@@ -1,4 +1,10 @@
+SRC_PATH = $$PWD/src
+
+INCLUDEPATH += $$SRC_PATH
+
 HEADERS += \
-    $$PWD/src/ping.h
+    $$SRC_PATH/ping.h
 SOURCES += \
-    $$PWD/src/ping.cpp
+    $$SRC_PATH/ping.cpp
+
+include($$SRC_PATH/link/link.pri)
