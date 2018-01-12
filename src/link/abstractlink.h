@@ -20,7 +20,7 @@ public:
 
     const AbstractLink& operator=(const AbstractLink& other);
 
-    virtual bool setConfiguration(const QStringList& args) { Q_UNUSED(args) return true; }
+    virtual bool setConfiguration(const QString& arg) { Q_UNUSED(arg) return true; }
 
     void setName(const QString& name) { _name = name; emit nameChanged(_name); };
     const QString name() { return _name; }

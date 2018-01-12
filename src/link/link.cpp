@@ -24,28 +24,6 @@ Link::Link(AbstractLink::LinkType linkType, QString name)
     _abstractLink->setName(name);
 }
 
-void Link::setConfiguration(const QString& string)
-{
-    if(string.isEmpty()) {
-        qDebug() << "No argument!";
-        return;
-    }
-
-    QStringList args = string.split(':');
-    if(!_abstractLink->setConfiguration(args)) {
-        qDebug() << "Configuration not ok... check argument";
-    }
-}
-
-void Link::startConnection()
-{
-    if(!_abstractLink->startConnection()) {
-        qDebug() << "Mo connection.. Check your arguments or connection";
-    }
-    connect(_abstractLink, &AbstractLink::newData, this, &Link::newData);
-    connect( this, &Link::sendData, _abstractLink, &AbstractLink::sendData);
-}
-
 Link::~Link()
 {
     qDebug() << "Link out !";

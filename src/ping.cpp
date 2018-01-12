@@ -7,15 +7,15 @@ Ping::Ping() :
     ,_protocol(new Protocol())
 {
     qDebug() << "Ping in !";
-    _link->setConfiguration("/dev/ttyUSB0:115200");
-    _link->startConnection();
-    if(!_link->abstractLink()->isOpen()) {
+    _link->self()->setConfiguration("/dev/ttyUSB0:115200");
+    _link->self()->startConnection();
+    if(!_link->self()->isOpen()) {
         qDebug() << "Connection fail !";
         return;
     }
 
-    connect(_link, &Link::newData, _protocol, &Protocol::handleData);
-    connect(_protocol, &Protocol::sendData, _link, &Link::sendData);
+    connect(_link->self(), &AbstractLink::newData, _protocol, &Protocol::handleData);
+    connect(_protocol, &Protocol::sendData, _link->self(), &AbstractLink::sendData);
 }
 
 Ping::~Ping()

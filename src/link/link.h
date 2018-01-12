@@ -11,14 +11,8 @@ public:
     Link(AbstractLink::LinkType linkType = AbstractLink::LinkType::None, QString name = QString());
     ~Link();
 
-    void setConfiguration(const QString& string);
-    void startConnection();
-
-    AbstractLink* abstractLink() { return _abstractLink; };
-
-signals:
-    void newData(const QByteArray& data);
-    void sendData(const QByteArray& data);
+    //This will handle the connection change
+    AbstractLink* self() { return _abstractLink; };
 
 private:
     AbstractLink* _abstractLink;

@@ -9,8 +9,9 @@ SerialLink::SerialLink()
     qDebug() << "SerialLink in !";
 }
 
-bool SerialLink::setConfiguration(const QStringList& args)
+bool SerialLink::setConfiguration(const QString& arg)
 {
+    QStringList args = arg.split(':');
     if(args.length() != 2) {
         qDebug() << "Wrong argument E.g: /dev/ttyUSB0:115200";
         return false;
