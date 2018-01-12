@@ -12,6 +12,6 @@ public:
     ~SerialLink();
 
     bool setConfiguration(const QStringList& args) final;
-    bool connect() final;
-    bool disconnect() final;
+    bool startConnection() final;
+    bool finishConnection() final;
 };

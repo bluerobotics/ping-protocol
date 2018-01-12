@@ -37,12 +37,13 @@ void Link::setConfiguration(const QString& string)
     }
 }
 
-void Link::connect()
+void Link::startConnection()
 {
-    if(!_abstractLink->connect()) {
+    if(!_abstractLink->startConnection()) {
         qDebug() << "Mo connection.. Check your arguments or connection";
     }
-    QObject::connect(_abstractLink, &AbstractLink::newData, this, &Link::newData);
+    connect(_abstractLink, &AbstractLink::newData, this, &Link::newData);
+    connect( this, &Link::sendData, _abstractLink, &AbstractLink::sendData);
 }
 
 Link::~Link()

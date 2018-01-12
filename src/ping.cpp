@@ -8,14 +8,14 @@ Ping::Ping() :
 {
     qDebug() << "Ping in !";
     _link->setConfiguration("/dev/ttyUSB0:115200");
-    _link->connect();
+    _link->startConnection();
     if(!_link->abstractLink()->isOpen()) {
         qDebug() << "Connection fail !";
         return;
     }
 
-    QObject::connect(_link, &Link::newData, _protocol, &Protocol::handleData);
-    //connect(_protocol, Protocol::handleData, [=](int vMajor, int vMinor){qDebug() << vMajor << vMinor;};);
+    connect(_link, &Link::newData, _protocol, &Protocol::handleData);
+    connect(_protocol, &Protocol::sendData, _link, &Link::sendData);
 }
 
 Ping::~Ping()

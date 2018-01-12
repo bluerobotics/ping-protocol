@@ -20,7 +20,7 @@ bool SerialLink::setConfiguration(const QStringList& args)
     return true;
 }
 
-bool SerialLink::connect()
+bool SerialLink::startConnection()
 {
     if(open(QIODevice::ReadWrite)) {
         QObject::connect(this, &QIODevice::readyRead, [=]() {
@@ -28,33 +28,16 @@ bool SerialLink::connect()
             emit newData(readAll());
         });
 
-        QTimer *timer = new QTimer();
-        QObject::connect(timer, &QTimer::timeout, [=]() {
-            QByteArray s;
-            s.append('B');
-            s.append('R');
-            s.append((uint8_t)2);
-            s.append((uint8_t)0);
-            s.append((uint8_t)120);
-            s.append((uint8_t)0);
-            s.append((uint8_t)0);
-            s.append((uint8_t)0);
-            s.append((uint8_t)101);
-            s.append((uint8_t)0);
-            uint16_t checksum = 0;
-            for (int i = 0; i < s.length(); i++)
-                checksum += (uint8_t) s[i];
-            s.append((const char*) &checksum, 2);
-            qDebug() << "sending.." << s;
-            write(s);
+        QObject::connect(this, &AbstractLink::sendData, [=](const QByteArray& data) {
+            qDebug() << __FUNCTION__ << "sending..." << data;
+            write(data);
         });
-        timer->start(1000);
         return true;
     }
     return false;
 }
 
-bool SerialLink::disconnect()
+bool SerialLink::finishConnection()
 {
     close();
     return true;
