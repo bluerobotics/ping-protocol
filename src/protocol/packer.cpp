@@ -93,6 +93,19 @@ QByteArray Packer::convert(const QVariant& var, const QChar& format)
     return QByteArray();
 }
 
+QByteArray Packer::merge(const QByteArray& header, const QByteArray& payload)
+{
+    QByteArray data;
+    uint16_t checksum = 0;
+    for(const auto& value : header + payload)
+        checksum += (uint8_t) value;
+
+    data.append(header);
+    data.append(payload);
+    data.append(pack(Message::checksumPackString(), checksum));
+    return data;
+}
+
 QByteArray Packer::populateHeader(int messageID, int srcDevID, int dstDevID, int payload)
 {
     QByteArray headerPack = Message::headerPackString();
@@ -112,17 +125,4 @@ QByteArray Packer::request(const QVariant& messageID, int srcDevID, int dstDevID
     QByteArray headerPack = populateHeader(Message::GeneralMessageID::gen_cmd_request, srcDevID, dstDevID, 2);
     QByteArray payloadPack = messagePack(Message::GeneralMessageID::gen_cmd_request, messageID);
     return merge(headerPack, payloadPack);
-}
-
-QByteArray Packer::merge(const QByteArray& header, const QByteArray& payload)
-{
-    QByteArray data;
-    uint16_t checksum = 0;
-    for(const auto& value : header + payload)
-        checksum += (uint8_t) value;
-
-    data.append(header);
-    data.append(payload);
-    data.append(pack(Message::checksumPackString(), checksum));
-    return data;
 }
