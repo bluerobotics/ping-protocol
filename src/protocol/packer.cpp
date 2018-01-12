@@ -16,7 +16,7 @@ Packer::~Packer()
 }
 
 
-// TODO: Do this in compilation time
+// TODO: Do this in protocol compilation time
 QString Packer::checkPackString(const QString& packString)
 {
     if(packString[0] != '<' && packString[0] != '>') {
