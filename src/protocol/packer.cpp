@@ -78,15 +78,36 @@ QByteArray Packer::convert(const QVariant& var, const QChar& format)
 {
     uint8_t uint8Value;
     uint16_t uint16Value;
+    uint32_t uint32Value;
+    uint64_t uint64Value;
+    float floatValue;
+    double doubleValue;
     switch(format.toLatin1()) {
         case('c'):
+        case('b'):
         case('B'):
             uint8Value = var.toUInt();
             return QByteArray(reinterpret_cast<const char*>(&uint8Value), sizeof(uint8Value));
+        case('h'):
         case('H'):
             uint16Value = var.toUInt();
             return QByteArray(reinterpret_cast<const char*>(&uint16Value), sizeof(uint16Value));
-        break;
+        case('i'):
+        case('I'):
+        case('l'):
+        case('L'):
+            uint32Value = var.toUInt();
+            return QByteArray(reinterpret_cast<const char*>(&uint32Value), sizeof(uint32Value));
+        case('q'):
+        case('Q'):
+            uint64Value = var.toUInt();
+            return QByteArray(reinterpret_cast<const char*>(&uint64Value), sizeof(uint64Value));
+        case('f'):
+            floatValue = var.toFloat();
+            return QByteArray(reinterpret_cast<const char*>(&floatValue), sizeof(floatValue));
+        case('d'):
+            doubleValue = var.toDouble();
+            return QByteArray(reinterpret_cast<const char*>(&doubleValue), sizeof(doubleValue));
         default:
             break;
     }
