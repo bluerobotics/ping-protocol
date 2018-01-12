@@ -42,6 +42,7 @@ void Link::connect()
     if(!_abstractLink->connect()) {
         qDebug() << "Mo connection.. Check your arguments or connection";
     }
+    QObject::connect(_abstractLink, &AbstractLink::newData, this, &Link::newData);
 }
 
 Link::~Link()

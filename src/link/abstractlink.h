@@ -32,11 +32,13 @@ public:
 
     virtual bool connect() { return true;};
     virtual bool disconnect() { return true;};
+    virtual bool isOpen() { return true;};
 
 signals:
-    void nameChanged        (const QString& name);
-    void autoConnectChanged ();
-    void linkChanged        (LinkType link);
+    void nameChanged(const QString& name);
+    void autoConnectChanged();
+    void linkChanged(LinkType link);
+    void newData(QByteArray data);
 
 private:
     bool _autoConnect;

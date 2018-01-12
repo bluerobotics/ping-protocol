@@ -8,3 +8,4 @@ SOURCES += \
     $$SRC_PATH/ping.cpp
 
 include($$SRC_PATH/link/link.pri)
+include($$SRC_PATH/protocol/protocol.pri)

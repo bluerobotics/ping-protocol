@@ -14,6 +14,11 @@ public:
     void setConfiguration(const QString& string);
     void connect();
 
+    AbstractLink* abstractLink() { return _abstractLink; };
+
+signals:
+    void newData(const QByteArray& data);
+
 private:
     AbstractLink* _abstractLink;
 };
