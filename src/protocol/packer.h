@@ -7,6 +7,7 @@ public:
     ~Packer();
 
     QString checkPackString(const QString& packString);
+    QByteArray pack(const QByteArray& packString, const QVariant& var);
     QByteArray pack(const QByteArray& packString, const QVariantList& varList);
     QByteArray convert(const QVariant& var, const QChar& format);
     QByteArray populateHeader(int messageID = 120, int srcDevID = 0, int dstDevID = 0, int payload = -1);
