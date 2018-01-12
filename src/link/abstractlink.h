@@ -30,15 +30,16 @@ public:
     bool isAutoConnect() { return _autoConnect; }
     virtual void setAutoConnect(bool autoc = true) { _autoConnect = autoc; emit autoConnectChanged(); }
 
-    virtual bool connect() { return true;};
-    virtual bool disconnect() { return true;};
+    virtual bool startConnection() { return true;};
+    virtual bool finishConnection() { return true;};
     virtual bool isOpen() { return true;};
 
 signals:
     void nameChanged(const QString& name);
     void autoConnectChanged();
     void linkChanged(LinkType link);
-    void newData(QByteArray data);
+    void newData(const QByteArray& data);
+    void sendData(const QByteArray& data);
 
 private:
     bool _autoConnect;
