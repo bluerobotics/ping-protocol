@@ -34,6 +34,13 @@ QString Packer::checkPackString(const QString& packString)
     return formatString;
 }
 
+QByteArray Packer::pack(const QByteArray& packString, const QVariant& var)
+{
+    QVariantList list;
+    list.append(var);
+    return pack(packString, list);
+}
+
 QByteArray Packer::pack(const QByteArray& packString, const QVariantList& varList)
 {
     QString formatString = checkPackString(packString);
@@ -93,9 +100,7 @@ QByteArray Packer::populateHeader(int messageID, int srcDevID, int dstDevID, int
 QByteArray Packer::request(const QVariant& messageID, int srcDevID, int dstDevID)
 {
     QByteArray headerPack = populateHeader(Message::GeneralMessageID::gen_cmd_request, srcDevID, dstDevID, 2);
-    QVariantList list;
-    list.append(messageID);
-    QByteArray payloadPack = pack(Message::packString(Message::GeneralMessageID::gen_cmd_request), list);
+    QByteArray payloadPack = pack(Message::packString(Message::GeneralMessageID::gen_cmd_request), messageID);
 
     qDebug() << "final merge" << merge(headerPack, payloadPack);
     return merge(headerPack, payloadPack);
@@ -110,8 +115,6 @@ QByteArray Packer::merge(const QByteArray& header, const QByteArray& payload)
 
     data.append(header);
     data.append(payload);
-    QVariantList list;
-    list.append(checksum);
-    data.append(pack(Message::checksumPackString(), list));
+    data.append(pack(Message::checksumPackString(), checksum));
     return data;
 }
