@@ -7,6 +7,8 @@ public:
     ~Packer();
 
     QString checkPackString(const QString& packString);
+    QByteArray messagePack(const QVariant& messageID, const QVariant& var);
+    QByteArray messagePack(const QVariant& messageID, const QVariantList& var);
     QByteArray pack(const QByteArray& packString, const QVariant& var);
     QByteArray pack(const QByteArray& packString, const QVariantList& varList);
     QByteArray convert(const QVariant& var, const QChar& format);
