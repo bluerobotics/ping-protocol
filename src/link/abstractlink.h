@@ -18,10 +18,14 @@ public:
         Tcp,
     };
 
+    const AbstractLink& operator=(const AbstractLink& other);
+
+    virtual bool setConfiguration(const QStringList& args) { Q_UNUSED(args) return true; }
+
     void setName(const QString& name) { _name = name; emit nameChanged(_name); };
     const QString name() { return _name; }
-    virtual void setType(LinkType type) { _linkType = type; emit linkChanged(_linkType); };
-    LinkType type() { return _linkType; };
+    virtual void setType(LinkType type) { _type = type; emit linkChanged(_type); };
+    LinkType type() { return _type; };
 
     bool isAutoConnect() { return _autoConnect; }
     virtual void setAutoConnect(bool autoc = true) { _autoConnect = autoc; emit autoConnectChanged(); }
@@ -36,6 +40,6 @@ signals:
 
 private:
     bool _autoConnect;
-    LinkType _linkType;
+    LinkType _type;
     QString _name;
 };
