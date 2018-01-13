@@ -199,9 +199,9 @@ QByteArray Packer::pack(const QByteArray& packString, const QVariantList& varLis
     if(formatString.isEmpty()) {
         qDebug() << "formatString cannot be empty !";
         return QByteArray();
-    } else if(formatString.length()-1 != varList.length()) {
+    } else if(byteInFormatString(formatString) != varList.length()) {
         qDebug() << "packString and varList differ in size";
-        qDebug() << formatString.length()-1 << varList.length();
+        qDebug() << byteInFormatString(formatString) << varList.length();
     }
 
     QByteArray data;
@@ -214,6 +214,42 @@ QByteArray Packer::pack(const QByteArray& packString, const QVariantList& varLis
     }
 
     return data;
+}
+
+int Packer::byteInFormatString(const QString& formatString)
+{
+    int numberOfBytes = 0;
+    for(const auto& format : formatString) {
+        switch(format.toLatin1()) {
+            case('c'):
+            case('b'):
+            case('B'):
+                numberOfBytes += sizeof(uint8_t);
+                break;
+            case('h'):
+            case('H'):
+                numberOfBytes += sizeof(uint16_t);
+                break;
+            case('i'):
+            case('I'):
+            case('l'):
+            case('L'):
+                numberOfBytes += sizeof(uint32_t);
+                break;
+            case('q'):
+            case('Q'):
+                numberOfBytes += sizeof(uint64_t);
+                break;
+            case('f'):
+                numberOfBytes += sizeof(float);
+                break;
+            case('d'):
+                numberOfBytes += sizeof(double);
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 QByteArray Packer::convert(const QVariant& var, const QChar& format)
