@@ -61,7 +61,7 @@ bool Packer::validadeData(QByteArray& data, QVariantList& package)
     return true;
 }
 
-QVariantList Packer::decode(QByteArray data)
+void Packer::decode(QByteArray data)
 {
     QVariantList package;
     qDebug() << "decode" << data;
@@ -77,7 +77,6 @@ QVariantList Packer::decode(QByteArray data)
         qDebug() << "Checksum GOOD !";
         emit newPackage(package);
     }
-    return QVariantList();
 }
 
 // TODO: Do this in protocol compilation time

@@ -11,7 +11,7 @@ public:
     ~Packer();
 
     bool validadeData(QByteArray& data, QVariantList& package);
-    QVariantList decode(QByteArray data);
+    void decode(QByteArray data);
     QString checkPackString(const QString& packString);
     QVariantList unpack(const QString& packString, QByteArray data);
     QVariant undo(QByteArray& data, const QChar& format);
