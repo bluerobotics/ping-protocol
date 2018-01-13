@@ -1,12 +1,16 @@
 #pragma once
 
-class Packer
+#include <QObject>
+#include <QVariantList>
+
+class Packer : public QObject
 {
+    Q_OBJECT
 public:
     Packer();
     ~Packer();
 
-    bool validadeData(const QByteArray& data);
+    bool validadeData(QByteArray& data, QVariantList& package);
     QVariantList decode(QByteArray data);
     QString checkPackString(const QString& packString);
     QVariantList unpack(const QString& packString, QByteArray data);
@@ -19,4 +23,7 @@ public:
     QByteArray merge(const QByteArray& header, const QByteArray& payload);
     QByteArray populateHeader(int messageID = 120, int srcDevID = 0, int dstDevID = 0, int payload = -1);
     QByteArray request(const QVariant& messageID, int srcDevID = 0, int dstDevID = 0);
+
+signals:
+    void newPackage(QVariantList package);
 };

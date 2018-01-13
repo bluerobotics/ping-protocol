@@ -15,34 +15,67 @@ Packer::~Packer()
     qDebug() << "Packer out !";
 }
 
-bool Packer::validadeData(const QByteArray& data)
+bool Packer::validadeData(QByteArray& data, QVariantList& package)
 {
     qDebug() << __FUNCTION__;
     qDebug() << data;
-    if(data.length() < 2) {
-        qDebug() << "No data to construct" << data.length();
+    QByteArray dataTmp = data;
+    if(!dataTmp.length()) {
+        qDebug() << "No data to construct" << dataTmp.length();
         return false;
     }
+    qDebug() << "Enough data !" << dataTmp.length();
+
+    QVariantList header = unpack(Message::headerPackString(), dataTmp);
+
     // Check start byte 1 and 2
-    if(data[0] != 'B' && data[1] != 'R') {
+    if(header[0].toChar() != 'B' && header[1].toChar() != 'R') {
         qDebug() << "Wrong start";
         return false;
     }
+    qDebug() << "Good start !" << dataTmp.length();
 
-    unpack(Message::headerPackString(), data);
-    return false;
+    uint payloadSize = header[2].toUInt();
+    // TODO: This size need to be from message
+    uint headerSize = 8;
+    uint16_t checksum = 0;
+    for(const auto& value : dataTmp.left(headerSize + payloadSize))
+        checksum += (uint8_t) value;
+
+    uint checksumSize = 2;
+    QVariantList dataChecksum = unpack("<H", dataTmp.mid(headerSize + payloadSize, checksumSize));
+    if(checksum != dataChecksum[0].toUInt()) {
+        qDebug() << "Wrong checksum";
+        return false;
+    }
+
+    qDebug() << "Good checksum !" << dataTmp.length();
+
+    qDebug() << header[3] << Message::packString(header[3]) << Message::string(header[3]);
+    QVariantList payload = unpack(Message::packString(header[3]), dataTmp.mid(headerSize, payloadSize));
+    qDebug() << "payload" << payload;
+    package = header + payload;
+    qDebug() << "validade end !" << package;
+    data.remove(0, headerSize + payloadSize + checksumSize);
+
+    return true;
 }
 
 QVariantList Packer::decode(QByteArray data)
 {
+    QVariantList package;
     qDebug() << "decode" << data;
     for(int i(0); i < data.length()-1; i++) {
-        data = data.remove(0, i);
-        if(!validadeData(data)) {
-            qDebug() << "Checksum error !";
+        if(!validadeData(data, package)) {
+            qDebug() << "no Valida data !";
+            data = data.remove(0, 1);
             continue;
         }
+        // Pegar os dados validos e retornar de alguma forma para o message e decodificar
+        // Talvez mandando toda a estrutura para ele via QVariantList
+        // E ele que se vere para mandar isso para o usuario
         qDebug() << "Checksum GOOD !";
+        emit newPackage(package);
     }
     return QVariantList();
 }
@@ -84,7 +117,7 @@ QVariantList Packer::unpack(const QString& packString, QByteArray data)
         list.append(var);
     }
     qDebug() << "---??" << list;
-    return QVariantList();
+    return list;
 }
 
 QVariant Packer::undo(QByteArray& data, const QChar& format)
