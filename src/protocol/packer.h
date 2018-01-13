@@ -10,8 +10,11 @@ public:
     Packer();
     ~Packer();
 
-    bool validadeData(QByteArray& data, QVariantList& package);
     void decode(QByteArray data);
+    QByteArray request(const QVariant& messageID, int srcDevID = 0, int dstDevID = 0);
+
+private:
+    bool validadeData(QByteArray& data, QVariantList& package);
     QString checkPackString(const QString& packString);
     QVariantList unpack(const QString& packString, QByteArray data);
     QVariant undo(QByteArray& data, const QChar& format);
@@ -23,7 +26,6 @@ public:
     QByteArray convert(const QVariant& var, const QChar& format);
     QByteArray merge(const QByteArray& header, const QByteArray& payload);
     QByteArray populateHeader(int messageID = 120, int srcDevID = 0, int dstDevID = 0, int payload = -1);
-    QByteArray request(const QVariant& messageID, int srcDevID = 0, int dstDevID = 0);
 
 signals:
     void newPackage(QVariantList package);
