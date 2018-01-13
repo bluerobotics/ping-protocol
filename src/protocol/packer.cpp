@@ -17,14 +17,14 @@ Packer::~Packer()
 
 bool Packer::validadeData(QByteArray& data, QVariantList& package)
 {
-    qDebug() << __FUNCTION__;
-    qDebug() << data;
+    // Check if data have a package
+    // Return false if no package available in first n bytes
+    // Return true and populate package if data is util
     QByteArray dataTmp = data;
     if(!dataTmp.length()) {
-        qDebug() << "No data to construct" << dataTmp.length();
+        qDebug() << "No enough data to construct" << dataTmp.length();
         return false;
     }
-    qDebug() << "Enough data !" << dataTmp.length();
 
     QVariantList header = unpack(Message::headerPackString(), dataTmp);
 
@@ -33,11 +33,10 @@ bool Packer::validadeData(QByteArray& data, QVariantList& package)
         qDebug() << "Wrong start";
         return false;
     }
-    qDebug() << "Good start !" << dataTmp.length();
 
     uint payloadSize = header[2].toUInt();
     // TODO: This size need to be from message
-    uint headerSize = 8;
+    uint headerSize = byteInFormatString(checkPackString(Message::headerPackString()));
     uint16_t checksum = 0;
     for(const auto& value : dataTmp.left(headerSize + payloadSize))
         checksum += (uint8_t) value;
@@ -63,18 +62,14 @@ bool Packer::validadeData(QByteArray& data, QVariantList& package)
 
 void Packer::decode(QByteArray data)
 {
+    // Decode incoming data
     QVariantList package;
-    qDebug() << "decode" << data;
     for(int i(0); i < data.length()-1; i++) {
         if(!validadeData(data, package)) {
             qDebug() << "no Valida data !";
             data = data.remove(0, 1);
             continue;
         }
-        // Pegar os dados validos e retornar de alguma forma para o message e decodificar
-        // Talvez mandando toda a estrutura para ele via QVariantList
-        // E ele que se vere para mandar isso para o usuario
-        qDebug() << "Checksum GOOD !";
         emit newPackage(package);
     }
 }
@@ -99,28 +94,29 @@ QString Packer::checkPackString(const QString& packString)
 
 QVariantList Packer::unpack(const QString& packString, QByteArray data)
 {
-    qDebug() << __FUNCTION__;
     QString formatString = checkPackString(packString);
     if(formatString.isEmpty()) {
+        qDebug() << "formatString cannot be empty !";
         return QVariantList();
     }
+
     // TODO: work with endian
+    // Remove endian character
     formatString = formatString.remove(0, 1);
+
+    // Transform data in QVariantList package using packString
     QVariantList list;
     for(const auto& format : formatString) {
-        qDebug() << "---";
-        qDebug() << data << format;
         QVariant var = undo(data, format);
-        qDebug() << var;
-        qDebug() << data;
         list.append(var);
     }
-    qDebug() << "---??" << list;
     return list;
 }
 
 QVariant Packer::undo(QByteArray& data, const QChar& format)
 {
+    // Undo convert function
+    // Transform QByteArrays in QVariant with format information
     switch(format.toLatin1()) {
         case('c'):
         case('b'):
@@ -188,6 +184,7 @@ QByteArray Packer::messagePack(const QVariant& messageID, const QVariantList& va
 
 QByteArray Packer::pack(const QByteArray& packString, const QVariant& var)
 {
+    // Transform the QVariantList elements in QByteArray
     QVariantList list;
     list.append(var);
     return pack(packString, list);
@@ -195,21 +192,26 @@ QByteArray Packer::pack(const QByteArray& packString, const QVariant& var)
 
 QByteArray Packer::pack(const QByteArray& packString, const QVariantList& varList)
 {
+    // Transform the QVariantList elements in QByteArray
     QString formatString = checkPackString(packString);
+
+    // TODO: Work with endian
+    formatString.remove(0, 1);
     if(formatString.isEmpty()) {
         qDebug() << "formatString cannot be empty !";
         return QByteArray();
-    } else if(byteInFormatString(formatString) != varList.length()) {
-        qDebug() << "packString and varList differ in size";
-        qDebug() << byteInFormatString(formatString) << varList.length();
+    } else if(formatString.length() != varList.length()) {
+        qDebug() << "formatString and varList must have the same size !";
+        qDebug() << formatString << varList;
+        qDebug() << formatString.length() << varList.length();
     }
 
     QByteArray data;
 
     // TODO: work with endian
-    for(int index(1); index < formatString.length(); index++) {
+    for(int index(0); index < formatString.length(); index++) {
         QChar format = formatString[index];
-        QVariant var = varList[index-1];
+        QVariant var = varList[index];
         data.append(convert(var, format));
     }
 
@@ -218,6 +220,7 @@ QByteArray Packer::pack(const QByteArray& packString, const QVariantList& varLis
 
 int Packer::byteInFormatString(const QString& formatString)
 {
+    // Get formatString size in bytes
     int numberOfBytes = 0;
     for(const auto& format : formatString) {
         switch(format.toLatin1()) {
@@ -250,16 +253,20 @@ int Packer::byteInFormatString(const QString& formatString)
                 break;
         }
     }
+
+    return numberOfBytes;
 }
 
 QByteArray Packer::convert(const QVariant& var, const QChar& format)
 {
-    uint8_t uint8Value;
-    uint16_t uint16Value;
-    uint32_t uint32Value;
-    uint64_t uint64Value;
-    float floatValue;
-    double doubleValue;
+    // Convert QVariant to QByteArray using a format character
+    // https://docs.python.org/2/library/struct.html#format-characters
+    static uint8_t uint8Value;
+    static uint16_t uint16Value;
+    static uint32_t uint32Value;
+    static uint64_t uint64Value;
+    static float floatValue;
+    static double doubleValue;
     switch(format.toLatin1()) {
         case('c'):
         case('b'):
@@ -294,6 +301,7 @@ QByteArray Packer::convert(const QVariant& var, const QChar& format)
 
 QByteArray Packer::merge(const QByteArray& header, const QByteArray& payload)
 {
+    // Merge header and payload to finish the package with checksum
     QByteArray data;
     uint16_t checksum = 0;
     for(const auto& value : header + payload)
@@ -307,6 +315,7 @@ QByteArray Packer::merge(const QByteArray& header, const QByteArray& payload)
 
 QByteArray Packer::populateHeader(int messageID, int srcDevID, int dstDevID, int payload)
 {
+    // This should move to protocol
     QByteArray headerPack = Message::headerPackString();
     QVariantList list;
     list.append('B');
@@ -321,7 +330,8 @@ QByteArray Packer::populateHeader(int messageID, int srcDevID, int dstDevID, int
 
 QByteArray Packer::request(const QVariant& messageID, int srcDevID, int dstDevID)
 {
-    QByteArray headerPack = populateHeader(Message::GeneralMessageID::gen_cmd_request, srcDevID, dstDevID, 2);
+    // It's necessary the payload size to populate header
     QByteArray payloadPack = messagePack(Message::GeneralMessageID::gen_cmd_request, messageID);
+    QByteArray headerPack = populateHeader(Message::GeneralMessageID::gen_cmd_request, srcDevID, dstDevID, payloadPack.length());
     return merge(headerPack, payloadPack);
 }
