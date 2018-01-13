@@ -15,7 +15,7 @@ public:
     Message _message;
     Packer _packer;
 
-    static void handleData(const QByteArray& data);
+    void handleData(const QByteArray& data);
     void requestVersion();
 
 signals:

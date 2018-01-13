@@ -15,6 +15,37 @@ Packer::~Packer()
     qDebug() << "Packer out !";
 }
 
+bool Packer::validadeData(const QByteArray& data)
+{
+    qDebug() << __FUNCTION__;
+    qDebug() << data;
+    if(data.length() < 2) {
+        qDebug() << "No data to construct" << data.length();
+        return false;
+    }
+    // Check start byte 1 and 2
+    if(data[0] != 'B' && data[1] != 'R') {
+        qDebug() << "Wrong start";
+        return false;
+    }
+
+    unpack(Message::headerPackString(), data);
+    return false;
+}
+
+QVariantList Packer::decode(QByteArray data)
+{
+    qDebug() << "decode" << data;
+    for(int i(0); i < data.length()-1; i++) {
+        data = data.remove(0, i);
+        if(!validadeData(data)) {
+            qDebug() << "Checksum error !";
+            continue;
+        }
+        qDebug() << "Checksum GOOD !";
+    }
+    return QVariantList();
+}
 
 // TODO: Do this in protocol compilation time
 QString Packer::checkPackString(const QString& packString)
@@ -32,6 +63,85 @@ QString Packer::checkPackString(const QString& packString)
         }
     }
     return formatString;
+}
+
+QVariantList Packer::unpack(const QString& packString, QByteArray data)
+{
+    qDebug() << __FUNCTION__;
+    QString formatString = checkPackString(packString);
+    if(formatString.isEmpty()) {
+        return QVariantList();
+    }
+    // TODO: work with endian
+    formatString = formatString.remove(0, 1);
+    QVariantList list;
+    for(const auto& format : formatString) {
+        qDebug() << "---";
+        qDebug() << data << format;
+        QVariant var = undo(data, format);
+        qDebug() << var;
+        qDebug() << data;
+        list.append(var);
+    }
+    qDebug() << "---??" << list;
+    return QVariantList();
+}
+
+QVariant Packer::undo(QByteArray& data, const QChar& format)
+{
+    switch(format.toLatin1()) {
+        case('c'):
+        case('b'):
+        case('B'): {
+            auto var = (QChar)data[0];
+            data = data.remove(0, 1);
+            return var;
+        }
+        case('h'): {
+            const int16_t* var = reinterpret_cast<const int16_t*>(data.left(2).constData());
+            data = data.remove(0, 2);
+            return var[0];
+        }
+        case('H'): {
+            const uint16_t* var = reinterpret_cast<const uint16_t*>(data.left(2).constData());
+            data = data.remove(0, 2);
+            return var[0];
+        }
+        case('i'):
+        case('l'): {
+            const int32_t* var = reinterpret_cast<const int32_t*>(data.left(4).constData());
+            data = data.remove(0, 4);
+            return var[0];
+        }
+        case('I'):
+        case('L'): {
+            const uint32_t* var = reinterpret_cast<const uint32_t*>(data.left(4).constData());
+            data = data.remove(0, 4);
+            return var[0];
+        }
+        case('q'): {
+            const long long int* var = reinterpret_cast<const long long int*>(data.left(8).constData());
+            data = data.remove(0, 8);
+            return var[0];
+        }
+        case('Q'): {
+            const unsigned long long int* var = reinterpret_cast<const unsigned long long int*>(data.left(8).constData());
+            data = data.remove(0, 8);
+            return var[0];
+        }
+        case('f'): {
+            const float* var =  reinterpret_cast<const float*>(data.left(4).constData());
+            data = data.remove(0, 4);
+            return var[0];
+        }
+        case('d'): {
+            const double* var =  reinterpret_cast<const double*>(data.left(8).constData());
+            data = data.remove(0, 8);
+            return var[0];
+        }
+        default:
+            break;
+    }
 }
 
 QByteArray Packer::messagePack(const QVariant& messageID, const QVariant& var)

@@ -21,7 +21,8 @@ Protocol::~Protocol()
 
 void Protocol::handleData(const QByteArray& data)
 {
-    qDebug() << data;
+    qDebug() << "Receive:" <<  data;
+    qDebug() << _packer.decode(data);
 }
 
 void Protocol::requestVersion()
