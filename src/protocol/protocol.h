@@ -13,7 +13,7 @@ public:
     ~Protocol();
 
     Message _message;
-    Packer _packer;
+    Packer* _packer;
 
     void handleData(const QByteArray& data);
     void requestVersion();
