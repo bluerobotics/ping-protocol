@@ -35,6 +35,7 @@ bool SerialLink::startConnection()
         });
         return true;
     }
+    qDebug() << __FUNCTION__ << "Check your connection !";
     return false;
 }
 
