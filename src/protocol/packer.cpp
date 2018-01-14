@@ -107,13 +107,13 @@ QVariantList Packer::unpack(const QString& packString, QByteArray data)
     // Transform data in QVariantList package using packString
     QVariantList list;
     for(const auto& format : formatString) {
-        QVariant var = undo(data, format);
+        QVariant var = unconvert(data, format);
         list.append(var);
     }
     return list;
 }
 
-QVariant Packer::undo(QByteArray& data, const QChar& format)
+QVariant Packer::unconvert(QByteArray& data, const QChar& format)
 {
     // Undo convert function
     // Transform QByteArrays in QVariant with format information
