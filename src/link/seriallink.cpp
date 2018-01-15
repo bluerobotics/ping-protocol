@@ -6,7 +6,6 @@
 SerialLink::SerialLink()
 {
     setType(AbstractLink::LinkType::Serial);
-    qDebug() << "SerialLink in !";
 }
 
 bool SerialLink::setConfiguration(const QString& arg)
@@ -47,5 +46,4 @@ bool SerialLink::finishConnection()
 
 SerialLink::~SerialLink()
 {
-    qDebug() << "SerialLink out !";
 }

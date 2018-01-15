@@ -7,12 +7,10 @@
 
 Packer::Packer()
 {
-    qDebug() << "Packer in !";
 }
 
 Packer::~Packer()
 {
-    qDebug() << "Packer out !";
 }
 
 bool Packer::validadeData(QByteArray& data, QVariantList& package)
@@ -48,13 +46,8 @@ bool Packer::validadeData(QByteArray& data, QVariantList& package)
         return false;
     }
 
-    qDebug() << "Good checksum !" << dataTmp.length();
-
-    qDebug() << header[3] << Message::packString(header[3]) << Message::string(header[3]);
     QVariantList payload = unpack(Message::packString(header[3]), dataTmp.mid(headerSize, payloadSize));
-    qDebug() << "payload" << payload;
     package = header + payload;
-    qDebug() << "validade end !" << package;
     data.remove(0, headerSize + payloadSize + checksumSize);
 
     return true;

@@ -6,8 +6,6 @@
 Protocol::Protocol()
     : _packer(new Packer())
 {
-    qDebug() << "Protocol in !";
-
     QTimer *timer = new QTimer();
     QObject::connect(timer, &QTimer::timeout, [=]() {
         requestVersion();
@@ -23,7 +21,6 @@ Protocol::Protocol()
 
 Protocol::~Protocol()
 {
-    qDebug() << "Protocol out !";
 }
 
 void Protocol::handleData(const QByteArray& data)

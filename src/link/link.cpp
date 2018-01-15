@@ -9,8 +9,6 @@
 
 Link::Link(AbstractLink::LinkType linkType, QString name)
 {
-    qDebug() << "Link in !" << linkType;
-
     switch(linkType) {
         case AbstractLink::LinkType::Serial :
             _abstractLink = new SerialLink();
@@ -26,5 +24,4 @@ Link::Link(AbstractLink::LinkType linkType, QString name)
 
 Link::~Link()
 {
-    qDebug() << "Link out !";
 }
