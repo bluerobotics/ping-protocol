@@ -6,7 +6,6 @@ Ping::Ping() :
      _link(new Link(AbstractLink::LinkType::Serial, "Default"))
     ,_protocol(new Protocol())
 {
-    qDebug() << "Ping in !";
     _link->self()->setConfiguration("/dev/ttyUSB0:115200");
     _link->self()->startConnection();
     if(!_link->self()->isOpen()) {
@@ -21,5 +20,4 @@ Ping::Ping() :
 Ping::~Ping()
 {
     _link->disconnect();
-    qDebug() << "Ping out !";
 }

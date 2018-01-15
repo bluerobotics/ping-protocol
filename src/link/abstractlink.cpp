@@ -5,7 +5,6 @@
 AbstractLink::AbstractLink() :
     _type(LinkType::None)
 {
-    qDebug() << "AbstractLink in !";
 }
 
 const AbstractLink& AbstractLink::operator=(const AbstractLink& other)
@@ -18,5 +17,4 @@ const AbstractLink& AbstractLink::operator=(const AbstractLink& other)
 
 AbstractLink::~AbstractLink()
 {
-    qDebug() << "AbstractLink out !";
 }

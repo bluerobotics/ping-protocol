@@ -4,14 +4,12 @@
 
 Message::Message()
 {
-    qDebug() << "Message in !";
     qDebug() << string(GeneralMessageID::gen_goto_bootloader);
     qDebug() << packString(EchosounderMessageID::es_profile);
 }
 
 Message::~Message()
 {
-    qDebug() << "Message out !";
 }
 
 const QByteArray Message::checksumPackString()
