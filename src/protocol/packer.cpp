@@ -18,6 +18,10 @@ bool Packer::validadeData(QByteArray& data, QVariantList& package)
     // Check if data have a package
     // Return false if no package available in first n bytes
     // Return true and populate package if data is util
+
+    // Clean package before start
+    package.clear();
+
     QByteArray dataTmp = data;
     if(!dataTmp.length()) {
         qDebug() << "No enough data to construct" << dataTmp.length();
@@ -36,6 +40,12 @@ bool Packer::validadeData(QByteArray& data, QVariantList& package)
     // TODO: This size need to be from message
     uint headerSize = byteInFormatString(Message::headerPackString());
     uint16_t checksum = 0;
+
+    // Check if data have enough information
+    if(payloadSize + headerSize > (uint)dataTmp.length()) {
+        return true;
+    }
+
     for(const auto& value : dataTmp.left(headerSize + payloadSize))
         checksum += (uint8_t) value;
 
@@ -55,13 +65,20 @@ bool Packer::validadeData(QByteArray& data, QVariantList& package)
 
 void Packer::decode(QByteArray data)
 {
+    static QByteArray dataReceived;
+    dataReceived.append(data);
     // Decode incoming data
     QVariantList package;
-    for(int i(0); i < data.length()-1; i++) {
-        if(!validadeData(data, package)) {
+    for(int i(0); i < dataReceived.length()-1; i++) {
+        if(!validadeData(dataReceived, package)) {
             qDebug() << "no Valida data !";
-            data = data.remove(0, 1);
+            dataReceived = dataReceived.remove(0, 1);
             continue;
+        }
+        if(package.isEmpty()) {
+            // Package not done
+            // Not enough data to process
+            return;
         }
         emit newPackage(package);
     }
