@@ -1,41 +1,11 @@
 #include <QDebug>
-#include <QTimer>
 
 #include "protocol.h"
 
 Protocol::Protocol()
     : _packer(new Packer())
 {
-    QTimer *timer = new QTimer();
-    QObject::connect(timer, &QTimer::timeout, [=]() {
-        requestVersion();
-        requestDeviceID();
-        requestNewData();
-
-        // Echosounder requests
-        requestEchosounderDistanceSimple();
-        requestEchosounderDistance();
-        requestEchosounderProfile();
-        requestEchosounderRange();
-        requestEchosounderMode();
-        requestEchosounderRate();
-        requestEchosounderGain();
-        requestEchosounderPulse();
-
-        // Mechanical Scanning Sonar requests
-        requestMSSAngleProfilea();
-        requestMSSRange();
-        requestMSSMode();
-        requestMSSGain();
-    });
-    timer->start(1000);
-
-    connect(_packer, &Packer::newPackage, [=](QVariantList package){
-        qDebug() << "----------------------";
-        qDebug() << __FUNCTION__ << package;
-        qDebug() << "----------------------";
-
-    });
+    connect(_packer, &Packer::newPackage, this, &Protocol::emitMessages);
 }
 
 Protocol::~Protocol()
@@ -174,7 +144,6 @@ void Protocol::emitMessages(QVariantList package)
 
 void Protocol::handleData(const QByteArray& data)
 {
-    qDebug() << "Receive:" <<  data;
     _packer->decode(data);
 }
 

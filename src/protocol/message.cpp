@@ -4,8 +4,6 @@
 
 Message::Message()
 {
-    qDebug() << string(GeneralMessageID::gen_goto_bootloader);
-    qDebug() << packString(EchosounderMessageID::es_profile);
 }
 
 Message::~Message()
