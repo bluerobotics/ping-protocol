@@ -150,7 +150,7 @@ QVariant Packer::unconvert(QByteArray& data, const QChar& format)
             return var[0];
         }
         default:
-            break;
+            return QVariant();
     }
 }
 
