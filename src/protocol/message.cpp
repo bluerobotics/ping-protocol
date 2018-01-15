@@ -29,7 +29,7 @@ const QByteArray Message::headerPackString()
      * 6 src_dev_id
      * 7 dst_dev_id
      */
-    return "<2c2H2B";
+    return unpack("<2c2H2B");
 }
 
 const QByteArray Message::packString(const QVariant& messageIDEnum)
@@ -49,7 +49,7 @@ const QByteArray Message::packString(const QVariant& messageIDEnum)
              * 2-3 fw_version_major
              * 4-5 fw_version_minor
              */
-            return "<2B2H";
+            return unpack("<2B2H");
         case GeneralMessageID::gen_device_id :
             /**
              * 0 device_id
@@ -93,7 +93,7 @@ const QByteArray Message::packString(const QVariant& messageIDEnum)
              * 19-22 gain_index
              * 23-26 gain_index
              */
-            return "<IBH4I";
+            return unpack("<IBH4I");
         case EchosounderMessageID::es_profile :
             /**
              * 0-3 distance
@@ -108,13 +108,13 @@ const QByteArray Message::packString(const QVariant& messageIDEnum)
              * 27-28 num_points
              * 29-n data
              */
-            return "<IBH4IH200B";
+            return unpack("<IBH4IH200B");
         case EchosounderMessageID::es_range :
             /**
              * 0-3 start_mm
              * 4-7 length_mm
              */
-            return "<2I";
+            return unpack("<2I");
         case EchosounderMessageID::es_mode :
             /**
              * 0 auto_manual
@@ -146,7 +146,7 @@ const QByteArray Message::packString(const QVariant& messageIDEnum)
              * 11-13 num_points
              * 14-n data
              */
-            return "<2H2IHXB";
+            return unpack("<2H2IHXB");
         case MechanicalScanningSonarMessageID::mss_range :
             /**
              * 0-3 range_mm
@@ -170,7 +170,7 @@ const QByteArray Message::packString(const QVariant& messageIDEnum)
              * 4-5 pulse_length
              * 5-6 sample_size
              */
-            return "<iHB2I";
+            return unpack("<iHB2I");
 
         default:
             return QByteArray();
@@ -230,4 +230,21 @@ const QString Message::string(const QVariant& messageIDEnum)
         default:
             return tr("Command do not exist.");
     }
+}
+
+const QByteArray Message::unpack(const QString& packString)
+{
+    if(packString[0] != '<' && packString[0] != '>') {
+        qDebug() << "packString need to start with > or < to specify endian.";
+        return QByteArray();
+    }
+    QString formatString = packString;
+    for(int i(0); i < formatString.length(); i++) {
+        if(formatString[i].isDigit()) {
+            int digit = formatString[i].digitValue();
+            QString format(formatString[i+1]);
+            formatString.replace(formatString.mid(i, 2), format.repeated(digit));
+        }
+    }
+    return formatString.toLatin1();
 }

@@ -36,7 +36,7 @@ bool Packer::validadeData(QByteArray& data, QVariantList& package)
 
     uint payloadSize = header[2].toUInt();
     // TODO: This size need to be from message
-    uint headerSize = byteInFormatString(checkPackString(Message::headerPackString()));
+    uint headerSize = byteInFormatString(Message::headerPackString());
     uint16_t checksum = 0;
     for(const auto& value : dataTmp.left(headerSize + payloadSize))
         checksum += (uint8_t) value;
@@ -74,27 +74,9 @@ void Packer::decode(QByteArray data)
     }
 }
 
-// TODO: Do this in protocol compilation time
-QString Packer::checkPackString(const QString& packString)
-{
-    if(packString[0] != '<' && packString[0] != '>') {
-        qDebug() << "packString need to start with > or < to specify endian.";
-        return QString();
-    }
-    QString formatString = packString;
-    for(int i(0); i < formatString.length(); i++) {
-        if(formatString[i].isDigit()) {
-            int digit = formatString[i].digitValue();
-            QString format(formatString[i+1]);
-            formatString.replace(formatString.mid(i, 2), format.repeated(digit));
-        }
-    }
-    return formatString;
-}
-
 QVariantList Packer::unpack(const QString& packString, QByteArray data)
 {
-    QString formatString = checkPackString(packString);
+    QString formatString = packString;
     if(formatString.isEmpty()) {
         qDebug() << "formatString cannot be empty !";
         return QVariantList();
@@ -193,7 +175,7 @@ QByteArray Packer::pack(const QByteArray& packString, const QVariant& var)
 QByteArray Packer::pack(const QByteArray& packString, const QVariantList& varList)
 {
     // Transform the QVariantList elements in QByteArray
-    QString formatString = checkPackString(packString);
+    QString formatString = packString;
 
     // TODO: Work with endian
     formatString.remove(0, 1);
