@@ -59,7 +59,7 @@ signals:
     void EchosounderGain(int gain);
     void EchosounderNumberOfPoints(int numberOfPoints);
     void EchosounderPoints(QList<int> points);
-    void EchosounderMode(int mode);
+    void EchosounderAuto(bool mode);
     void EchosounderRate(int rate);
 
     // Mechanical Scanning Sonar info
@@ -69,7 +69,7 @@ signals:
     void MSSGain(int gain);
     void MSSNumberOfPoints(int numberOfPoints);
     void MSSPoints(QList<int> points);
-    void MSSMode(int mode);
+    void MSSAuto(bool mode);
     void MSStrainAngle(float angle);
     void MSSsectorWidth(float angle);
     void MSSstepSize(int stepSize);
