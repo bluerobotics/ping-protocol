@@ -75,4 +75,7 @@ signals:
     void MSSstepSize(int stepSize);
     void MSSLength(int mm);
     void MSSsampleSize(int size);
+
+private:
+    void emitMessages(QVariantList package);
 };
