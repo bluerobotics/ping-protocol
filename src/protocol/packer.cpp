@@ -63,7 +63,7 @@ bool Packer::validadeData(QByteArray& data, QVariantList& package)
     return true;
 }
 
-void Packer::decode(QByteArray data)
+void Packer::decode(const QByteArray& data)
 {
     static QByteArray dataReceived;
     dataReceived.append(data);

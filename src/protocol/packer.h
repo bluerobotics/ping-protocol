@@ -10,7 +10,7 @@ public:
     Packer();
     ~Packer();
 
-    void decode(QByteArray data);
+    void decode(const QByteArray& data);
     QByteArray request(const QVariant& messageID, int srcDevID = 0, int dstDevID = 0);
 
 private:
