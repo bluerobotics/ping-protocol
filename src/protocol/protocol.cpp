@@ -9,6 +9,24 @@ Protocol::Protocol()
     QTimer *timer = new QTimer();
     QObject::connect(timer, &QTimer::timeout, [=]() {
         requestVersion();
+        requestDeviceID();
+        requestNewData();
+
+        // Echosounder requests
+        requestEchosounderDistanceSimple();
+        requestEchosounderDistance();
+        requestEchosounderProfile();
+        requestEchosounderRange();
+        requestEchosounderMode();
+        requestEchosounderRate();
+        requestEchosounderGain();
+        requestEchosounderPulse();
+
+        // Mechanical Scanning Sonar requests
+        requestMSSAngleProfilea();
+        requestMSSRange();
+        requestMSSMode();
+        requestMSSGain();
     });
     timer->start(1000);
 
