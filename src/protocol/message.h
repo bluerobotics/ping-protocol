@@ -49,5 +49,5 @@ public:
     static const QString string(const QVariant& messageIDEnum);
 
 private:
-    static const QByteArray unpack(const QString& packString);
+    static const QByteArray unpack(QString packString);
 };
