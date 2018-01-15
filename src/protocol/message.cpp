@@ -232,19 +232,34 @@ const QString Message::string(const QVariant& messageIDEnum)
     }
 }
 
-const QByteArray Message::unpack(const QString& packString)
+const QByteArray Message::unpack(QString packString)
 {
+    // Check for endian
     if(packString[0] != '<' && packString[0] != '>') {
         qDebug() << "packString need to start with > or < to specify endian.";
         return QByteArray();
     }
-    QString formatString = packString;
-    for(int i(0); i < formatString.length(); i++) {
-        if(formatString[i].isDigit()) {
-            int digit = formatString[i].digitValue();
-            QString format(formatString[i+1]);
-            formatString.replace(formatString.mid(i, 2), format.repeated(digit));
+
+    // Remove numbers and repeat format
+    // E.g: 2I -> II; 4H2b -> HHHbb
+    for(int i(0); i < packString.length(); i++) {
+        // new digit
+        if(packString[i].isDigit()) {
+            // Check if the number is bigger than 9
+            int j = 1;
+            for(; j + i < packString.length(); j++) {
+                if(!packString[i + j].isDigit()) {
+                    break;
+                }
+            }
+            // Get the complete number
+            int digit = packString.mid(i, j).toInt();
+            // Get the format character
+            QString format(packString[i + j]);
+            // Replace number and character
+            // E.g: 4I2b --> (4I) --> (IIII) ->  IIII2b
+            packString.replace(packString.mid(i, j + 1), format.repeated(digit));
         }
     }
-    return formatString.toLatin1();
+    return packString.toLatin1();
 }
