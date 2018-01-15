@@ -24,12 +24,10 @@ bool SerialLink::startConnection()
 {
     if(open(QIODevice::ReadWrite)) {
         QObject::connect(this, &QIODevice::readyRead, [=]() {
-            qDebug() << __FUNCTION__ << "new data";
             emit newData(readAll());
         });
 
         QObject::connect(this, &AbstractLink::sendData, [=](const QByteArray& data) {
-            qDebug() << __FUNCTION__ << "sending..." << data;
             write(data);
         });
         return true;
