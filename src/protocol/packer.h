@@ -15,7 +15,6 @@ public:
 
 private:
     bool validadeData(QByteArray& data, QVariantList& package);
-    QString checkPackString(const QString& packString);
     QVariantList unpack(const QString& packString, QByteArray data);
     QVariant unconvert(QByteArray& data, const QChar& format);
     QByteArray messagePack(const QVariant& messageID, const QVariant& var);
