@@ -10,14 +10,28 @@ Ping::Ping() :
     auto serialPorts = _link->self()->listAvailableConnections();
     if(!serialPorts.isEmpty()) {
         auto port = serialPorts[0];
-        _link->self()->setConfiguration(port + ":115200");
-        _link->self()->startConnection();
+        connectLink(port + ":115200");
     }
+}
+
+void Ping::connectLink(const QString& connString)
+{
+    if(_link->self()->isOpen()) {
+        _link->self()->finishConnection();
+        disconnect(_link->self(), 0, _protocol, 0);
+        disconnect(_protocol, 0, _link->self(), 0);
+        disconnect(_protocol, 0, this, 0);
+    }
+
+    _link->self()->setConfiguration(connString);
+    _link->self()->startConnection();
+
     if(!_link->self()->isOpen()) {
-        qDebug() << "Connection fail !";
+        qDebug() << "Connection fail !" << connString;
         return;
     }
 
+    qDebug() << "Connection OK !";
     connect(_link->self(), &AbstractLink::newData, _protocol, &Protocol::handleData);
     connect(_protocol, &Protocol::sendData, _link->self(), &AbstractLink::sendData);
     connect(_protocol, &Protocol::update, this, &Ping::protocolUpdate);
@@ -25,5 +39,5 @@ Ping::Ping() :
 
 Ping::~Ping()
 {
-    _link->disconnect();
+    _link->self()->finishConnection();
 }

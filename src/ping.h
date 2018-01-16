@@ -14,6 +14,8 @@ public:
     Q_PROPERTY(AbstractLink* link READ link NOTIFY linkUpdate)
     AbstractLink* link() { return _link->self(); };
 
+    Q_INVOKABLE void connectLink(const QString& connString);
+
 private:
     Link* _link;
     Protocol* _protocol;
