@@ -34,6 +34,7 @@ public:
     bool isAutoConnect() { return _autoConnect; }
     virtual void setAutoConnect(bool autoc = true) { _autoConnect = autoc; emit autoConnectChanged(); }
 
+    Q_PROPERTY(QStringList listAvailableConnections READ listAvailableConnections NOTIFY availableConnectionsChanged)
     Q_INVOKABLE virtual QStringList listAvailableConnections() { return QStringList(); };
 
     Q_INVOKABLE virtual bool startConnection() { return true;};
