@@ -11,8 +11,8 @@ public:
     Q_PROPERTY(Protocol* protocol READ protocol NOTIFY protocolUpdate)
     Protocol* protocol() { return _protocol; };
 
-    Q_PROPERTY(Link* link READ link NOTIFY linkUpdate)
-    Link* link() { return _link; };
+    Q_PROPERTY(AbstractLink* link READ link NOTIFY linkUpdate)
+    AbstractLink* link() { return _link->self(); };
 
 private:
     Link* _link;
