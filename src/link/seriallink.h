@@ -12,8 +12,9 @@ public:
     SerialLink();
     ~SerialLink();
 
+    bool isOpen() final { return isWritable() && isReadable(); };
     bool setConfiguration(const QString& arg) final;
-    bool startConnection() final;
+    bool startConnection() final { return open(QIODevice::ReadWrite); };
     bool finishConnection() final;
     QStringList listAvailableConnections() final;
 };
