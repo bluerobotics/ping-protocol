@@ -42,6 +42,20 @@ bool SerialLink::finishConnection()
     return true;
 }
 
+QStringList SerialLink::listAvailableConnections()
+{
+    static QStringList list;
+    auto oldList = list;
+    auto ports = availablePorts();
+    for(const auto& port : ports) {
+        list.append(port.portName());
+    }
+    if(oldList != list) {
+        emit availableConnectionsChanged();
+    }
+    return list;
+}
+
 SerialLink::~SerialLink()
 {
 }
