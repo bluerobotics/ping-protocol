@@ -19,25 +19,25 @@ public:
     void handleData(const QByteArray& data);
 
     // General requests
-    void requestVersion();
-    void requestDeviceID();
-    void requestNewData();
+    Q_INVOKABLE void requestVersion();
+    Q_INVOKABLE void requestDeviceID();
+    Q_INVOKABLE void requestNewData();
 
     // Echosounder requests
-    void requestEchosounderDistanceSimple();
-    void requestEchosounderDistance();
-    void requestEchosounderProfile();
-    void requestEchosounderRange();
-    void requestEchosounderMode();
-    void requestEchosounderRate();
-    void requestEchosounderGain();
-    void requestEchosounderPulse();
+    Q_INVOKABLE void requestEchosounderDistanceSimple();
+    Q_INVOKABLE void requestEchosounderDistance();
+    Q_INVOKABLE void requestEchosounderProfile();
+    Q_INVOKABLE void requestEchosounderRange();
+    Q_INVOKABLE void requestEchosounderMode();
+    Q_INVOKABLE void requestEchosounderRate();
+    Q_INVOKABLE void requestEchosounderGain();
+    Q_INVOKABLE void requestEchosounderPulse();
 
     // Mechanical Scanning Sonar requests
-    void requestMSSAngleProfilea();
-    void requestMSSRange();
-    void requestMSSMode();
-    void requestMSSGain();
+    Q_INVOKABLE void requestMSSAngleProfilea();
+    Q_INVOKABLE void requestMSSRange();
+    Q_INVOKABLE void requestMSSMode();
+    Q_INVOKABLE void requestMSSGain();
 
 signals:
     void update();
