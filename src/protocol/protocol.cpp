@@ -40,99 +40,99 @@ void Protocol::emitMessages(QVariantList package)
 
         // Echosounder
         case Message::EchosounderMessageID::es_distance_simple:
-            emit EchosounderDistance(package[6].toInt());
-            emit EchosounderConfidence(package[7].toFloat());
+            emit echosounderDistance(package[6].toInt());
+            emit echosounderConfidence(package[7].toFloat());
             break;
 
         case Message::EchosounderMessageID::es_distance:
-            emit EchosounderDistance(package[6].toInt());
-            emit EchosounderConfidence(package[7].toFloat());
-            emit EchosounderPulseUs(package[8].toInt());
-            emit EchosounderPingNumber(package[9].toInt());
-            emit EchosounderStart(package[10].toInt());
-            emit EchosounderLength(package[11].toInt());
-            emit EchosounderGain(package[12].toInt());
+            emit echosounderDistance(package[6].toInt());
+            emit echosounderConfidence(package[7].toFloat());
+            emit echosounderPulseUs(package[8].toInt());
+            emit echosounderPingNumber(package[9].toInt());
+            emit echosounderStart(package[10].toInt());
+            emit echosounderLength(package[11].toInt());
+            emit echosounderGain(package[12].toInt());
             break;
 
         case Message::EchosounderMessageID::es_profile: {
-            emit EchosounderDistance(package[6].toInt());
-            emit EchosounderConfidence(package[7].toFloat());
-            emit EchosounderPulseUs(package[8].toInt());
-            emit EchosounderPingNumber(package[9].toInt());
-            emit EchosounderStart(package[10].toInt());
-            emit EchosounderLength(package[11].toInt());
-            emit EchosounderGain(package[12].toInt());
+            emit echosounderDistance(package[6].toInt());
+            emit echosounderConfidence(package[7].toFloat());
+            emit echosounderPulseUs(package[8].toInt());
+            emit echosounderPingNumber(package[9].toInt());
+            emit echosounderStart(package[10].toInt());
+            emit echosounderLength(package[11].toInt());
+            emit echosounderGain(package[12].toInt());
 
             int numberOfPoints = package[13].toInt();
-            emit EchosounderNumberOfPoints(numberOfPoints);
-            QList<int> points;
+            emit echosounderNumberOfPoints(numberOfPoints);
+            QList<double> points;
             points.reserve(numberOfPoints);
             auto tempList = package.mid(14, numberOfPoints);
             for(auto var : tempList) {
-                points.append(var.toInt());
+                points.append(var.toInt()/255.0f);
             }
-            emit EchosounderPoints(points);
+            emit echosounderPoints(points);
             break;
         }
 
         case Message::EchosounderMessageID::es_range:
-            emit EchosounderStart(package[6].toInt());
-            emit EchosounderLength(package[7].toInt());
+            emit echosounderStart(package[6].toInt());
+            emit echosounderLength(package[7].toInt());
             break;
 
         case Message::EchosounderMessageID::es_mode:
-            emit EchosounderAuto(package[6].toInt() == 1);
+            emit echosounderAuto(package[6].toInt() == 1);
             break;
 
         case Message::EchosounderMessageID::es_rate:
-            emit EchosounderRate(package[6].toInt());
+            emit echosounderRate(package[6].toInt());
             break;
 
         case Message::EchosounderMessageID::es_gain:
-            emit EchosounderGain(package[6].toInt());
+            emit echosounderGain(package[6].toInt());
             break;
 
         case Message::EchosounderMessageID::es_pulse:
-            emit EchosounderPulseUs(package[6].toInt());
+            emit echosounderPulseUs(package[6].toInt());
             break;
 
 
         // MSS
         case Message::MechanicalScanningSonarMessageID::mss_angle_profile: {
-            emit MSSangle(package[6].toFloat()/1000.0f);
-            emit MSSPulseUs(package[7].toInt());
-            emit MSSRange(package[8].toInt());
-            emit MSSGain(package[9].toInt());
+            emit mssAngle(package[6].toFloat()/1000.0f);
+            emit mssPulseUs(package[7].toInt());
+            emit mssRange(package[8].toInt());
+            emit mssGain(package[9].toInt());
 
             int numberOfPoints = package[10].toInt();
-            emit MSSNumberOfPoints(numberOfPoints);
+            emit mssNumberOfPoints(numberOfPoints);
             QList<int> points;
             points.reserve(numberOfPoints);
             auto tempList = package.mid(11, numberOfPoints);
             for(auto var : tempList) {
                 points.append(var.toInt());
             }
-            emit MSSPoints(points);
+            emit mssPoints(points);
             break;
         }
         case Message::MechanicalScanningSonarMessageID::mss_range:
-            emit MSSRange(package[6].toInt());
+            emit mssRange(package[6].toInt());
             break;
 
         case Message::MechanicalScanningSonarMessageID::mss_mode:
-            emit MSSAuto(package[6].toInt() == 1);
+            emit mssAuto(package[6].toInt() == 1);
             break;
 
         case Message::MechanicalScanningSonarMessageID::mss_gain:
-            emit MSSGain(package[6].toInt());
+            emit mssGain(package[6].toInt());
             break;
 
         case Message::MechanicalScanningSonarMessageID::mss_sector:
-            emit MSStrainAngle(package[6].toFloat());
-            emit MSSsectorWidth(package[7].toFloat());
-            emit MSSstepSize(package[8].toInt());
-            emit MSSLength(package[9].toInt());
-            emit MSSsampleSize(package[10].toInt());
+            emit msstrainAngle(package[6].toFloat());
+            emit msssectorWidth(package[7].toFloat());
+            emit mssstepSize(package[8].toInt());
+            emit mssLength(package[9].toInt());
+            emit msssampleSize(package[10].toInt());
             break;
 
         default:
@@ -140,6 +140,7 @@ void Protocol::emitMessages(QVariantList package)
             break;
         }
     }
+    emit update();
 }
 
 void Protocol::handleData(const QByteArray& data)
