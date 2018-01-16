@@ -33,6 +33,10 @@ public:
     Q_INVOKABLE void requestEchosounderGain();
     Q_INVOKABLE void requestEchosounderPulse();
 
+    // Echosounder setters
+    Q_INVOKABLE void setEchosounderGain(int gain);
+    Q_INVOKABLE void setEchosounderAuto(bool mode);
+
     // Mechanical Scanning Sonar requests
     Q_INVOKABLE void requestMSSAngleProfilea();
     Q_INVOKABLE void requestMSSRange();

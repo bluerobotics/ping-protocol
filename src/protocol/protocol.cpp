@@ -211,6 +211,22 @@ void Protocol::requestEchosounderPulse()
     request(Message::EchosounderMessageID::es_pulse);
 }
 
+void Protocol::setEchosounderGain(int gain)
+{
+    QVariantList vars;
+    vars.append(gain);
+    auto byteArray = _packer->createPack(Message::EchosounderMessageID::es_gain, vars);
+    emit sendData(byteArray);
+}
+
+void Protocol::setEchosounderAuto(bool mode)
+{
+    QVariantList vars;
+    vars.append(mode);
+    auto byteArray = _packer->createPack(Message::EchosounderMessageID::es_mode, vars);
+    emit sendData(byteArray);
+}
+
 // Mechanical Scanning Sonar requests
 void Protocol::requestMSSAngleProfilea()
 {
