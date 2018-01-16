@@ -7,8 +7,12 @@ Ping::Ping() :
     ,_protocol(new Protocol())
 {
     emit linkUpdate();
-    _link->self()->setConfiguration("/dev/ttyUSB0:115200");
-    _link->self()->startConnection();
+    auto serialPorts = _link->self()->listAvailableConnections();
+    if(!serialPorts.isEmpty()) {
+        auto port = serialPorts[0];
+        _link->self()->setConfiguration(port + ":115200");
+        _link->self()->startConnection();
+    }
     if(!_link->self()->isOpen()) {
         qDebug() << "Connection fail !";
         return;
