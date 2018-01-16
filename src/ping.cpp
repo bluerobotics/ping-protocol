@@ -15,6 +15,7 @@ Ping::Ping() :
 
     connect(_link->self(), &AbstractLink::newData, _protocol, &Protocol::handleData);
     connect(_protocol, &Protocol::sendData, _link->self(), &AbstractLink::sendData);
+    connect(_protocol, &Protocol::update, this, &Ping::protocolUpdate);
 }
 
 Ping::~Ping()

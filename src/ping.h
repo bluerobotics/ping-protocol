@@ -8,7 +8,13 @@ public:
     Ping();
     ~Ping();
 
+    Q_PROPERTY(Protocol* protocol READ protocol NOTIFY protocolUpdate)
+    Protocol* protocol() { return _protocol; };
+
 private:
     Link* _link;
     Protocol* _protocol;
+
+signals:
+    void protocolUpdate();
 };
