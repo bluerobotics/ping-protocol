@@ -148,7 +148,7 @@ void Protocol::handleData(const QByteArray& data)
     _packer->decode(data);
 }
 
-void Protocol::request(QVariant messageID)
+void Protocol::request(int messageID)
 {
     auto byteArray = _packer->request(messageID);
     emit sendData(byteArray);

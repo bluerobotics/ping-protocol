@@ -164,12 +164,12 @@ QVariant Packer::unconvert(QByteArray& data, const QChar& format)
     }
 }
 
-QByteArray Packer::messagePack(const QVariant& messageID, const QVariant& var)
+QByteArray Packer::messagePack(int messageID, const QVariant& var)
 {
     return pack(Message::packString(messageID), var);
 }
 
-QByteArray Packer::messagePack(const QVariant& messageID, const QVariantList& var)
+QByteArray Packer::messagePack(int messageID, const QVariantList& var)
 {
     return pack(Message::packString(messageID), var);
 }
@@ -320,10 +320,17 @@ QByteArray Packer::populateHeader(int messageID, int srcDevID, int dstDevID, int
     return pack(headerPack, list);
 }
 
-QByteArray Packer::request(const QVariant& messageID, int srcDevID, int dstDevID)
+QByteArray Packer::createPack(int messageID, const QVariantList& vars, int srcDevID, int dstDevID)
 {
     // It's necessary the payload size to populate header
-    QByteArray payloadPack = messagePack(Message::GeneralMessageID::gen_cmd_request, messageID);
-    QByteArray headerPack = populateHeader(Message::GeneralMessageID::gen_cmd_request, srcDevID, dstDevID, payloadPack.length());
+    QByteArray payloadPack = messagePack(messageID, vars);
+    QByteArray headerPack = populateHeader(messageID, srcDevID, dstDevID, payloadPack.length());
     return merge(headerPack, payloadPack);
+}
+
+QByteArray Packer::request(int messageID, int srcDevID, int dstDevID)
+{
+    QVariantList vars;
+    vars.append(messageID);
+    return createPack(Message::GeneralMessageID::gen_cmd_request, vars, srcDevID, dstDevID);
 }

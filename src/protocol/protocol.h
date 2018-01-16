@@ -15,7 +15,7 @@ public:
     Message _message;
     Packer* _packer;
 
-    void request(QVariant messageID);
+    void request(int messageID);
     void handleData(const QByteArray& data);
 
     // General requests
