@@ -22,17 +22,21 @@ public:
 
     virtual bool setConfiguration(const QString& arg) { Q_UNUSED(arg) return true; }
 
+    Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
     void setName(const QString& name) { _name = name; emit nameChanged(_name); };
     const QString name() { return _name; }
+
+    Q_PROPERTY(LinkType type READ type WRITE setType NOTIFY linkChanged)
     virtual void setType(LinkType type) { _type = type; emit linkChanged(_type); };
     LinkType type() { return _type; };
 
+    Q_PROPERTY(bool isAutoConnect READ isAutoConnect WRITE setAutoConnect NOTIFY autoConnectChanged)
     bool isAutoConnect() { return _autoConnect; }
     virtual void setAutoConnect(bool autoc = true) { _autoConnect = autoc; emit autoConnectChanged(); }
 
-    virtual bool startConnection() { return true;};
-    virtual bool finishConnection() { return true;};
-    virtual bool isOpen() { return true;};
+    Q_INVOKABLE virtual bool startConnection() { return true;};
+    Q_INVOKABLE virtual bool finishConnection() { return true;};
+    Q_INVOKABLE virtual bool isOpen() { return true;};
 
 signals:
     void nameChanged(const QString& name);

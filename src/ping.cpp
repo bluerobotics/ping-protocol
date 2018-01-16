@@ -6,6 +6,7 @@ Ping::Ping() :
      _link(new Link(AbstractLink::LinkType::Serial, "Default"))
     ,_protocol(new Protocol())
 {
+    emit linkUpdate();
     _link->self()->setConfiguration("/dev/ttyUSB0:115200");
     _link->self()->startConnection();
     if(!_link->self()->isOpen()) {
