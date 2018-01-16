@@ -40,6 +40,7 @@ public:
     void requestMSSGain();
 
 signals:
+    void update();
     void sendData(const QByteArray& data);
 
     // General info
@@ -50,31 +51,31 @@ signals:
     void newData(bool dataAvailable);
 
     // Echosounder info
-    void EchosounderDistance(int mm);
-    void EchosounderConfidence(float perc);
-    void EchosounderPulseUs(int pulse);
-    void EchosounderPingNumber(int pingNumber);
-    void EchosounderStart(int mm);
-    void EchosounderLength(int mm);
-    void EchosounderGain(int gain);
-    void EchosounderNumberOfPoints(int numberOfPoints);
-    void EchosounderPoints(QList<int> points);
-    void EchosounderAuto(bool mode);
-    void EchosounderRate(int rate);
+    void echosounderDistance(int mm);
+    void echosounderConfidence(float perc);
+    void echosounderPulseUs(int pulse);
+    void echosounderPingNumber(int pingNumber);
+    void echosounderStart(int mm);
+    void echosounderLength(int mm);
+    void echosounderGain(int gain);
+    void echosounderNumberOfPoints(int numberOfPoints);
+    void echosounderPoints(QList<double> points);
+    void echosounderAuto(bool mode);
+    void echosounderRate(int rate);
 
     // Mechanical Scanning Sonar info
-    void MSSangle(float angle);
-    void MSSPulseUs(int pulse);
-    void MSSRange(int mm);
-    void MSSGain(int gain);
-    void MSSNumberOfPoints(int numberOfPoints);
-    void MSSPoints(QList<int> points);
-    void MSSAuto(bool mode);
-    void MSStrainAngle(float angle);
-    void MSSsectorWidth(float angle);
-    void MSSstepSize(int stepSize);
-    void MSSLength(int mm);
-    void MSSsampleSize(int size);
+    void mssAngle(float angle);
+    void mssPulseUs(int pulse);
+    void mssRange(int mm);
+    void mssGain(int gain);
+    void mssNumberOfPoints(int numberOfPoints);
+    void mssPoints(QList<int> points);
+    void mssAuto(bool mode);
+    void msstrainAngle(float angle);
+    void msssectorWidth(float angle);
+    void mssstepSize(int stepSize);
+    void mssLength(int mm);
+    void msssampleSize(int size);
 
 private:
     void emitMessages(QVariantList package);
