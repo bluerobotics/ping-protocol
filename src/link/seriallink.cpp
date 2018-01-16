@@ -46,6 +46,7 @@ QStringList SerialLink::listAvailableConnections()
 {
     static QStringList list;
     auto oldList = list;
+    list.clear();
     auto ports = availablePorts();
     for(const auto& port : ports) {
         list.append(port.portName());
