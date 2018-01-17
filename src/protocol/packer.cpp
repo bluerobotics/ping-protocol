@@ -69,7 +69,7 @@ void Packer::decode(const QByteArray& data)
     dataReceived.append(data);
     // Decode incoming data
     QVariantList package;
-    for(int i(0); i < dataReceived.length()-1; i++) {
+    while(!dataReceived.isEmpty()) {
         if(!validadeData(dataReceived, package)) {
             qDebug() << "no Valida data !";
             dataReceived = dataReceived.remove(0, 1);
@@ -78,7 +78,7 @@ void Packer::decode(const QByteArray& data)
         if(package.isEmpty()) {
             // Package not done
             // Not enough data to process
-            return;
+            break;
         }
         emit newPackage(package);
     }
