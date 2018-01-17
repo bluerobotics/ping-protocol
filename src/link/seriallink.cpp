@@ -6,6 +6,14 @@
 SerialLink::SerialLink()
 {
     setType(AbstractLink::LinkType::Serial);
+
+    QObject::connect(this, &QIODevice::readyRead, [=]() {
+        emit newData(readAll());
+    });
+
+    QObject::connect(this, &AbstractLink::sendData, [=](const QByteArray& data) {
+        write(data);
+    });
 }
 
 bool SerialLink::setConfiguration(const QString& arg)
@@ -17,14 +25,6 @@ bool SerialLink::setConfiguration(const QString& arg)
     }
     setPortName(args[0]);
     setBaudRate(args[1].toInt());
-
-    QObject::connect(this, &QIODevice::readyRead, [=]() {
-        emit newData(readAll());
-    });
-
-    QObject::connect(this, &AbstractLink::sendData, [=](const QByteArray& data) {
-        write(data);
-    });
 
     return true;
 }
