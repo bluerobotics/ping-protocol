@@ -21,6 +21,8 @@ private:
     Protocol* _protocol;
 
 signals:
+    void connectionClose();
+    void connectionOpen();
     void protocolUpdate();
     void linkUpdate();
 };

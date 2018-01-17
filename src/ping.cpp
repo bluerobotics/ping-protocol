@@ -28,6 +28,7 @@ void Ping::connectLink(const QString& connString)
 
     if(!_link->self()->isOpen()) {
         qDebug() << "Connection fail !" << connString;
+        emit connectionClose();
         return;
     }
 
@@ -35,6 +36,7 @@ void Ping::connectLink(const QString& connString)
     connect(_link->self(), &AbstractLink::newData, _protocol, &Protocol::handleData);
     connect(_protocol, &Protocol::sendData, _link->self(), &AbstractLink::sendData);
     connect(_protocol, &Protocol::update, this, &Ping::protocolUpdate);
+    emit connectionOpen();
 }
 
 Ping::~Ping()
