@@ -63,7 +63,7 @@ signals:
     void echosounderLength(int mm);
     void echosounderGain(int gain);
     void echosounderNumberOfPoints(int numberOfPoints);
-    void echosounderPoints(QList<double> points);
+    void echosounderPoints(const QList<double>& points);
     void echosounderAuto(bool mode);
     void echosounderRate(int rate);
 
@@ -73,7 +73,7 @@ signals:
     void mssRange(int mm);
     void mssGain(int gain);
     void mssNumberOfPoints(int numberOfPoints);
-    void mssPoints(QList<int> points);
+    void mssPoints(const QList<int>& points);
     void mssAuto(bool mode);
     void msstrainAngle(float angle);
     void msssectorWidth(float angle);
