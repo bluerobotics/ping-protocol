@@ -41,12 +41,12 @@ void Protocol::emitMessages(QVariantList package)
         // Echosounder
         case Message::EchosounderMessageID::es_distance_simple:
             emit echosounderDistance(package[6].toInt());
-            emit echosounderConfidence(package[7].toFloat());
+            emit echosounderConfidence(package[7].toInt());
             break;
 
         case Message::EchosounderMessageID::es_distance:
             emit echosounderDistance(package[6].toInt());
-            emit echosounderConfidence(package[7].toFloat());
+            emit echosounderConfidence(package[7].toInt());
             emit echosounderPulseUs(package[8].toInt());
             emit echosounderPingNumber(package[9].toInt());
             emit echosounderStart(package[10].toInt());
@@ -56,7 +56,7 @@ void Protocol::emitMessages(QVariantList package)
 
         case Message::EchosounderMessageID::es_profile: {
             emit echosounderDistance(package[6].toInt());
-            emit echosounderConfidence(package[7].toFloat());
+            emit echosounderConfidence(package[7].toInt());
             emit echosounderPulseUs(package[8].toInt());
             emit echosounderPingNumber(package[9].toInt());
             emit echosounderStart(package[10].toInt());
