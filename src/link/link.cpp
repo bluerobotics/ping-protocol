@@ -13,6 +13,10 @@ Link::Link(AbstractLink::LinkType linkType, QString name)
         case AbstractLink::LinkType::Serial :
             _abstractLink = new SerialLink();
             break;
+        case AbstractLink::LinkType::Udp :
+            _abstractLink = new UDPLink();
+            qDebug() << "udp!!!";
+            break;
         default :
             qDebug() << "Link not available!";
             return;

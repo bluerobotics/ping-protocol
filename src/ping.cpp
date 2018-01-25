@@ -7,11 +7,8 @@ Ping::Ping() :
     ,_protocol(new Protocol())
 {
     emit linkUpdate();
-    auto serialPorts = _link->self()->listAvailableConnections();
-    if(!serialPorts.isEmpty()) {
-        auto port = serialPorts[0];
-        connectLink(port + ":115200");
-    }
+
+    connectLink("2:/dev/ttyUSB0:115200");
 }
 
 void Ping::connectLink(const QString& connString)
@@ -23,7 +20,24 @@ void Ping::connectLink(const QString& connString)
         disconnect(_protocol, 0, this, 0);
     }
 
-    _link->self()->setConfiguration(connString);
+    QStringList confList = connString.split(':');
+    qDebug() << confList;
+    if(confList.length() != 3) {
+        qDebug() << "wrong size !";
+        return;
+    }
+    if(confList[0].toInt() <= 0 || confList[0].toInt() > 5) {
+        qDebug() << "wrong arg !";
+        return;
+    }
+    if(_link) {
+        delete _link;
+    }
+    _link = new Link((AbstractLink::LinkType)confList[0].toInt(), "Default");
+    confList.removeFirst();
+    QString conf = confList.join(':');
+
+    _link->self()->setConfiguration(conf);
     _link->self()->startConnection();
 
     if(!_link->self()->isOpen()) {
