@@ -27,7 +27,7 @@ void Protocol::emitMessages(QVariantList package)
             }
 
             emit deviceModel(package[7].toInt() == 1 ? "Ping" : "Unknown");
-            emit firmwareVersion(QString("v%1.%2").arg(package[8].toInt(), package[9].toInt()));
+            emit firmwareVersion(QString("%0.%1v").arg(package[8].toInt()).arg(package[9].toInt()));
             break;
 
         case Message::GeneralMessageID::gen_device_id:
