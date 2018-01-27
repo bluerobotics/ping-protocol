@@ -21,6 +21,12 @@ bool SerialLink::setConfiguration(const QString& arg)
     QStringList args = arg.split(':');
     if(args.length() != 2) {
         qDebug() << "Wrong argument E.g: /dev/ttyUSB0:115200";
+        qDebug() << arg;
+        return false;
+    }
+    if(args[0].isEmpty() || args[1].isEmpty()) {
+        qDebug() << "Wrong argument E.g: /dev/ttyUSB0:115200";
+        qDebug() << arg;
         return false;
     }
     setPortName(args[0]);
