@@ -42,17 +42,17 @@ bool Packer::validadeData(QByteArray& data, QVariantList& package)
     uint16_t checksum = 0;
 
     // Check if data have enough information
-    if(payloadSize + headerSize > (uint)dataTmp.length()) {
+    uint checksumSize = 2;
+    if(payloadSize + headerSize + payloadSize > (uint)dataTmp.length()) {
         return true;
     }
 
     for(const auto& value : dataTmp.left(headerSize + payloadSize))
         checksum += (uint8_t) value;
 
-    uint checksumSize = 2;
     QVariantList dataChecksum = unpack("<H", dataTmp.mid(headerSize + payloadSize, checksumSize));
     if(checksum != dataChecksum[0].toUInt()) {
-        qDebug() << "Wrong checksum";
+        qDebug() << "Wrong checksum" << dataTmp.length() << headerSize + payloadSize << dataTmp.mid(headerSize + payloadSize, checksumSize);
         return false;
     }
 
