@@ -39,6 +39,7 @@ void Ping::connectLink(const QString& connString)
 
     _link->self()->setConfiguration(conf);
     _link->self()->startConnection();
+    emit linkUpdate();
 
     if(!_link->self()->isOpen()) {
         qDebug() << "Connection fail !" << connString;
