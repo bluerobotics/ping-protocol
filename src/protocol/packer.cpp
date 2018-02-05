@@ -58,6 +58,7 @@ bool Packer::validadeData(QByteArray& data, QVariantList& package)
 
     QVariantList payload = unpack(Message::packString(header[3]), dataTmp.mid(headerSize, payloadSize));
     package = header + payload;
+    emit newRawPackage(data.left(headerSize + payloadSize + checksumSize));
     data.remove(0, headerSize + payloadSize + checksumSize);
 
     return true;

@@ -6,13 +6,14 @@ Protocol::Protocol()
     : _packer(new Packer())
 {
     connect(_packer, &Packer::newPackage, this, &Protocol::emitMessages);
+    connect(_packer, &Packer::newRawPackage, this, &Protocol::emitRawMessages);
 }
 
 Protocol::~Protocol()
 {
 }
 
-void Protocol::emitMessages(QVariantList package)
+void Protocol::emitMessages(const QVariantList& package)
 {
     switch(package[3].toInt()) {
         // General

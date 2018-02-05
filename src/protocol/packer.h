@@ -28,5 +28,6 @@ private:
     QByteArray populateHeader(int messageID = 120, int srcDevID = 0, int dstDevID = 0, int payload = -1);
 
 signals:
-    void newPackage(QVariantList package);
+    void newPackage(const QVariantList& package);
+    void newRawPackage(const QByteArray& package);
 };
