@@ -81,6 +81,9 @@ signals:
     void mssLength(int mm);
     void msssampleSize(int size);
 
+    // To Log
+    void emitRawMessages(const QByteArray& package);
+
 private:
-    void emitMessages(QVariantList package);
+    void emitMessages(const QVariantList& package);
 };
