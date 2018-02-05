@@ -41,6 +41,8 @@ public:
     Q_INVOKABLE virtual bool finishConnection() { return true;};
     Q_INVOKABLE virtual bool isOpen() { return true;};
 
+    virtual QString errorString() { return QString();};
+
 signals:
     void availableConnectionsChanged();
     void nameChanged(const QString& name);
