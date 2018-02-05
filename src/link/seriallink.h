@@ -16,5 +16,6 @@ public:
     bool setConfiguration(const QString& arg) final;
     bool startConnection() final { return open(QIODevice::ReadWrite); };
     bool finishConnection() final;
+    QString errorString() final { return QSerialPort::errorString(); };
     QStringList listAvailableConnections() final;
 };
