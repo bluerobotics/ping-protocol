@@ -21,7 +21,6 @@ void Ping::connectLink(const QString& connString)
     }
 
     QStringList confList = connString.split(':');
-    qDebug() << confList;
     if(confList.length() != 3) {
         qDebug() << "wrong size !";
         return;
