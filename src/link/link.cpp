@@ -10,6 +10,9 @@
 Link::Link(AbstractLink::LinkType linkType, QString name)
 {
     switch(linkType) {
+        case AbstractLink::LinkType::File :
+            _abstractLink = new FileLink();
+            break;
         case AbstractLink::LinkType::Serial :
             _abstractLink = new SerialLink();
             break;
