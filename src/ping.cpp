@@ -1,9 +1,11 @@
+#include <QDateTime>
 #include <QDebug>
 
 #include "ping.h"
 
 Ping::Ping() :
-     _link(new Link(AbstractLink::LinkType::Serial, "Default"))
+     _linkIn(new Link(AbstractLink::LinkType::Serial, "Default"))
+    ,_linkOut(nullptr)
     ,_protocol(new Protocol())
 {
     emit linkUpdate();
@@ -13,11 +15,11 @@ Ping::Ping() :
 
 void Ping::connectLink(const QString& connString)
 {
-    if(_link->self()->isOpen()) {
-        _link->self()->finishConnection();
-        disconnect(_link->self(), 0, _protocol, 0);
-        disconnect(_protocol, 0, _link->self(), 0);
-        disconnect(_protocol, 0, this, 0);
+    if(link()->isOpen()) {
+        link()->finishConnection();
+        disconnect(link(), &AbstractLink::newData, _protocol, &Protocol::handleData);
+        disconnect(_protocol, &Protocol::sendData, link(), &AbstractLink::sendData);
+        disconnect(_protocol, &Protocol::update, this, &Ping::protocolUpdate);
     }
 
     QStringList confList = connString.split(':');
@@ -29,31 +31,135 @@ void Ping::connectLink(const QString& connString)
         qDebug() << "wrong arg !";
         return;
     }
-    if(_link) {
-        delete _link;
+    if(_linkIn) {
+        delete _linkIn;
     }
-    _link = new Link((AbstractLink::LinkType)confList[0].toInt(), "Default");
+    _linkIn = new Link((AbstractLink::LinkType)confList[0].toInt(), "Default");
     confList.removeFirst();
     QString conf = confList.join(':');
 
-    _link->self()->setConfiguration(conf);
-    _link->self()->startConnection();
-    emit linkUpdate();
+    link()->setConfiguration(conf);
+    link()->startConnection();
 
-    if(!_link->self()->isOpen()) {
-        qDebug() << "Connection fail !" << connString;
+    if(!link()->isOpen()) {
+        qDebug() << "Connection fail !" << connString << link()->errorString();;
         emit connectionClose();
         return;
     }
 
-    qDebug() << "Connection OK !";
-    connect(_link->self(), &AbstractLink::newData, _protocol, &Protocol::handleData);
-    connect(_protocol, &Protocol::sendData, _link->self(), &AbstractLink::sendData);
+    emit linkUpdate();
+
+    connect(link(), &AbstractLink::newData, _protocol, &Protocol::handleData);
+    connect(_protocol, &Protocol::sendData, link(), &AbstractLink::sendData);
     connect(_protocol, &Protocol::update, this, &Ping::protocolUpdate);
     emit connectionOpen();
+
+    // Disable log if playing one
+    if(link()->type() == AbstractLink::LinkType::File) {
+        if(!_linkOut) {
+            return;
+        }
+        if(linkLog()->isOpen()) {
+            disconnect(_protocol, &Protocol::emitRawMessages, linkLog(), &AbstractLink::sendData);
+            linkLog()->finishConnection();
+            _linkOut->deleteLater();
+        }
+    } else { // Start log, if not playing one
+        QString fileName = QStringLiteral("%1.%2").arg(QDateTime::currentDateTime().toString(QStringLiteral("yyyyMMdd-hhmmsszzz")), "bin");
+        QString config = QStringLiteral("%1:%2:%3").arg(QString::number(1), fileName, "w");
+        connectLinkLog(config);
+    }
+}
+
+void Ping::connectLinkLog(const QString& connString)
+{
+    if(_linkOut) {
+        if(!link()->isOpen()) {
+            qDebug() << "No connection to log !" << linkLog()->errorString();
+            return;
+        }
+        delete _linkOut;
+    }
+
+    QStringList confList = connString.split(':');
+    if(confList.length() != 3) {
+        qDebug() << "wrong size !" << confList;
+        return;
+    }
+    if(confList[0].toInt() <= 0 || confList[0].toInt() > 5) {
+        qDebug() << "wrong arg !" << confList;
+        return;
+    }
+
+    _linkOut = new Link((AbstractLink::LinkType)confList[0].toInt(), "Log");
+    confList.removeFirst();
+    QString conf = confList.join(':');
+
+    linkLog()->setConfiguration(conf);
+    linkLog()->startConnection();
+
+    if(!linkLog()->isOpen()) {
+        qDebug() << "Connection with log fail !" << connString << linkLog()->errorString();
+        return;
+    }
+
+    connect(_protocol, &Protocol::emitRawMessages, linkLog(), &AbstractLink::sendData);
+    emit linkLogUpdate();
+}
+
+void Ping::linkLogPause()
+{
+    if(!_linkOut) {
+        qDebug() << "No linkLog to pause";
+        return;
+    }
+    if(!link()->isOpen()) {
+        qDebug() << "No log to pause";
+        return;
+    }
+    //disconnect(_protocol, 0, linkLog(), 0);
+}
+
+void Ping::linkLogStart()
+{
+
+    if(!_linkOut) {
+        qDebug() << "No linkLog to pause";
+        return;
+    }
+    if(!link()->isOpen()) {
+        qDebug() << "No log to start";
+        return;
+    }
+}
+
+void Ping::linkLogStop()
+{
+    if(!_linkOut) {
+        qDebug() << "No linkLog to stop";
+        return;
+    }
+    if(!link()->isOpen()) {
+        qDebug() << "No log to stop";
+        return;
+    }
+
+    linkLogPause();
+    linkLog()->finishConnection();
+    _linkOut->deleteLater();
 }
 
 Ping::~Ping()
 {
-    _link->self()->finishConnection();
+    if(_linkIn) {
+        if(link()->isOpen()) {
+            link()->finishConnection();
+        }
+    }
+
+    if(_linkOut) {
+        if(linkLog()->isOpen()) {
+            linkLog()->finishConnection();
+        }
+    }
 }
