@@ -15,7 +15,6 @@ Link::Link(AbstractLink::LinkType linkType, QString name)
             break;
         case AbstractLink::LinkType::Udp :
             _abstractLink = new UDPLink();
-            qDebug() << "udp!!!";
             break;
         default :
             qDebug() << "Link not available!";
