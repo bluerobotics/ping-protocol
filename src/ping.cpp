@@ -107,59 +107,6 @@ void Ping::connectLinkLog(const QString& connString)
     emit linkLogUpdate();
 }
 
-void Ping::linkLogPause()
-{
-    if(!_linkOut) {
-        qDebug() << "No linkLog to pause";
-        return;
-    }
-    if(!link()->isOpen()) {
-        qDebug() << "No log to pause";
-        return;
-    }
-    //disconnect(_protocol, 0, linkLog(), 0);
-}
-
-void Ping::linkLogStart()
-{
-
-    if(!_linkOut) {
-        qDebug() << "No linkLog to pause";
-        return;
-    }
-    if(!link()->isOpen()) {
-        qDebug() << "No log to start";
-        return;
-    }
-}
-
-void Ping::linkLogStop()
-{
-    if(!_linkOut) {
-        qDebug() << "No linkLog to stop";
-        return;
-    }
-    if(!link()->isOpen()) {
-        qDebug() << "No log to stop";
-        return;
-    }
-
-    linkLogPause();
-    linkLog()->finishConnection();
-    _linkOut->deleteLater();
-}
-
 Ping::~Ping()
 {
-    if(_linkIn) {
-        if(link()->isOpen()) {
-            link()->finishConnection();
-        }
-    }
-
-    if(_linkOut) {
-        if(linkLog()->isOpen()) {
-            linkLog()->finishConnection();
-        }
-    }
 }

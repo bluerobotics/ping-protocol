@@ -11,6 +11,7 @@
 FileLink::FileLink():
      _openModeFlag(QIODevice::ReadWrite)
     ,_time(QTime::currentTime())
+    ,_logThread(nullptr)
 {
     setType(AbstractLink::LinkType::File);
 
@@ -53,37 +54,36 @@ bool FileLink::startConnection() {
     bool ok = open(QIODevice::ReadWrite);
     // FileLink created as read ?
     if(ok && _openModeFlag == QIODevice::ReadOnly) {
-        // Prepare lambda timer !
-        static std::function<void(void)> sendNewPackage = [&] {
-            // Start lambda vars
-            // TODO: `in` need to be outside to update if new log is selected
-            static QDataStream in(this);
-            static Pack pack;
-            static int mSecs(0);
+        QDataStream in(this);
+        Pack pack;
+        if(_logThread) {
+            // Disconnect LogThread
+            QObject::disconnect(_logThread, &LogThread::newPackage, this, &FileLink::newData);
+            QObject::disconnect(_logThread, &LogThread::packageIndexChanged, this, &FileLink::packageIndexChanged);
+            QObject::disconnect(_logThread, &LogThread::packageIndexChanged, this, &FileLink::elapsedTimeChanged);
 
+            delete _logThread;
+        }
+        _logThread = new LogThread();
+        QObject::connect(_logThread, &LogThread::newPackage, this, &FileLink::newData);
+        QObject::connect(_logThread, &LogThread::packageIndexChanged, this, &FileLink::packageIndexChanged);
+        QObject::connect(_logThread, &LogThread::packageIndexChanged, this, &FileLink::elapsedTimeChanged);
+        while(true) {
+            // Get data
             in >> pack.time >> pack.data;
 
             // Check if we have a new package
             if(pack.time.isEmpty()) {
                 qDebug() << "No more packages !";
-                return;
+                break;
             }
-            emit newData(pack.data);
-            // Emit package or wait for the correct time
-            if(mSecs == 0) {
-                // First time, no diffMSecs, run again
-                mSecs = QTime::fromString(pack.time, _timeFormat).msecsSinceStartOfDay();
-                sendNewPackage();
-            } else {
-                // Get diff between the two messages, and trigger the next emit
-                int diffMSecs = QTime::fromString(pack.time, _timeFormat).msecsSinceStartOfDay() - mSecs;
-                // Update mSecs
-                mSecs += diffMSecs;
-                QTimer::singleShot(diffMSecs, [&]{sendNewPackage();});
-            }
-        };
-        // Start replay
-        sendNewPackage();
+
+            QTime time = QTime::fromString(pack.time, _timeFormat);
+            _logThread->append(time, pack.data);
+        }
+        _logThread->start();
+        emit elapsedTimeChanged();
+        emit totalTimeChanged();
     }
     return ok;
 };

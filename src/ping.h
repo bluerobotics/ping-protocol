@@ -20,10 +20,6 @@ public:
     Q_INVOKABLE void connectLink(const QString& connString);
     Q_INVOKABLE void connectLinkLog(const QString& connString);
 
-    Q_INVOKABLE void linkLogPause();
-    Q_INVOKABLE void linkLogStart();
-    Q_INVOKABLE void linkLogStop();
-
 private:
     Link* _linkIn;
     Link* _linkOut;
