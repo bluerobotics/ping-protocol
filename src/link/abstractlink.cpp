@@ -2,6 +2,8 @@
 
 #include "abstractlink.h"
 
+const QString AbstractLink::_timeFormat = QStringLiteral("hh:mm:ss.zzz");
+
 AbstractLink::AbstractLink() :
     _type(LinkType::None)
 {
