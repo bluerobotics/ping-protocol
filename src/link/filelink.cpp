@@ -8,9 +8,6 @@
 
 #include "filelink.h"
 
-
-const QString FileLink::_timeFormat = QStringLiteral("hhmmsszzz");
-
 FileLink::FileLink():
      _openModeFlag(QIODevice::ReadWrite)
     ,_time(QTime::currentTime())

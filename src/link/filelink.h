@@ -25,6 +25,4 @@ private:
 
     QIODevice::OpenModeFlag _openModeFlag;
     QTime _time;
-
-    static const QString _timeFormat;
 };
