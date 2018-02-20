@@ -19,4 +19,5 @@ const AbstractLink& AbstractLink::operator=(const AbstractLink& other)
 
 AbstractLink::~AbstractLink()
 {
+    finishConnection();
 }
