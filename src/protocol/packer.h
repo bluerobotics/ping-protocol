@@ -10,12 +10,20 @@ public:
     Packer();
     ~Packer();
 
+    enum ValidadeData {
+        NewPackage = 0,
+        WrongStart,
+        WrongCheckSum,
+        NeedMoreData,
+        NoData,
+    };
+
     void decode(const QByteArray& data);
     QByteArray createPack(int messageID, const QVariantList& vars, int srcDevID = 0, int dstDevID = 0);
     QByteArray request(int messageID, int srcDevID = 0, int dstDevID = 0);
 
 private:
-    bool validadeData(QByteArray& data, QVariantList& package);
+    ValidadeData validadeData(QByteArray& data, QVariantList& package);
     QVariantList unpack(const QString& packString, QByteArray data);
     QVariant unconvert(QByteArray& data, const QChar& format);
     QByteArray messagePack(int messageID, const QVariant& var);
