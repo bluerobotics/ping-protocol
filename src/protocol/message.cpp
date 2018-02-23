@@ -10,12 +10,13 @@ Message::~Message()
 {
 }
 
-const QByteArray Message::checksumPackString()
+const QByteArray& Message::checksumPackString()
 {
-    return "<H";
+    static const auto pack = unpack("<H");
+    return pack;
 }
 
-const QByteArray Message::headerPackString()
+const QByteArray& Message::headerPackString()
 {
     /**
      * 0 'B'
@@ -25,59 +26,73 @@ const QByteArray Message::headerPackString()
      * 6 src_dev_id
      * 7 dst_dev_id
      */
-    return unpack("<2c2H2B");
+    static const auto pack = unpack("<2c2H2B");
+    return pack;
 }
 
-const QByteArray Message::packString(const QVariant& messageIDEnum)
+const QByteArray& Message::packString(const QVariant& messageIDEnum)
 {
     int messageID = messageIDEnum.toInt();
     switch (messageID) {
         // General
-        case GeneralMessageID::gen_goto_bootloader :
+        case GeneralMessageID::gen_goto_bootloader : {
             /**
              * none
              */
-            return "";
-        case GeneralMessageID::gen_get_version :
+            static const auto pack = unpack("");
+            return pack;
+        }
+        case GeneralMessageID::gen_get_version : {
             /**
              * 0 device_type
              * 1 device_model
              * 2-3 fw_version_major
              * 4-5 fw_version_minor
              */
-            return unpack("<2B2H");
-        case GeneralMessageID::gen_device_id :
+            static const auto pack = unpack("<2B2H");
+            return pack;
+        }
+        case GeneralMessageID::gen_device_id : {
             /**
              * 0 device_id
              */
-            return "<B";
-        case GeneralMessageID::gen_new_data :
+            static const auto pack = unpack("<B");
+            return pack;
+        }
+        case GeneralMessageID::gen_new_data : {
             /**
              * 0 is_new_data
              */
-            return "<B";
-        case GeneralMessageID::gen_cmd_request :
+            static const auto pack = unpack("<B");
+            return pack;
+        }
+        case GeneralMessageID::gen_cmd_request : {
             /**
              * 0-1 request_id
              */
-            return "<H";
+            static const auto pack = unpack("<H");
+            return pack;
+        }
 
         // Sonar
-        case SonarMessageID::sonar_set_velocity :
+        case SonarMessageID::sonar_set_velocity : {
             /**
              * 0-3 c_water
              */
-            return "<I";
-
+            static const auto pack = unpack("<I");
+            return pack;
+        }
         // Echosounder
-        case EchosounderMessageID::es_distance_simple :
+        case EchosounderMessageID::es_distance_simple : {
             /**
              * 0-3 distance
              * 4 confidence
              */
-            return "<IB";
+            static const auto pack = unpack("<IB");
+            return pack;
+        }
 
-        case EchosounderMessageID::es_distance :
+        case EchosounderMessageID::es_distance : {
             /**
              * 0-3 distance
              * 4 confidence
@@ -89,8 +104,10 @@ const QByteArray Message::packString(const QVariant& messageIDEnum)
              * 19-22 gain_index
              * 23-26 gain_index
              */
-            return unpack("<IBH4I");
-        case EchosounderMessageID::es_profile :
+            static const auto pack = unpack("<IBH4I");
+            return pack;
+        }
+        case EchosounderMessageID::es_profile : {
             /**
              * 0-3 distance
              * 4 confidence
@@ -104,36 +121,48 @@ const QByteArray Message::packString(const QVariant& messageIDEnum)
              * 27-28 num_points
              * 29-n data
              */
-            return unpack("<IBH4IH200B");
-        case EchosounderMessageID::es_range :
+            static const auto pack = unpack("<IBH4IH200B");
+            return pack;
+        }
+        case EchosounderMessageID::es_range : {
             /**
              * 0-3 start_mm
              * 4-7 length_mm
              */
-            return unpack("<2I");
-        case EchosounderMessageID::es_mode :
+            static const auto pack = unpack("<2I");
+            return pack;
+        }
+        case EchosounderMessageID::es_mode : {
             /**
              * 0 auto_manual
              */
-            return "<B";
-        case EchosounderMessageID::es_rate :
+            static const auto pack = unpack("<B");
+            return pack;
+        }
+        case EchosounderMessageID::es_rate : {
             /**
              * 0-1 msec_per_ping
              */
-            return "<H";
-        case EchosounderMessageID::es_gain :
+            static const auto pack = unpack("<H");
+            return pack;
+        }
+        case EchosounderMessageID::es_gain : {
             /**
              * 0 gain_index
              */
-            return "<B";
-        case EchosounderMessageID::es_pulse :
+            static const auto pack = unpack("<B");
+            return pack;
+        }
+        case EchosounderMessageID::es_pulse : {
             /**
              * 0-1 pulse_usec
              */
-            return "<H";
+            static const auto pack = unpack("<H");
+            return pack;
+        }
 
         // Mechanical Scanning
-        case MechanicalScanningSonarMessageID::mss_angle_profile :
+        case MechanicalScanningSonarMessageID::mss_angle_profile : {
             /**
              * 0-1 angle
              * 2-3 pulse_usec
@@ -142,23 +171,31 @@ const QByteArray Message::packString(const QVariant& messageIDEnum)
              * 11-13 num_points
              * 14-n data
              */
-            return unpack("<2H2IHXB");
-        case MechanicalScanningSonarMessageID::mss_range :
+            static const auto pack = unpack("<2H2IHXB");
+            return pack;
+        }
+        case MechanicalScanningSonarMessageID::mss_range : {
             /**
              * 0-3 range_mm
              */
-            return "<I";
-        case MechanicalScanningSonarMessageID::mss_mode :
+            static const auto pack = unpack("<I");
+            return pack;
+        }
+        case MechanicalScanningSonarMessageID::mss_mode : {
             /**
              * 0 auto_manual
              */
-            return "<B";
-        case MechanicalScanningSonarMessageID::mss_gain :
+            static const auto pack = unpack("<B");
+            return pack;
+        }
+        case MechanicalScanningSonarMessageID::mss_gain : {
             /**
              * 0 gain_index
              */
-            return "<B";
-        case MechanicalScanningSonarMessageID::mss_sector :
+            static const auto pack = unpack("<B");
+            return pack;
+        }
+        case MechanicalScanningSonarMessageID::mss_sector : {
             /**
              * 0-1 train_angle
              * 2-3 sector_width
@@ -166,10 +203,13 @@ const QByteArray Message::packString(const QVariant& messageIDEnum)
              * 4-5 pulse_length
              * 5-6 sample_size
              */
-            return unpack("<iHB2I");
-
-        default:
-            return QByteArray();
+            static const auto pack = unpack("<iHB2I");
+            return pack;
+        }
+        default: {
+            static const auto pack = unpack("");
+            return pack;
+        }
     }
 }
 
