@@ -43,9 +43,9 @@ public:
         ,mss_sector
     };
 
-    static const QByteArray checksumPackString();
-    static const QByteArray headerPackString();
-    static const QByteArray packString(const QVariant& messageIDEnum);
+    static const QByteArray& checksumPackString();
+    static const QByteArray& headerPackString();
+    static const QByteArray& packString(const QVariant& messageIDEnum);
     static const QString string(const QVariant& messageIDEnum);
 
 private:
