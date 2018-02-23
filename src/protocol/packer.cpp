@@ -25,15 +25,14 @@ Packer::ValidadeData Packer::validadeData(QByteArray& data, QVariantList& packag
         return ValidadeData::NoData;
     }
 
-    QVariantList header = unpack(Message::headerPackString(), dataTmp);
-
     // Check start byte 1 and 2
-    if(header[0].toChar() != 'B' && header[1].toChar() != 'R') {
+    if(dataTmp[0] != 'B' && dataTmp[1] != 'R') {
         qDebug() << "Wrong start";
         return ValidadeData::WrongStart;
     }
 
-    uint payloadSize = header[2].toUInt();
+    QVariantList header = unpack(Message::headerPackString(), dataTmp);
+    uint payloadSize = header[2].toInt();
     // TODO: This size need to be from message
     uint headerSize = byteInFormatString(Message::headerPackString());
     uint16_t checksum = 0;
@@ -105,8 +104,7 @@ QVariantList Packer::unpack(const QString& packString, QByteArray data)
     // Transform data in QVariantList package using packString
     QVariantList list;
     for(const auto& format : formatString) {
-        QVariant var = unconvert(data, format);
-        list.append(var);
+        list.append(unconvert(data, format));
     }
     return list;
 }
