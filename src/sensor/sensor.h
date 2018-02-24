@@ -12,10 +12,10 @@ public:
     ~Sensor();
 
     Q_PROPERTY(AbstractLink* link READ link NOTIFY linkUpdate)
-    AbstractLink* link() { return _linkIn->self(); };
+    AbstractLink* link() { return _linkIn ? _linkIn->self() : nullptr; };
 
     Q_PROPERTY(AbstractLink* linkLog READ linkLog NOTIFY linkLogUpdate)
-    AbstractLink* linkLog() { return _linkOut->self(); };
+    AbstractLink* linkLog() { return _linkOut ? _linkOut->self() : nullptr; };
 
     Q_PROPERTY(QString name READ name NOTIFY nameUpdate)
     QString name() { return _name; };
