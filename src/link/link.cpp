@@ -8,6 +8,7 @@
 #include "udplink.h"
 
 Link::Link(AbstractLink::LinkType linkType, QString name)
+    : _abstractLink(nullptr)
 {
     switch(linkType) {
         case AbstractLink::LinkType::File :
