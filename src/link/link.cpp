@@ -3,7 +3,9 @@
 #include "link.h"
 
 #include "filelink.h"
+#include "pingsimulationlink.h"
 #include "seriallink.h"
+#include "simulationlink.h"
 #include "tcplink.h"
 #include "udplink.h"
 
@@ -19,6 +21,9 @@ Link::Link(AbstractLink::LinkType linkType, QString name)
             break;
         case AbstractLink::LinkType::Udp :
             _abstractLink = new UDPLink();
+            break;
+        case AbstractLink::LinkType::PingSimulation :
+            _abstractLink = new PingSimulationLink();
             break;
         default :
             qDebug() << "Link not available!";
