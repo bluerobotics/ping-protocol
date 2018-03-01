@@ -2,7 +2,7 @@
 
 #include "abstractlink.h"
 
-class TCPLink : AbstractLink
+class TCPLink : public AbstractLink
 {
 public:
     TCPLink();
