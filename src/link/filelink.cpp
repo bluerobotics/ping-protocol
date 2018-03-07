@@ -94,4 +94,5 @@ bool FileLink::finishConnection()
 
 FileLink::~FileLink()
 {
+    delete _logThread;
 }
