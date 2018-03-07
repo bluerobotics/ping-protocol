@@ -1,6 +1,5 @@
 #include <functional>
 
-#include <QDataStream>
 #include <QDebug>
 #include <QDir>
 #include <QTimer>
@@ -14,14 +13,14 @@ FileLink::FileLink():
     ,_logThread(nullptr)
 {
     setType(AbstractLink::LinkType::File);
+    _inout.setDevice(this);
 
     // This save the data as a structure to deal with the timestamp
-    QObject::connect(this, &AbstractLink::sendData, [=](const QByteArray& data) {
-        if(_openModeFlag == QIODevice::WriteOnly) {
-            static QDataStream out(this);
+    QObject::connect(this, &AbstractLink::sendData, [&](const QByteArray& data) {
+        if(_openModeFlag == QIODevice::WriteOnly && isWritable()) {
             QString time = _time.currentTime().toString(_timeFormat);
             Pack pack{time, data};
-            out << pack.time << pack.data;
+            _inout << pack.time << pack.data;
         }
     });
 }
@@ -54,7 +53,6 @@ bool FileLink::startConnection() {
     bool ok = open(QIODevice::ReadWrite);
     // FileLink created as read ?
     if(ok && _openModeFlag == QIODevice::ReadOnly) {
-        QDataStream in(this);
         Pack pack;
         if(_logThread) {
             // Disconnect LogThread
@@ -70,7 +68,7 @@ bool FileLink::startConnection() {
         QObject::connect(_logThread, &LogThread::packageIndexChanged, this, &FileLink::elapsedTimeChanged);
         while(true) {
             // Get data
-            in >> pack.time >> pack.data;
+            _inout >> pack.time >> pack.data;
 
             // Check if we have a new package
             if(pack.time.isEmpty()) {
