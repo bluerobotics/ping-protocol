@@ -14,25 +14,28 @@ PingSimulationLink::PingSimulationLink()
 void PingSimulationLink::randomUpdate()
 {
     Packer p;
-    QVariantList l;
 
     static uint counter = 0;
     counter++;
-    const float numPoints = 200;
+    static const float numPoints = 200;
     const float stop1 = numPoints / 2.0 - 10 * qSin(counter / 10.0);
     const float stop2 = 3 * numPoints / 5.0 + 6 * qCos(counter / 5.5);
 
-    uint32_t peak = 50000 * (stop1 + stop2) / 2 / 255;
+    static const float peakMult = 50000.0f / 2 / 255;
+    uint32_t peak = peakMult * (stop1 + stop2);
     uint8_t conf = 400 / (stop2 - stop1);
 
-    l.append(peak);    // * 0-3 distance     u32
-    l.append(conf);    // * 4 confidence     u8
-    l.append(200);     // * 5-6 pulse_usec   u16
-    l.append(counter); // * 7-10 ping_number u32
-    l.append(500);     // * 11-14 start_mm   u32
-    l.append(50000);   // * 15-18 length_mm  u32
-    l.append(4);       // * 19-22 gain_index u32
-    l.append(200);     // * 23-24 num_points u16 // Note fixed at 200
+    QVariantList profile;
+    profile.append({ peak, conf, 200, counter, 500, 50000, 4, 200 });
+
+//    l.append(peak);    // * 0-3 distance     u32
+//    l.append(conf);    // * 4 confidence     u8
+//    l.append(200);     // * 5-6 pulse_usec   u16
+//    l.append(counter); // * 7-10 ping_number u32
+//    l.append(500);     // * 11-14 start_mm   u32
+//    l.append(50000);   // * 15-18 length_mm  u32
+//    l.append(4);       // * 19-22 gain_index u32
+//    l.append(200);     // * 23-24 num_points u16 // Note fixed at 200
 
     // * 25-n data         u8[200]
     for (int i(0); i < numPoints; i++) {
@@ -44,8 +47,8 @@ void PingSimulationLink::randomUpdate()
         } else {
             point = 0.45 * (qrand()%256);
         }
-        l.append(point);
+        profile.append(point);
     }
 
-    emit newData(p.createPack(Message::EchosounderMessageID::es_profile, l, 9, 8));
+    emit newData(p.createPack(Message::EchosounderMessageID::es_profile, profile, 9, 8));
 }
