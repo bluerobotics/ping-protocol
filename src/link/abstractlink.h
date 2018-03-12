@@ -17,7 +17,7 @@ public:
         Serial,
         Udp,
         Tcp,
-        PingSimulation
+        PingSimulation,
     };
 
     const AbstractLink& operator=(const AbstractLink& other);
