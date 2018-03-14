@@ -1,6 +1,5 @@
 #include <functional>
 
-#include <QDataStream>
 #include <QDebug>
 #include <QDir>
 #include <QTimer>
@@ -14,16 +13,21 @@ FileLink::FileLink():
     ,_logThread(nullptr)
 {
     setType(AbstractLink::LinkType::File);
+    connect(this, &AbstractLink::sendData, this, &FileLink::_writeData);
+}
+
+void FileLink::_writeData(const QByteArray& data)
+{
+    if (!_file.isOpen()) {
+        return;
+    }
 
     // This save the data as a structure to deal with the timestamp
-    QObject::connect(this, &AbstractLink::sendData, [=](const QByteArray& data) {
-        if(_openModeFlag == QIODevice::WriteOnly) {
-            static QDataStream out(this);
-            QString time = _time.currentTime().toString(_timeFormat);
-            Pack pack{time, data};
-            out << pack.time << pack.data;
-        }
-    });
+    if(_openModeFlag == QIODevice::WriteOnly) {
+        QString time = _time.currentTime().toString(_timeFormat);
+        Pack pack{time, data};
+        _out << pack.time << pack.data;
+    }
 }
 
 bool FileLink::setConfiguration(const QString& arg)
@@ -45,16 +49,16 @@ bool FileLink::setConfiguration(const QString& arg)
     // This flag does not change how the file will be open (ReadWrite)
     _openModeFlag = args[1][0] == "r" ? QIODevice::ReadOnly : QIODevice::WriteOnly;
 
-    setFileName(args[0]);
+    _file.setFileName(args[0]);
 
     return true;
 }
 
 bool FileLink::startConnection() {
-    bool ok = open(QIODevice::ReadWrite);
+    bool ok = _file.open(QIODevice::ReadWrite);
     // FileLink created as read ?
     if(ok && _openModeFlag == QIODevice::ReadOnly) {
-        QDataStream in(this);
+        QDataStream in(&_file);
         Pack pack;
         if(_logThread) {
             // Disconnect LogThread
@@ -90,7 +94,7 @@ bool FileLink::startConnection() {
 
 bool FileLink::finishConnection()
 {
-    close();
+    _file.close();
     return true;
 }
 
