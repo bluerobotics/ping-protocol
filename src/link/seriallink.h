@@ -5,7 +5,7 @@
 
 #include "abstractlink.h"
 
-class SerialLink : public AbstractLink, QSerialPort, QSerialPortInfo
+class SerialLink : public AbstractLink, public QSerialPort, public QSerialPortInfo
 {
 
 public:
