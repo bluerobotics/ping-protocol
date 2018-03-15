@@ -141,6 +141,7 @@ void Protocol::emitMessages(const QVariantList& package)
             break;
         }
     }
+    qDebug() << "Rx id:" << package[3].toInt();
     emit update();
 }
 
@@ -152,6 +153,7 @@ void Protocol::handleData(const QByteArray& data)
 void Protocol::request(int messageID)
 {
     auto byteArray = _packer->request(messageID);
+    qDebug() << "Requesting id:" << messageID;
     emit sendData(byteArray);
 }
 
