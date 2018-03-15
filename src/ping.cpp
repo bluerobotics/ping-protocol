@@ -10,6 +10,9 @@ Ping::Ping() :
 {
     emit linkUpdate();
 
+    requestTimer.setInterval(1000);
+    connect(&requestTimer, &QTimer::timeout, _protocol, &Protocol::requestEchosounderProfile);
+
     connectLink("2:/dev/ttyUSB0:115200");
 }
 
@@ -105,6 +108,33 @@ void Ping::connectLinkLog(const QString& connString)
 
     connect(_protocol, &Protocol::emitRawMessages, linkLog(), &AbstractLink::sendData);
     emit linkLogUpdate();
+}
+
+QVariant Ping::pollFrequency()
+{
+    if (!requestTimer.isActive()) {
+        return 0;
+    }
+    return 1000.0f / requestTimer.interval();
+}
+
+void Ping::setPollFrequency(QVariant pollFrequency)
+{
+    if (pollFrequency.toInt() <= 0) {
+        if (requestTimer.isActive()) {
+            requestTimer.stop();
+        }
+    } else {
+        int period_ms = 1000.0f / pollFrequency.toInt();
+        qDebug() << "setting f" << pollFrequency.toInt() << period_ms;
+        requestTimer.setInterval(period_ms);
+        if (!requestTimer.isActive()) {
+            requestTimer.start();
+        }
+    }
+
+    qDebug() << "Poll period" << pollFrequency;
+    emit pollFrequencyUpdate();
 }
 
 Ping::~Ping()

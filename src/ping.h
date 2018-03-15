@@ -16,6 +16,10 @@ public:
     Q_PROPERTY(AbstractLink* link READ link NOTIFY linkUpdate)
     AbstractLink* link() { return _linkIn->self(); };
 
+    Q_PROPERTY(QVariant pollFrequency READ pollFrequency WRITE setPollFrequency NOTIFY pollFrequencyUpdate)
+    QVariant pollFrequency();
+    void setPollFrequency(QVariant pollFrequency);
+
     Q_PROPERTY(AbstractLink* linkLog READ linkLog NOTIFY linkLogUpdate)
     AbstractLink* linkLog() { return _linkOut->self(); };
 
@@ -26,6 +30,7 @@ private:
     Link* _linkIn;
     Link* _linkOut;
     Protocol* _protocol;
+    QTimer requestTimer;
 
 signals:
     // In
@@ -36,4 +41,5 @@ signals:
 
     // Out
     void linkLogUpdate();
+    void pollFrequencyUpdate();
 };
