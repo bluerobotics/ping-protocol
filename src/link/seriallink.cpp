@@ -38,6 +38,7 @@ bool SerialLink::setConfiguration(const QString& arg)
 bool SerialLink::finishConnection()
 {
     close();
+    qDebug() << "port closed";
     return true;
 }
 
