@@ -1,3 +1,5 @@
+#pragma once
+
 #include "link.h"
 #include "protocol.h"
 
