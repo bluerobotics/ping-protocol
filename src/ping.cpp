@@ -2,6 +2,7 @@
 #include <QDebug>
 
 #include "ping.h"
+#include "seriallink.h"
 
 Ping::Ping() :
      _linkIn(new Link(AbstractLink::LinkType::Serial, "Default"))
@@ -13,11 +14,58 @@ Ping::Ping() :
     requestTimer.setInterval(1000);
     connect(&requestTimer, &QTimer::timeout, _protocol, &Protocol::requestEchosounderProfile);
 
+    connect(&_flasher, &Stm32Flasher::flashProgress, this, &Ping::flashProgress);
+    connect(&_flasher, &Stm32Flasher::flashComplete, this, &Ping::flashComplete);
+    connect(&_flasher, &Stm32Flasher::flashComplete, this, &Ping::reconnectLink);
+
     connectLink("2:/dev/ttyUSB0:115200");
+}
+
+void Ping::firmwareUpdate(const QUrl& fileUrl)
+{
+    SerialLink* serialLink = dynamic_cast<SerialLink*>(link());
+
+    if (!serialLink) {
+        return;
+    }
+
+    if(link()->isOpen()) {
+        setPollFrequency(0);
+
+        _protocol->requestGotoBootloader();
+
+        while (serialLink->bytesToWrite())
+        {
+            qDebug() << "Waiting for bytes to be written";
+            serialLink->waitForBytesWritten();
+        }
+
+        disconnect(link(), &AbstractLink::newData, _protocol, &Protocol::handleData);
+        disconnect(_protocol, &Protocol::sendData, link(), &AbstractLink::sendData);
+        disconnect(_protocol, &Protocol::update, this, &Ping::protocolUpdate);
+
+        link()->finishConnection();
+    }
+
+    QSerialPortInfo pInfo(serialLink->QSerialPort::portName());
+    QString portLocation = pInfo.systemLocation();
+
+    _flasher.flash(portLocation, fileUrl.path(), false /*verify*/);
+}
+
+void Ping::reconnectLink(bool success) {
+    if (!success) {
+        qDebug() << "Error flashing!";
+    }
+
+    // TODO change to run autoconnect routine?, (same as app startup)
+    connectLink(_linkConfigString);
 }
 
 void Ping::connectLink(const QString& connString)
 {
+    _linkConfigString = connString;
+
     if(link()->isOpen()) {
         link()->finishConnection();
         disconnect(link(), &AbstractLink::newData, _protocol, &Protocol::handleData);
@@ -51,12 +99,6 @@ void Ping::connectLink(const QString& connString)
     }
 
     emit linkUpdate();
-
-    connect(link(), &AbstractLink::newData, _protocol, &Protocol::handleData);
-    connect(_protocol, &Protocol::sendData, link(), &AbstractLink::sendData);
-    connect(_protocol, &Protocol::update, this, &Ping::protocolUpdate);
-    emit connectionOpen();
-
     // Disable log if playing one
     if(link()->type() == AbstractLink::LinkType::File) {
         if(!_linkOut) {
@@ -72,15 +114,22 @@ void Ping::connectLink(const QString& connString)
         QString config = QStringLiteral("%1:%2:%3").arg(QString::number(1), fileName, "w");
         connectLinkLog(config);
     }
+    connect(link(), &AbstractLink::newData, _protocol, &Protocol::handleData);
+    connect(_protocol, &Protocol::sendData, link(), &AbstractLink::sendData);
+    connect(_protocol, &Protocol::update, this, &Ping::protocolUpdate);
+
+    emit connectionOpen();
 }
 
 void Ping::connectLinkLog(const QString& connString)
 {
     if(_linkOut) {
-        if(!link()->isOpen()) {
+        if(!link()->isOpen()) { // TODO should be linkout()?!?!
             qDebug() << "No connection to log !" << linkLog()->errorString();
             return;
         }
+        disconnect(_protocol, &Protocol::emitRawMessages, linkLog(), &AbstractLink::sendData);
+
         delete _linkOut;
     }
 

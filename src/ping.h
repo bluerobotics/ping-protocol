@@ -2,6 +2,7 @@
 
 #include "link.h"
 #include "protocol.h"
+#include "stm32flasher.h"
 
 class Ping : public QObject
 {
@@ -24,13 +25,22 @@ public:
     AbstractLink* linkLog() { return _linkOut->self(); };
 
     Q_INVOKABLE void connectLink(const QString& connString);
+    void reconnectLink(bool something);
     Q_INVOKABLE void connectLinkLog(const QString& connString);
 
+    Q_INVOKABLE void firmwareUpdate(const QUrl& fileUrl);
+
+signals:
+    void flashProgress(float progress);
+    void flashComplete(bool success); // TODO make use of success flag
+
 private:
+    QString _linkConfigString;
     Link* _linkIn;
     Link* _linkOut;
     Protocol* _protocol;
     QTimer requestTimer;
+    Stm32Flasher _flasher;
 
 signals:
     // In
