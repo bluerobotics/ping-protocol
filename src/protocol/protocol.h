@@ -22,6 +22,7 @@ public:
     Q_INVOKABLE void requestVersion();
     Q_INVOKABLE void requestDeviceID();
     Q_INVOKABLE void requestNewData();
+    Q_INVOKABLE void requestGotoBootloader();
 
     // Echosounder requests
     Q_INVOKABLE void requestEchosounderDistanceSimple();

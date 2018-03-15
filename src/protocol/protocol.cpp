@@ -171,6 +171,14 @@ void Protocol::requestNewData()
     request(Message::GeneralMessageID::gen_new_data);
 }
 
+void Protocol::requestGotoBootloader()
+{
+    QVariantList vars;
+    auto byteArray = _packer->createPack(Message::GeneralMessageID::gen_goto_bootloader, vars);
+    qDebug() << "~~~Sending to bootloader...";
+    emit sendData(byteArray);
+}
+
 // Echosounder requests
 void Protocol::requestEchosounderDistanceSimple()
 {
