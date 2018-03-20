@@ -9,3 +9,8 @@ SOURCES += \
     $$PWD/message.cpp \
     $$PWD/packer.cpp \
     $$PWD/protocol.cpp
+
+HEADERS += \
+    $$PWD/pingmessage/pingmessage.h \
+    $$PWD/pingmessage/pingmessage_es.h \
+    $$PWD/pingmessage/pingmessage_gen.h
