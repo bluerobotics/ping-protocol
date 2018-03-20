@@ -11,6 +11,9 @@ SOURCES += \
     $$PWD/protocol.cpp
 
 HEADERS += \
+    $$PWD/parsers/parser.h \
+    $$PWD/parsers/parser_json.h \
+    $$PWD/parsers/parser_ping.h \
     $$PWD/pingmessage/pingmessage.h \
     $$PWD/pingmessage/pingmessage_es.h \
     $$PWD/pingmessage/pingmessage_gen.h
