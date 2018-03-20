@@ -12,7 +12,6 @@ public:
     Protocol();
     ~Protocol();
 
-    Message _message;
     Packer* _packer;
 
     void request(int messageID);
