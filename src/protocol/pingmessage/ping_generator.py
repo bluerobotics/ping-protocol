@@ -1,7 +1,7 @@
 import json
 
-
-qbytearray_enabled = False
+# Enable QByteArray constructor (disable for embedded use)
+qbytearray_enabled = True
 
 f = None
 
@@ -9,67 +9,65 @@ headerBytes = 8
 checksumBytes = 2
 
 def get_type_string(t):
-  if t.find("u8") != -1:
-    s = "uint8_t"
-  if t.find("u16") != -1:
-    s = "uint16_t"
-  if t.find("u32") != -1:
-    s = "uint32_t"
-  if t.find("i8") != -1:
-    s = "int8_t"
-  if t.find("i16") != -1:
-    s = "int16_t"
-  if t.find("i32") != -1:
-    s = "int32_t"
-  if t.find("float") != -1:
-    s = "float"
+    if t.find("u8") != -1:
+      s = "uint8_t"
+    if t.find("u16") != -1:
+      s = "uint16_t"
+    if t.find("u32") != -1:
+      s = "uint32_t"
+    if t.find("i8") != -1:
+      s = "int8_t"
+    if t.find("i16") != -1:
+      s = "int16_t"
+    if t.find("i32") != -1:
+      s = "int32_t"
+    if t.find("float") != -1:
+      s = "float"
 
-  first = t.find("[")
-  if first != -1:
-    last = t.find("]")
-#    s = s + t[first:last+1]
-    s = s + "*"
+    first = t.find("[")
+    if first != -1:
+      s = s + "*"
 
-  return s
+    return s
 
 def get_cast_string(t):
-  s = get_type_string(t)
-  if s.find("*") != -1:
-    s = "(" + s + ")"
-  else:
-    s = "*(" + s + "*)"
+    s = get_type_string(t)
+    if s.find("*") != -1:
+      s = "(" + s + ")"
+    else:
+      s = "*(" + s + "*)"
 
-  return s
+    return s
 
 def get_type_base_size(t):
 
-  if t.find("u8") != -1:
-    o = 1;
-  if t.find("u16") != -1:
-    o = 2;
-  if t.find("u32") != -1:
-    o = 4;
-  if t.find("i8") != -1:
-    o = 1;
-  if t.find("i16") != -1:
-    o = 2;
-  if t.find("i32") != -1:
-    o = 4;
-  if t.find("float") != -1:
-    o = 4;
+    if t.find("u8") != -1:
+      o = 1;
+    if t.find("u16") != -1:
+      o = 2;
+    if t.find("u32") != -1:
+      o = 4;
+    if t.find("i8") != -1:
+      o = 1;
+    if t.find("i16") != -1:
+      o = 2;
+    if t.find("i32") != -1:
+      o = 4;
+    if t.find("float") != -1:
+      o = 4;
 
-  return o
+    return o
 
 def get_type_offset(t):
 
-  o = get_type_base_size(t)
+    o = get_type_base_size(t)
 
-  first = t.find("[")
-  if first != -1:
-    last = t.find("]")
-    o = o * int(t[first+1:last])
+    first = t.find("[")
+    if first != -1:
+      last = t.find("]")
+      o = o * int(t[first+1:last])
 
-  return o
+    return o
 
 def file_write(f, data, debug = False):
     if debug:
@@ -133,7 +131,8 @@ public:
 
         star = type_string.find("*") # is this field an array?
 
-	f1 = ("%s")%(type_string)
+        # Output getter of this field
+        f1 = ("%s")%(type_string)
         f2 = ("%s()")%(n)
         if star != -1: # this field is an array
             f3 = ("{ return (msgData.data() + 8 + %s); }") % (current_offset)
@@ -142,19 +141,18 @@ public:
 
         get_string = ("    {:<10} {:<50} {:<20}\n").format(f1, f2, f3)
 
-
+        # Output setter of this field
         f1 = ("void")
         if star != -1: # this field is an array
             f2 = ("set_%s_at(uint16_t i, %s %s)")%(n, type_string[:star], n)
-	    #f3 = ("{ *" + cast + " (msgData.data() + 8 + %d + i) = %s; }")%(current_offset, n)
-	    f3 = ("{ memcpy((msgData.data() + 8 + %d + i), &%s, %s); }")%(current_offset, n, type_base_size)
+            #f3 = ("{ *" + cast + " (msgData.data() + 8 + %d + i) = %s; }")%(current_offset, n)
+            f3 = ("{ memcpy((msgData.data() + 8 + %d + i), &%s, %s); }")%(current_offset, n, type_base_size)
         else:
-	    f2 = ("set_%s(%s %s)")%(n, type_string, n)
-	    #f3 = ("{ " + cast + " (msgData.data() + 8 + %d) = %s; }")%(current_offset, n)
-	    f3 = ("{ memcpy((msgData.data() + 8 + %d), &%s, %s); }")%(current_offset, n, type_base_size)
+            f2 = ("set_%s(%s %s)")%(n, type_string, n)
+            #f3 = ("{ " + cast + " (msgData.data() + 8 + %d) = %s; }")%(current_offset, n)
+            f3 = ("{ memcpy((msgData.data() + 8 + %d), &%s, %s); }")%(current_offset, n, type_base_size)
 
         set_string = ("    {:<10} {:<50} {:<20}\n").format(f1, f2, f3)
-
 
         get_strings = get_strings + get_string
         set_strings = set_strings + set_string
@@ -165,8 +163,7 @@ public:
     file_write(f, set_strings)
     file_write(f, "};\n\n")
 
-#msg_definition_file = open("ping_protocol.json", "r")
-msg_definition_file = open("esc_protocol.json", "r")
+msg_definition_file = open("ping_protocol.json", "r")
 
 msg_json = json.load(msg_definition_file)
 
