@@ -1,6 +1,7 @@
 #!/usr/bin/env python2
 
 import json
+import re
 
 # Enable QByteArray constructor (disable for embedded use)
 qbytearray_enabled = True
@@ -10,25 +11,41 @@ f = None
 headerBytes = 8
 checksumBytes = 2
 
-def get_type_string(t):
-    if t.find("u8") != -1:
-      s = "uint8_t"
-    if t.find("u16") != -1:
-      s = "uint16_t"
-    if t.find("u32") != -1:
-      s = "uint32_t"
-    if t.find("i8") != -1:
-      s = "int8_t"
-    if t.find("i16") != -1:
-      s = "int16_t"
-    if t.find("i32") != -1:
-      s = "int32_t"
-    if t.find("float") != -1:
-      s = "float"
 
-    first = t.find("[")
-    if first != -1:
-      s = s + "*"
+def convert_short_type(t):
+
+    # u/i
+    ui = t[0]
+    # number of bits
+    nbits = t[1:]
+
+    if ui == 'i':
+        return 'int{0}_t'.format(nbits)
+
+    if ui == 'u':
+        return 'uint{0}_t'.format(nbits)
+
+
+def get_type_string(t):
+
+    # Remove vector info
+    vector = False
+    if t.find('[') != -1:
+        t = t.split('[')[0]
+        vector = True
+
+    # Check for short type
+    # This script will get X in u/iX (u8, i16)
+    match = re.search('[u,i][0-9]{1,2}$', t)
+    s = ''
+    if match:
+        s = convert_short_type(t)
+    else:
+        s = t
+
+    # Append vector
+    if vector:
+        s = s + '*'
 
     return s
 
@@ -43,22 +60,21 @@ def get_cast_string(t):
 
 def get_type_base_size(t):
 
-    if t.find("u8") != -1:
-      o = 1;
-    if t.find("u16") != -1:
-      o = 2;
-    if t.find("u32") != -1:
-      o = 4;
-    if t.find("i8") != -1:
-      o = 1;
-    if t.find("i16") != -1:
-      o = 2;
-    if t.find("i32") != -1:
-      o = 4;
-    if t.find("float") != -1:
-      o = 4;
+    if t.find('bool') != -1:
+        return 1
+    if t.find('int') != -1:
+        return 4
+    if t.find('float') != -1:
+        return 4
+    if t.find('double') != -1:
+        return 8
 
-    return o
+    # Get short types
+    # this regex will get the X in u/intX_t (uint8_t, int16_t)
+    match = re.search('[0-9]{1,2}', t)
+    if match:
+        return int(int(match.group(0)) / 8)
+
 
 def get_type_offset(t):
 
