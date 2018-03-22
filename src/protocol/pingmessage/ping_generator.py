@@ -1,3 +1,5 @@
+#!/usr/bin/env python2
+
 import json
 
 # Enable QByteArray constructor (disable for embedded use)
