@@ -2,7 +2,6 @@
 
 #include "link.h"
 #include "parsers/parser.h"
-#include "protocol.h"
 
 // TODO rename to Device?
 class Sensor : public QObject
@@ -11,9 +10,6 @@ class Sensor : public QObject
 public:
     Sensor();
     ~Sensor();
-
-    Q_PROPERTY(Protocol* protocol READ protocol NOTIFY protocolUpdate) // deprecated
-    Protocol* protocol() { return _protocol; }; // deprecated
 
     Q_PROPERTY(AbstractLink* link READ link NOTIFY linkUpdate)
     AbstractLink* link() { return _linkIn->self(); };
@@ -30,7 +26,6 @@ public:
 protected:
     Link* _linkIn;
     Link* _linkOut;
-    Protocol* _protocol; // deprecated
     Parser* _parser; // communication implementation
 
     QString _name; // TODO populate
@@ -39,7 +34,6 @@ signals:
     // In
     void connectionClose();
     void connectionOpen();
-    void protocolUpdate();
     void nameUpdate();
     void linkUpdate();
 

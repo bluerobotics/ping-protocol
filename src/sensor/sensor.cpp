@@ -10,7 +10,6 @@
 Sensor::Sensor() :
      _linkIn(new Link(AbstractLink::LinkType::Serial, "Default"))
     ,_linkOut(nullptr)
-    ,_protocol(new Protocol())
     ,_parser(nullptr)
 {
 
@@ -21,9 +20,6 @@ void Sensor::connectLink(const QString& connString)
 {
     if(link()->isOpen()) {
         link()->finishConnection();
-        disconnect(link(), &AbstractLink::newData, _protocol, &Protocol::handleData);
-        disconnect(_protocol, &Protocol::sendData, link(), &AbstractLink::sendData);
-        disconnect(_protocol, &Protocol::update, this, &Sensor::protocolUpdate);
     }
 
     qDebug() << "connecting to" << connString;
@@ -54,14 +50,11 @@ void Sensor::connectLink(const QString& connString)
 
     emit linkUpdate();
 
-    connect(link(), &AbstractLink::newData, _protocol, &Protocol::handleData);
     if (_parser) {
         connect(link(), &AbstractLink::newData, _parser, &Parser::parseBuffer);
 
     }
 
-    connect(_protocol, &Protocol::sendData, link(), &AbstractLink::sendData);
-    connect(_protocol, &Protocol::update, this, &Sensor::protocolUpdate);
     emit connectionOpen();
 
     // Disable log if playing one
@@ -70,7 +63,6 @@ void Sensor::connectLink(const QString& connString)
             return;
         }
         if(linkLog()->isOpen()) {
-            disconnect(_protocol, &Protocol::emitRawMessages, linkLog(), &AbstractLink::sendData);
             linkLog()->finishConnection();
             _linkOut->deleteLater();
         }
@@ -113,7 +105,6 @@ void Sensor::connectLinkLog(const QString& connString)
         return;
     }
 
-    connect(_protocol, &Protocol::emitRawMessages, linkLog(), &AbstractLink::sendData);
     emit linkLogUpdate();
 }
 
