@@ -9,7 +9,7 @@ void Ping::handleMessage(PingMessage msg)
 
     switch (msg.message_id()) {
 
-    case PingMessage::gen_get_version: {
+    case PingMessage::gen_id_version: {
         ping_msg_gen_version m(msg);
         _device_type = m.device_type();
         _device_model = m.device_model();
@@ -23,7 +23,7 @@ void Ping::handleMessage(PingMessage msg)
     }
         break;
 
-    case PingMessage::es_distance: {
+    case PingMessage::es_id_distance: {
         ping_msg_es_distance m(msg);
         _distance = m.distance();
         _confidence = m.confidence();
@@ -44,7 +44,7 @@ void Ping::handleMessage(PingMessage msg)
     }
         break;
 
-    case PingMessage::es_profile: {
+    case PingMessage::es_id_profile: {
         ping_msg_es_profile m(msg);
         _distance = m.distance();
         _confidence = m.confidence();
@@ -74,7 +74,7 @@ void Ping::handleMessage(PingMessage msg)
     }
         break;
 
-    case PingMessage::es_mode: {
+    case PingMessage::es_id_mode: {
         ping_msg_es_mode m(msg);
         _mode_auto = m.auto_manual();
         emit modeAutoUpdate();

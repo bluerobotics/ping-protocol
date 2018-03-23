@@ -1,8 +1,10 @@
 #!/usr/bin/env python2
 
+import copy
 import json
 import os
 import re
+import shutil
 
 # Force program to generate read and write in the same dir
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__))) + "/"
@@ -193,11 +195,89 @@ public:
     file_write(f, set_strings)
     file_write(f, "};\n\n")
 
+def create_enums(in_json):
+    # Create all enums
+    msg_json = copy.deepcopy(in_json)
+    all_enums = ''
+    enum_text = \
+    '''
+    enum {name} {{
+        {name}_id_first = {first_enum_value},
+{enum_list}        {name}_id_last = {last_enum_value},
+    }};
+    '''
+
+    # For each enum (es, gen)
+    names = msg_json.keys()
+    for name in names:
+        enum_list = ''
+        data = {}
+        data['name'] = name
+
+        # Get all values of the enum
+        enum_values = {}
+        minor_value_geral = 65535
+        bigger_value_geral = 0
+        # Remove the minor message ID to create an organized enum
+        while msg_json[name].keys():
+            minor_value_id = ''
+            minor_value = 65535
+            types = msg_json[name]
+            for values in types.keys():
+                value = types[values]
+                if int(value['id']) <= minor_value:
+                    minor_value_check = value['id']
+                    minor_value_id = values
+
+                    # Check for the local minor
+                    if minor_value > int(minor_value_check):
+                        minor_value = int(minor_value_check)
+
+                    # Check for global minor
+                    if minor_value_geral > int(minor_value_check):
+                        minor_value_geral = int(minor_value)
+
+                    # Check for global major
+                    if bigger_value_geral < int(minor_value):
+                        bigger_value_geral = int(minor_value)
+            else:
+                enum_values[minor_value] = minor_value_id
+                enum_list = enum_list + '        {0}_id_{1} = {2},\n'.format(name, minor_value_id, minor_value)
+                msg_json[name].pop(minor_value_id)
+
+        data['first_enum_value'] = minor_value_geral - 1
+        data['last_enum_value'] = bigger_value_geral + 1
+        data['enum_list'] = enum_list
+        all_enums = all_enums + enum_text.format(**data)
+
+    return all_enums
+
+def create_class(file_name, class_info, msg_json):
+    header_name = file_name.replace('.in', '.h');
+    shutil.copy(__location__ + file_name, __location__ + header_name)
+
+    f = open(__location__ + file_name, 'r')
+    template_class = f.read()
+    f.close()
+    f = open(__location__ + header_name, 'w')
+    class_info['enums'] = create_enums(msg_json)
+    f.write(template_class.format(**class_info))
+    f.close()
+
 msg_definition_file = open(__location__ + "ping_protocol.json", "r")
 
 msg_json = json.load(msg_definition_file)
 
 msg_definition_file.close()
+
+if "file" in msg_json:
+    class_file = msg_json["file"]
+    msg_json.pop("file")
+    print("Creating file: {}".format(class_file))
+    if "class_info" in msg_json:
+        class_info = msg_json["class_info"]
+        msg_json.pop("class_info")
+        create_class(class_file, class_info, msg_json)
 
 headers = []
 for msg_group in msg_json.keys():
