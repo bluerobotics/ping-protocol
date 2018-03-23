@@ -1,5 +1,7 @@
 INCLUDEPATH += $$PWD
 
+system(./pingmessage/ping_generator.py)
+
 HEADERS += \
     $$PWD/message.h \
     $$PWD/packer.h \
