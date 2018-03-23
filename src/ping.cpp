@@ -50,7 +50,7 @@ void Ping::firmwareUpdate(const QUrl& fileUrl)
     QSerialPortInfo pInfo(serialLink->QSerialPort::portName());
     QString portLocation = pInfo.systemLocation();
 
-    _flasher.flash(portLocation, fileUrl.path(), false /*verify*/);
+    _flasher.flash(portLocation, fileUrl.toLocalFile(), false /*verify*/);
 }
 
 void Ping::reconnectLink(bool success) {
