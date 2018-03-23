@@ -3,6 +3,7 @@
 #include "sensor.h"
 #include "parsers/parser.h"
 #include "parsers/parser_ping.h"
+#include "parsers/detector.h"
 
 class Ping : public Sensor
 {
@@ -19,7 +20,10 @@ public:
         connect(link(), &AbstractLink::newData, _parser, &Parser::parseBuffer);
         emit linkUpdate();
 
-        connectLink("2:/dev/ttyUSB2:115200");
+        //connectLink("2:/dev/ttyUSB2:115200");
+
+        connect(&_detector, &ProtocolDetector::_detected, this, &Ping::connectLink);
+        _detector.start();
     }
     ~Ping() {}
 
@@ -135,4 +139,6 @@ private:
 
     // TODO const &
     void handleMessage(PingMessage msg); // handle incoming message
+
+    ProtocolDetector _detector;
 };
