@@ -59,7 +59,7 @@ void Ping::handleMessage(PingMessage msg)
         // This is necessary to convert <uint8_t> to <int>
         // QProperty only supports vector<int>, otherwise, we could use memcpy
         for (int i = 0; i < m.num_points(); i++) {
-            _points.replace(i, m.data()[i]);
+            _points.replace(i, m.data()[i] / 255.0); // TODO we should really be working in ints
         }
 
         // TODO, change to distMsgUpdate() or similar
