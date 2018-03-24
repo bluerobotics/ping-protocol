@@ -17,7 +17,7 @@ void Ping::handleMessage(PingMessage msg)
         _fw_version_minor = m.fw_version_minor();
 
         emit deviceTypeUpdate();
-        emit deviceModeUpdate();
+        emit deviceModelUpdate();
         emit fwVersionMajorUpdate();
         emit fwVersionMinorUpdate();
     }
@@ -103,6 +103,7 @@ void Ping::request(int id)
     m.set_request_id(id);
     m.updateChecksum();
 
+    // todo add link::write(char*, int size)
     link()->sendData(QByteArray(reinterpret_cast<const char*>(m.msgData.data()), m.msgData.size()));
 }
 

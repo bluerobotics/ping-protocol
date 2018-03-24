@@ -33,6 +33,12 @@ public:
     Q_PROPERTY(int fw_version_minor READ fw_version_minor NOTIFY fwVersionMinorUpdate)
     uint16_t fw_version_minor() { return _fw_version_minor; }
 
+    Q_PROPERTY(int device_type READ device_type NOTIFY deviceTypeUpdate)
+    uint8_t device_type() { return _device_type; }
+
+    Q_PROPERTY(int device_model READ device_model NOTIFY deviceModelUpdate)
+    uint8_t device_model() { return _device_model; }
+
     Q_PROPERTY(int distance READ distance NOTIFY distanceUpdate)
     uint32_t distance() { return _distance; }
 
@@ -73,7 +79,7 @@ signals:
     void srcIdUpdate();
     void dstIdUpdate();
     void deviceTypeUpdate();
-    void deviceModeUpdate();
+    void deviceModelUpdate();
     void fwVersionMajorUpdate();
     void fwVersionMinorUpdate();
 
