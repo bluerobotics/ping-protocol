@@ -9,7 +9,11 @@ class Ping : public Sensor
     Q_OBJECT
 public:
 
-    Ping() : Sensor(), _points(QVector<int>(_num_points, '\0')) {
+    Ping() : Sensor() {
+        _points.reserve(_num_points);
+        for (int i = 0; i < _num_points; i++) {
+            _points.append(0);
+        }
         _parser = new PingParser();
         connect(dynamic_cast<PingParser*>(_parser), &PingParser::newMessage, this, &Ping::handleMessage);
         connect(link(), &AbstractLink::newData, _parser, &Parser::parseBuffer);
@@ -60,8 +64,8 @@ public:
     Q_PROPERTY(int gain_index READ gain_index NOTIFY gainIndexUpdate)
     uint32_t gain_index() { return _gain_index; }
 
-    Q_PROPERTY(QVector<int> points READ points NOTIFY pointsUpdate)
-    QVector<int> points() { return _points; }
+    Q_PROPERTY(QList<double> points READ points NOTIFY pointsUpdate)
+    QList<double> points() { return _points; }
 
     Q_PROPERTY(bool mode_auto READ mode_auto NOTIFY modeAutoUpdate)
     bool mode_auto() { return _mode_auto; }
@@ -116,7 +120,8 @@ private:
 
     // TODO maybe use vector or uint8_t[] here
     // QVector is only required if points need to be exposed to qml
-    QVector<int> _points;
+    //QVector<int> _points;
+    QList<double> _points;
 
     bool _mode_auto;
     uint16_t _msec_per_ping;
