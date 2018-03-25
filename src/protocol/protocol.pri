@@ -1,6 +1,6 @@
 INCLUDEPATH += $$PWD
 
-system(./pingmessage/ping_generator.py)
+system(python $$PWD/pingmessage/ping_generator.py)
 
 HEADERS += \
     $$PWD/parsers/*.h \
