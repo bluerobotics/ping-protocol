@@ -79,6 +79,8 @@ public:
 
     Q_INVOKABLE void request(int id); // send request for message
 
+    Q_INVOKABLE void firmwareUpdate(QString fileUrl);
+
 signals:
     void srcIdUpdate();
     void dstIdUpdate();
@@ -99,6 +101,9 @@ signals:
     void modeAutoUpdate();
     void msecPerPingUpdate();
 
+    void flashProgress(float progress);
+    void flashComplete();
+
 private:
     uint8_t _srcId;
     uint8_t _dstId;
@@ -115,6 +120,8 @@ private:
     uint32_t _start_mm;
     uint32_t _length_mm;
     uint32_t _gain_index;
+
+    float _fw_update_perc;
 
     static const uint16_t _num_points = 200;
 
