@@ -49,7 +49,7 @@ public:
 
             while (!detected && attempts < 10) { // Try to get a valid response, timeout after 40 ms
                 sockit.waitForReadyRead(4);
-                auto datagram = sockit.receiveDatagram();
+                QNetworkDatagram datagram = sockit.receiveDatagram();
                 auto buf = datagram.data();
                 for (auto byte = buf.begin(); byte != buf.end(); ++byte) {
                     detected = _parser.parseByte(*byte) == PingParser::NEW_MESSAGE;
