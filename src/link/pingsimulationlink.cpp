@@ -25,7 +25,12 @@ void PingSimulationLink::randomUpdate()
     uint32_t peak = peakMult * (stop1 + stop2);
     uint8_t conf = 400 / (stop2 - stop1);
 
-    QVariantList profile;
+    static QVariantList profile;
+
+    while (profile.length()) {
+        profile.removeFirst();
+    }
+
     profile.append({ peak, conf, 200, counter, 500, 50000, 4, 200 });
 
 //    l.append(peak);    // * 0-3 distance     u32
