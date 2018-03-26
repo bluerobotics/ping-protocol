@@ -103,7 +103,7 @@ public:
 
                     if (detected) {
                         qDebug() << "Ping detected on" << p.portName();
-                        emit _detected("2:/dev/" + p.portName() + ":115200");
+                        emit _detected("2:" + p.portName() + ":115200");
                         _active = false;
                         return;
                     }
