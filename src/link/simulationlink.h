@@ -1,11 +1,11 @@
 #pragma once
 
 #include "abstractlink.h"
-#include "protocol.h"
+#include "parsers/parser.h"
 
 class SimulationLink : public AbstractLink
 {
 public:
     SimulationLink();
-    Protocol* _protocol;
+    Parser _parser;
 };
