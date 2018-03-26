@@ -1,20 +1,16 @@
-#include "message.h"
-#include "packer.h"
-#include "pingsimulationlink.h"
 #include <QtMath>
+
+#include "pingsimulationlink.h"
+#include "pingmessage/pingmessage_all.h"
 
 PingSimulationLink::PingSimulationLink()
 {
-    _protocol= new Protocol();
-
     connect(&_randomUpdateTimer, &QTimer::timeout, this, &PingSimulationLink::randomUpdate);
     _randomUpdateTimer.start(50);
 }
 
 void PingSimulationLink::randomUpdate()
 {
-    Packer p;
-
     static uint counter = 0;
     counter++;
     static const float numPoints = 200;
@@ -25,25 +21,18 @@ void PingSimulationLink::randomUpdate()
     uint32_t peak = peakMult * (stop1 + stop2);
     uint8_t conf = 400 / (stop2 - stop1);
 
-    static QVariantList profile;
+    static ping_msg_es_profile profile;
 
-    while (profile.length()) {
-        profile.removeFirst();
-    }
+    profile.set_distance(peak);
+    profile.set_confidence(conf);
+    profile.set_pulse_usec(200);
+    profile.set_ping_number(counter);
+    profile.set_start_mm(500);
+    profile.set_length_mm(50000);
+    profile.set_gain_index(4);
+    profile.set_num_points(200);
 
-    profile.append({ peak, conf, 200, counter, 500, 50000, 4, 200 });
-
-//    l.append(peak);    // * 0-3 distance     u32
-//    l.append(conf);    // * 4 confidence     u8
-//    l.append(200);     // * 5-6 pulse_usec   u16
-//    l.append(counter); // * 7-10 ping_number u32
-//    l.append(500);     // * 11-14 start_mm   u32
-//    l.append(50000);   // * 15-18 length_mm  u32
-//    l.append(4);       // * 19-22 gain_index u32
-//    l.append(200);     // * 23-24 num_points u16 // Note fixed at 200
-
-    // * 25-n data         u8[200]
-    for (int i(0); i < numPoints; i++) {
+    for (int i = 0; i < numPoints; i++) {
         float point;
         if (i < stop1) {
             point = 0.1 * (qrand()%256);
@@ -52,8 +41,9 @@ void PingSimulationLink::randomUpdate()
         } else {
             point = 0.45 * (qrand()%256);
         }
-        profile.append(point);
+        profile.set_data_at(i, point);
     }
 
-    emit newData(p.createPack(Message::EchosounderMessageID::es_profile, profile, 9, 8));
+    profile.updateChecksum();
+    emit newData(QByteArray(reinterpret_cast<const char*>(profile.msgData.data()), profile.msgData.size()));
 }
