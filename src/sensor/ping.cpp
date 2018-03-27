@@ -91,6 +91,13 @@ void Ping::handleMessage(PingMessage msg)
     }
         break;
 
+    case PingMessage::es_rate: {
+        ping_msg_es_rate m(msg);
+        _msec_per_ping = m.msec_per_ping();
+        emit msecPerPingUpdate();
+    }
+        break;
+
     default:
         qCritical() << "UNHANDLED MESSAGE ID:" << msg.message_id();
         break;
