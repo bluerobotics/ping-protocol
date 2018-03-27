@@ -82,6 +82,7 @@ public:
         m.set_msec_per_ping(msec_per_ping);
         m.updateChecksum();
         writeMessage(m);
+        request(PingMessage::es_rate);
     }
 
     // TODO, maybe store history/filtered history of values in this
