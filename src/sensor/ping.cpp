@@ -2,6 +2,16 @@
 #include "pingmessage/pingmessage.h"
 #include "pingmessage/pingmessage_es.h"
 #include "pingmessage/pingmessage_gen.h"
+#include "../link/seriallink.h"
+#include <QCoreApplication>
+#include <QFileInfo>
+#include <QProcess>
+#include <QRegularExpression>
+#include <QSerialPort>
+#include <QSerialPortInfo>
+#include <QStringList>
+#include <QThread>
+#include <QUrl>
 
 void Ping::handleMessage(PingMessage msg)
 {
@@ -93,6 +103,81 @@ void Ping::handleMessage(PingMessage msg)
     emit srcIdUpdate();
 
 //    printStatus();
+}
+
+void Ping::firmwareUpdate(QString fileUrl)
+{
+    SerialLink* serialLink = dynamic_cast<SerialLink*>(link());
+
+    if (!serialLink) {
+        return;
+    }
+
+    if(!link()->isOpen()) {
+        return;
+    }
+
+    qDebug() << "Put it in bootloader mode.";
+    ping_msg_gen_goto_bootloader m;
+    m.updateChecksum();
+    link()->sendData(QByteArray(reinterpret_cast<const char*>(m.msgData.data()), m.msgData.size()));
+
+    while (serialLink->QSerialPort::bytesToWrite()) {
+        qDebug() << "Waiting for bytes to be written...";
+        serialLink->QSerialPort::waitForBytesWritten();
+        qDebug() << "Done !";
+    }
+
+    qDebug() << "Finish connection.";
+    // TODO: Move thread delay to something more.. correct.
+    QThread::usleep(500e3);
+    link()->finishConnection();
+
+
+    QSerialPortInfo pInfo(serialLink->QSerialPort::portName());
+    QString portLocation = pInfo.systemLocation();
+
+    auto flash = [=](const QString& portLocation, const QString& firmwareFile, bool verify = false /*verify*/) {
+        #ifdef Q_OS_OSX
+        // macdeployqt file do not put stm32flash binary in the same folder of pingviewer
+        static QString binPath = QCoreApplication::applicationDirPath() + "/../..";
+        #else
+        static QString binPath = QCoreApplication::applicationDirPath();
+        #endif
+        static QString cmd = binPath + "/stm32flash -w %0 %1 -v -g 0x0";
+
+        QProcess *process = new QProcess();
+        process->setEnvironment(QProcess::systemEnvironment());
+        process->setProcessChannelMode(QProcess::MergedChannels);
+        qDebug() << "3... 2... 1...";
+        qDebug() << cmd.arg(QFileInfo(firmwareFile).absoluteFilePath(), portLocation);
+        process->start(cmd.arg(QFileInfo(firmwareFile).absoluteFilePath(), portLocation));
+        emit flashProgress(0);
+        connect(process, &QProcess::readyReadStandardOutput, this, [this, process] {
+            QString output(process->readAllStandardOutput());
+            // Track values like: (12.23%)
+            QRegularExpression regex("\\d{1,3}[.]\\d\\d");
+            QRegularExpressionMatch match = regex.match(output);
+            if (match.hasMatch()) {
+                QStringList percs = match.capturedTexts();
+                for(const auto& perc : percs) {
+                    _fw_update_perc = perc.toFloat();
+
+                    if (_fw_update_perc > 99.99) {
+                        emit flashComplete();
+                    } else {
+                        emit flashProgress(_fw_update_perc);
+                    }
+                }
+            }
+
+            qDebug() << output;
+        });
+    };
+
+    qDebug() << "Start flash.";
+    QThread::usleep(500e3);
+    flash(portLocation, QUrl(fileUrl).toLocalFile());
 }
 
 void Ping::request(int id)
