@@ -139,6 +139,7 @@ private:
 
     // TODO const &
     void handleMessage(PingMessage msg); // handle incoming message
+    void writeMessage(const PingMessage& msg); // write a messge to link
 
     ProtocolDetector _detector;
 };
