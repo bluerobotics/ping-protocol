@@ -188,8 +188,7 @@ void Ping::request(int id)
     m.set_request_id(id);
     m.updateChecksum();
 
-    // todo add link::write(char*, int size)
-    link()->sendData(QByteArray(reinterpret_cast<const char*>(m.msgData.data()), m.msgData.size()));
+    writeMessage(m);
 }
 
 void Ping::printStatus()
@@ -211,4 +210,10 @@ void Ping::printStatus()
     qDebug() << "\t- mode_auto:" << _mode_auto;
     qDebug() << "\t- msec_per_ping:" << _msec_per_ping;
 //    qDebug() << "\t- points:" << QByteArray((const char*)points, num_points).toHex();
+}
+
+void Ping::writeMessage(const PingMessage &msg)
+{
+    // todo add link::write(char*, int size)
+    link()->sendData(QByteArray(reinterpret_cast<const char*>(msg.msgData.data()), msg.msgData.size()));
 }
