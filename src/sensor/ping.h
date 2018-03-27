@@ -4,6 +4,7 @@
 #include "parsers/parser.h"
 #include "parsers/parser_ping.h"
 #include "parsers/detector.h"
+#include "pingmessage/pingmessage_all.h"
 
 class Ping : public Sensor
 {
@@ -74,8 +75,14 @@ public:
     Q_PROPERTY(bool mode_auto READ mode_auto NOTIFY modeAutoUpdate)
     bool mode_auto() { return _mode_auto; }
 
-    Q_PROPERTY(int msec_per_ping READ msec_per_ping NOTIFY msecPerPingUpdate)
+    Q_PROPERTY(int msec_per_ping READ msec_per_ping WRITE set_msec_per_ping NOTIFY msecPerPingUpdate)
     uint16_t msec_per_ping() { return _msec_per_ping; }
+    void set_msec_per_ping(uint16_t msec_per_ping) {
+        ping_msg_es_rate m;
+        m.set_msec_per_ping(msec_per_ping);
+        m.updateChecksum();
+        writeMessage(m);
+    }
 
     // TODO, maybe store history/filtered history of values in this
     // object for access by different visual elements without need to recompute
