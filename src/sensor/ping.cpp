@@ -124,6 +124,8 @@ void Ping::firmwareUpdate(QString fileUrl)
         return;
     }
 
+    setPollFrequency(0);
+
     qDebug() << "Put it in bootloader mode.";
     ping_msg_gen_goto_bootloader m;
     m.updateChecksum();
