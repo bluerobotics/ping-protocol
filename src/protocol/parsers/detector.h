@@ -26,7 +26,7 @@ public:
 
         // To find a ping, we this message on a link, then wait for a reply
         ping_msg_gen_cmd_request req;
-        req.set_request_id(PingMessage::gen_get_version);
+        req.set_request_id(PingMessage::gen_version);
         req.updateChecksum();
 
         // Scan until we find a ping, then stop
