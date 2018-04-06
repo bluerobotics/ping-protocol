@@ -1,0 +1,6 @@
+# This template will handle all includes headers
+
+INCLUDEPATH += $$PWD
+
+HEADERS += \
+    $$PWD/{{class_info.name.lower()}}/*.h
