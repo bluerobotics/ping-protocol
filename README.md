@@ -1,1 +1,0 @@
-# ping-protocol-cpp
