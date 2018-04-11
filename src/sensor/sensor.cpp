@@ -8,7 +8,8 @@
 #include "pingmessage/pingmessage_es.h"
 
 Sensor::Sensor() :
-     _linkIn(new Link(AbstractLink::LinkType::Serial, "Default"))
+    _autodetect(true)
+    ,_linkIn(new Link(AbstractLink::LinkType::Serial, "Default"))
     ,_linkOut(nullptr)
     ,_parser(nullptr)
 {
