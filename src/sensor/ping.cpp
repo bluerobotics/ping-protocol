@@ -13,6 +13,25 @@
 #include <QThread>
 #include <QUrl>
 
+Ping::Ping() : Sensor() {
+    _points.reserve(_num_points);
+    for (int i = 0; i < _num_points; i++) {
+        _points.append(0);
+    }
+    _parser = new PingParser();
+    connect(dynamic_cast<PingParser*>(_parser), &PingParser::newMessage, this, &Ping::handleMessage);
+    connect(link(), &AbstractLink::newData, _parser, &Parser::parseBuffer);
+    emit linkUpdate();
+
+    _requestTimer.setInterval(1000);
+    connect(&_requestTimer, &QTimer::timeout, this, [this]{ request(PingMessage::es_profile); });
+
+    //connectLink("2:/dev/ttyUSB2:115200");
+
+    connect(&_detector, &ProtocolDetector::_detected, this, &Ping::connectLink);
+    _detector.start();
+}
+
 void Ping::handleMessage(PingMessage msg)
 {
     qDebug() << "Handling Message:" << msg.message_id() << "Checksum Pass:" << msg.verifyChecksum();
