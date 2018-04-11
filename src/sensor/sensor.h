@@ -22,6 +22,8 @@ public:
 
     Q_INVOKABLE void connectLink(const QString& connString);
     Q_INVOKABLE void connectLinkLog(const QString& connString);
+    Q_INVOKABLE virtual void stopDetector(){};
+    Q_INVOKABLE virtual void startDetector(){};
 
 protected:
     Link* _linkIn;
