@@ -73,45 +73,46 @@ public:
             auto ports = QSerialPortInfo::availablePorts();
 
             for (auto it = ports.begin(); it != ports.end(); ++it) { // Scan all available ports
-                qDebug() << "probing" << it->portName();
+                qDebug() << "Probing Serial" << it->portName();
 
                 QSerialPort p(*it);
+                for (const int baudrate : {115200, 921600}) {
+                    if (p.open(QIODevice::ReadWrite)) { // Attempt to open port
+                        p.setBaudRate(baudrate);
 
-                if (p.open(QIODevice::ReadWrite)) { // Attempt to open port
-                    p.setBaudRate(115200);
+                        // Probe
+                        p.write(reinterpret_cast<const char*>(req.msgData.data()), (uint16_t)req.msgData.size());
+                        p.waitForBytesWritten();
 
-                    // Probe
-                    p.write(reinterpret_cast<const char*>(req.msgData.data()), (uint16_t)req.msgData.size());
-                    p.waitForBytesWritten();
+                        bool detected = false;
+                        int attempts = 0;
 
-                    bool detected = false;
-                    int attempts = 0;
-
-                    while (!detected && attempts < 10) { // Try to get a valid response, timeout after 40 ms
-                        p.waitForReadyRead(4);
-                        auto buf = p.readAll();
-                        for (auto byte = buf.begin(); byte != buf.end(); ++byte) {
-                            detected = _parser.parseByte(*byte) == PingParser::NEW_MESSAGE;
-                            if (detected) {
-                                break;
+                        while (!detected && attempts < 10) { // Try to get a valid response, timeout after 40 ms
+                            p.waitForReadyRead(4);
+                            auto buf = p.readAll();
+                            for (auto byte = buf.begin(); byte != buf.end(); ++byte) {
+                                detected = _parser.parseByte(*byte) == PingParser::NEW_MESSAGE;
+                                if (detected) {
+                                    break;
+                                }
                             }
+                            attempts++;
                         }
-                        attempts++;
-                    }
 
-                    p.close();
+                        p.close();
 
-                    if (detected) {
-                        qDebug() << "Ping detected on" << p.portName();
-                        emit _detected("2:" + p.portName() + ":115200");
-                        _active = false;
-                        return;
+                        if (detected) {
+                            qDebug() << "Ping detected on" << p.portName() << baudrate;
+                            emit _detected(QString("2:%1:%2").arg(p.portName()).arg(baudrate));
+                            _active = false;
+                            return;
+                        }
+                    } else {
+                        qDebug() << "couldn't open port";
                     }
-                } else {
-                    qDebug() << "couldn't open port";
                 }
+                msleep(350);
             }
-            msleep(350);
         }
     }
 
