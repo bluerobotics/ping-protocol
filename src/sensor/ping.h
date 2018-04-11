@@ -85,6 +85,9 @@ public:
 
     Q_INVOKABLE void firmwareUpdate(QString fileUrl);
 
+    Q_INVOKABLE void stopDetector() override;
+    Q_INVOKABLE void startDetector() override;
+
 signals:
     void srcIdUpdate();
     void dstIdUpdate();

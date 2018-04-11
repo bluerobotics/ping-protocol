@@ -274,3 +274,17 @@ void Ping::writeMessage(const PingMessage &msg)
     // todo add link::write(char*, int size)
     link()->sendData(QByteArray(reinterpret_cast<const char*>(msg.msgData.data()), msg.msgData.size()));
 }
+
+void Ping::stopDetector()
+{
+    if(_detector.isRunning()) {
+        _detector.exit();
+    }
+}
+
+void Ping::startDetector()
+{
+    if(!_detector.isRunning()) {
+        _detector.start();
+    }
+}
