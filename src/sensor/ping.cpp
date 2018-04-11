@@ -124,6 +124,8 @@ void Ping::firmwareUpdate(QString fileUrl)
         return;
     }
 
+    setPollFrequency(0);
+
     qDebug() << "Put it in bootloader mode.";
     ping_msg_gen_goto_bootloader m;
     m.updateChecksum();
@@ -196,6 +198,35 @@ void Ping::request(int id)
     m.updateChecksum();
 
     writeMessage(m);
+}
+
+QVariant Ping::pollFrequency()
+{
+    if (!_requestTimer.isActive()) {
+        return 0;
+    }
+    return 1000.0f / _requestTimer.interval();
+}
+
+void Ping::setPollFrequency(QVariant pollFrequency)
+{
+    if (pollFrequency.toInt() <= 0) {
+        if (_requestTimer.isActive()) {
+            _requestTimer.stop();
+        }
+    } else {
+        int period_ms = 1000.0f / pollFrequency.toInt();
+        qDebug() << "setting f" << pollFrequency.toInt() << period_ms;
+        _requestTimer.setInterval(period_ms);
+        if (!_requestTimer.isActive()) {
+            _requestTimer.start();
+        }
+
+        set_msec_per_ping(period_ms);
+    }
+
+    qDebug() << "Poll period" << pollFrequency;
+    emit pollFrequencyUpdate();
 }
 
 void Ping::printStatus()

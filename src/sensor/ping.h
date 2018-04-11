@@ -1,5 +1,7 @@
 #pragma once
 
+#include <QTimer>
+
 #include "sensor.h"
 #include "parsers/parser.h"
 #include "parsers/parser_ping.h"
@@ -20,6 +22,9 @@ public:
         connect(dynamic_cast<PingParser*>(_parser), &PingParser::newMessage, this, &Ping::handleMessage);
         connect(link(), &AbstractLink::newData, _parser, &Parser::parseBuffer);
         emit linkUpdate();
+
+        _requestTimer.setInterval(1000);
+        connect(&_requestTimer, &QTimer::timeout, this, [this]{ request(PingMessage::es_profile); });
 
         //connectLink("2:/dev/ttyUSB2:115200");
 
@@ -85,6 +90,10 @@ public:
         request(PingMessage::es_rate);
     }
 
+    Q_PROPERTY(QVariant pollFrequency READ pollFrequency WRITE setPollFrequency NOTIFY pollFrequencyUpdate)
+    QVariant pollFrequency();
+    void setPollFrequency(QVariant pollFrequency);
+
     // TODO, maybe store history/filtered history of values in this
     // object for access by different visual elements without need to recompute
     // TODO install filters here?
@@ -116,6 +125,7 @@ signals:
     void flashProgress(float progress);
     void flashComplete();
 
+    void pollFrequencyUpdate();
 private:
     uint8_t _srcId;
     uint8_t _dstId;
@@ -150,4 +160,5 @@ private:
     void writeMessage(const PingMessage& msg); // write a messge to link
 
     ProtocolDetector _detector;
+    QTimer _requestTimer;
 };
