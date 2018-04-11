@@ -30,6 +30,27 @@ Ping::Ping() : Sensor() {
 
     connect(&_detector, &ProtocolDetector::_detected, this, &Ping::connectLink);
     _detector.start();
+
+    connect(this, &Ping::autoDetectUpdate, this, [this](bool autodetect){
+        if(!autodetect) {
+            if(_detector.isRunning()) {
+                _detector.exit();
+            }
+        } else {
+            if(!_detector.isRunning()) {
+                _detector.start();
+            }
+        }
+    });
+}
+
+void Ping::connectLink(const QString& connString)
+{
+    if(_detector.isRunning()) {
+        _detector.exit();
+    }
+    setAutoDetect(false);
+    Sensor::connectLink(connString);
 }
 
 void Ping::handleMessage(PingMessage msg)
