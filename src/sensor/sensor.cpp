@@ -76,7 +76,7 @@ void Sensor::connectLink(const QString& connString)
 void Sensor::connectLinkLog(const QString& connString)
 {
     if(_linkOut) {
-        if(!_linkOut->isOpen()) {
+        if(!_linkOut->self()->isOpen()) {
             qDebug() << "No connection to log !" << linkLog()->errorString();
             return;
         }
