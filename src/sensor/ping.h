@@ -16,6 +16,7 @@ public:
     Ping();
     ~Ping() {}
 
+    void connectLink(const QString& connString);
     void printStatus(); // console debug
 
     Q_PROPERTY(int srcId READ srcId NOTIFY srcIdUpdate)
