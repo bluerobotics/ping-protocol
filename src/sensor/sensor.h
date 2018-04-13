@@ -23,7 +23,19 @@ public:
     Q_INVOKABLE void connectLink(const QString& connString);
     Q_INVOKABLE void connectLinkLog(const QString& connString);
 
+    Q_PROPERTY(bool autodetect READ autoDetect WRITE setAutoDetect NOTIFY autoDetectUpdate)
+    void setAutoDetect(bool autodetect) {
+        if(_autodetect == autodetect) {
+            return;
+        }
+        _autodetect = autodetect;
+        emit autoDetectUpdate(autodetect);
+    };
+    bool autoDetect() { return _autodetect; };
+
 protected:
+    bool _autodetect;
+
     Link* _linkIn;
     Link* _linkOut;
     Parser* _parser; // communication implementation
@@ -31,6 +43,8 @@ protected:
     QString _name; // TODO populate
 
 signals:
+    void autoDetectUpdate(bool autodetect);
+
     // In
     void connectionClose();
     void connectionOpen();
