@@ -1,6 +1,11 @@
 INCLUDEPATH += $$PWD
 
-system(python $$PWD/generator.py)
+# Generate code
+generator.target = $$PWD/pingmessage
+generator.depends = FORCE
+generator.commands = python $$PWD/generator.py
+PRE_TARGETDEPS += $$PWD/pingmessage
+QMAKE_EXTRA_TARGETS += generator
 
 HEADERS += \
     $$PWD/parsers/detector.h \
