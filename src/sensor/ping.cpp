@@ -59,7 +59,7 @@ void Ping::handleMessage(PingMessage msg)
 
     switch (msg.message_id()) {
 
-    case PingMessage::gen_get_version: {
+    case PingMessage::gen_version: {
         ping_msg_gen_version m(msg);
         _device_type = m.device_type();
         _device_model = m.device_model();
