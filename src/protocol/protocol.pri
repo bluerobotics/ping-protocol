@@ -10,4 +10,7 @@ QMAKE_EXTRA_TARGETS += generator
 HEADERS += \
     $$PWD/parsers/*.h
 
+SOURCES += \
+    $$PWD/parsers/*.cpp
+
 include($$PWD/generator.pri)
