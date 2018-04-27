@@ -5,6 +5,7 @@
 #include "../link/seriallink.h"
 #include <QCoreApplication>
 #include <QFileInfo>
+#include <QLoggingCategory>
 #include <QProcess>
 #include <QRegularExpression>
 #include <QSerialPort>
@@ -12,6 +13,8 @@
 #include <QStringList>
 #include <QThread>
 #include <QUrl>
+
+Q_LOGGING_CATEGORY(PING_PROTOCOL_PING, "ping.protocol.ping")
 
 Ping::Ping() : Sensor() {
     _points.reserve(_num_points);
@@ -55,7 +58,7 @@ void Ping::connectLink(const QString& connString)
 
 void Ping::handleMessage(PingMessage msg)
 {
-    qDebug() << "Handling Message:" << msg.message_id() << "Checksum Pass:" << msg.verifyChecksum();
+    qCDebug(PING_PROTOCOL_PING) << "Handling Message:" << msg.message_id() << "Checksum Pass:" << msg.verifyChecksum();
 
     switch (msg.message_id()) {
 
@@ -167,7 +170,7 @@ void Ping::firmwareUpdate(QString fileUrl, bool sendPingGotoBootloader)
     setPollFrequency(0);
 
     if (sendPingGotoBootloader) {
-        qDebug() << "Put it in bootloader mode.";
+        qCDebug(PING_PROTOCOL_PING) << "Put it in bootloader mode.";
         ping_msg_gen_goto_bootloader m;
         m.updateChecksum();
         link()->sendData(QByteArray(reinterpret_cast<const char*>(m.msgData.data()), m.msgData.size()));
@@ -175,12 +178,12 @@ void Ping::firmwareUpdate(QString fileUrl, bool sendPingGotoBootloader)
 
     // Wait for bytes to be written before finishing the connection
     while (serialLink->QSerialPort::bytesToWrite()) {
-        qDebug() << "Waiting for bytes to be written...";
+        qCDebug(PING_PROTOCOL_PING) << "Waiting for bytes to be written...";
         serialLink->QSerialPort::waitForBytesWritten();
-        qDebug() << "Done !";
+        qCDebug(PING_PROTOCOL_PING) << "Done !";
     }
 
-    qDebug() << "Finish connection.";
+    qCDebug(PING_PROTOCOL_PING) << "Finish connection.";
     // TODO: Move thread delay to something more.. correct.
     QThread::usleep(500e3);
     link()->finishConnection();
@@ -201,8 +204,8 @@ void Ping::firmwareUpdate(QString fileUrl, bool sendPingGotoBootloader)
         QProcess *process = new QProcess();
         process->setEnvironment(QProcess::systemEnvironment());
         process->setProcessChannelMode(QProcess::MergedChannels);
-        qDebug() << "3... 2... 1...";
-        qDebug() << cmd.arg(QFileInfo(firmwareFile).absoluteFilePath(), portLocation);
+        qCDebug(PING_PROTOCOL_PING) << "3... 2... 1...";
+        qCDebug(PING_PROTOCOL_PING) << cmd.arg(QFileInfo(firmwareFile).absoluteFilePath(), portLocation);
         process->start(cmd.arg(QFileInfo(firmwareFile).absoluteFilePath(), portLocation));
         emit flashProgress(0);
         connect(process, &QProcess::readyReadStandardOutput, this, [this, process] {
@@ -223,18 +226,18 @@ void Ping::firmwareUpdate(QString fileUrl, bool sendPingGotoBootloader)
                 }
             }
 
-            qDebug() << output;
+            qCDebug(PING_PROTOCOL_PING) << output;
         });
     };
 
-    qDebug() << "Start flash.";
+    qCDebug(PING_PROTOCOL_PING) << "Start flash.";
     QThread::usleep(500e3);
     flash(portLocation, QUrl(fileUrl).toLocalFile());
 }
 
 void Ping::request(int id)
 {
-    qDebug() << "Requesting:" << id;
+    qCDebug(PING_PROTOCOL_PING) << "Requesting:" << id;
 
     ping_msg_gen_cmd_request m;
     m.set_request_id(id);
@@ -259,7 +262,7 @@ void Ping::setPollFrequency(QVariant pollFrequency)
         }
     } else {
         int period_ms = 1000.0f / pollFrequency.toInt();
-        qDebug() << "setting f" << pollFrequency.toInt() << period_ms;
+        qCDebug(PING_PROTOCOL_PING) << "setting f" << pollFrequency.toInt() << period_ms;
         _requestTimer.setInterval(period_ms);
         if (!_requestTimer.isActive()) {
             _requestTimer.start();
@@ -268,29 +271,29 @@ void Ping::setPollFrequency(QVariant pollFrequency)
         set_msec_per_ping(period_ms);
     }
 
-    qDebug() << "Poll period" << pollFrequency;
+    qCDebug(PING_PROTOCOL_PING) << "Poll period" << pollFrequency;
     emit pollFrequencyUpdate();
 }
 
 void Ping::printStatus()
 {
-    qDebug() << "Ping Status:";
-    qDebug() << "\t- srcId:" << _srcId;
-    qDebug() << "\t- dstID:" << _dstId;
-    qDebug() << "\t- device_type:" << _device_type;
-    qDebug() << "\t- device_model:" << _device_model;
-    qDebug() << "\t- fw_version_major:" << _fw_version_major;
-    qDebug() << "\t- fw_version_minor:" << _fw_version_minor;
-    qDebug() << "\t- distance:" << _distance;
-    qDebug() << "\t- confidence:" << _confidence;
-    qDebug() << "\t- pulse_usec:" << _pulse_usec;
-    qDebug() << "\t- ping_number:" << _ping_number;
-    qDebug() << "\t- start_mm:" << _start_mm;
-    qDebug() << "\t- length_mm:" << _length_mm;
-    qDebug() << "\t- gain_index:" << _gain_index;
-    qDebug() << "\t- mode_auto:" << _mode_auto;
-    qDebug() << "\t- msec_per_ping:" << _msec_per_ping;
-//    qDebug() << "\t- points:" << QByteArray((const char*)points, num_points).toHex();
+    qCDebug(PING_PROTOCOL_PING) << "Ping Status:";
+    qCDebug(PING_PROTOCOL_PING) << "\t- srcId:" << _srcId;
+    qCDebug(PING_PROTOCOL_PING) << "\t- dstID:" << _dstId;
+    qCDebug(PING_PROTOCOL_PING) << "\t- device_type:" << _device_type;
+    qCDebug(PING_PROTOCOL_PING) << "\t- device_model:" << _device_model;
+    qCDebug(PING_PROTOCOL_PING) << "\t- fw_version_major:" << _fw_version_major;
+    qCDebug(PING_PROTOCOL_PING) << "\t- fw_version_minor:" << _fw_version_minor;
+    qCDebug(PING_PROTOCOL_PING) << "\t- distance:" << _distance;
+    qCDebug(PING_PROTOCOL_PING) << "\t- confidence:" << _confidence;
+    qCDebug(PING_PROTOCOL_PING) << "\t- pulse_usec:" << _pulse_usec;
+    qCDebug(PING_PROTOCOL_PING) << "\t- ping_number:" << _ping_number;
+    qCDebug(PING_PROTOCOL_PING) << "\t- start_mm:" << _start_mm;
+    qCDebug(PING_PROTOCOL_PING) << "\t- length_mm:" << _length_mm;
+    qCDebug(PING_PROTOCOL_PING) << "\t- gain_index:" << _gain_index;
+    qCDebug(PING_PROTOCOL_PING) << "\t- mode_auto:" << _mode_auto;
+    qCDebug(PING_PROTOCOL_PING) << "\t- msec_per_ping:" << _msec_per_ping;
+//    qCDebug(PING_PROTOCOL_PING) << "\t- points:" << QByteArray((const char*)points, num_points).toHex();
 }
 
 void Ping::writeMessage(const PingMessage &msg)
