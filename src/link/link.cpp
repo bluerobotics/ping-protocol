@@ -1,4 +1,5 @@
 #include <QDebug>
+#include <QLoggingCategory>
 
 #include "link.h"
 
@@ -8,6 +9,8 @@
 #include "simulationlink.h"
 #include "tcplink.h"
 #include "udplink.h"
+
+Q_LOGGING_CATEGORY(PING_PROTOCOL_LINK, "ping.protocol.link")
 
 Link::Link(AbstractLink::LinkType linkType, QString name)
     : _abstractLink(nullptr)
@@ -26,7 +29,7 @@ Link::Link(AbstractLink::LinkType linkType, QString name)
             _abstractLink = new PingSimulationLink();
             break;
         default :
-            qDebug() << "Link not available!";
+            qCDebug(PING_PROTOCOL_LINK) << "Link not available!";
             return;
     }
 

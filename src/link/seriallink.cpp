@@ -1,7 +1,10 @@
 #include <QDebug>
+#include <QLoggingCategory>
 #include <QTimer>
 
 #include "seriallink.h"
+
+Q_LOGGING_CATEGORY(PING_PROTOCOL_SERIALLINK, "ping.protocol.seriallink")
 
 SerialLink::SerialLink()
 {
@@ -20,13 +23,13 @@ bool SerialLink::setConfiguration(const QString& arg)
 {
     QStringList args = arg.split(':');
     if(args.length() != 2) {
-        qDebug() << "Wrong argument E.g: /dev/ttyUSB0:115200";
-        qDebug() << arg;
+        qCDebug(PING_PROTOCOL_SERIALLINK) << "Wrong argument E.g: /dev/ttyUSB0:115200";
+        qCDebug(PING_PROTOCOL_SERIALLINK) << arg;
         return false;
     }
     if(args[0].isEmpty() || args[1].isEmpty()) {
-        qDebug() << "Wrong argument E.g: /dev/ttyUSB0:115200";
-        qDebug() << arg;
+        qCDebug(PING_PROTOCOL_SERIALLINK) << "Wrong argument E.g: /dev/ttyUSB0:115200";
+        qCDebug(PING_PROTOCOL_SERIALLINK) << arg;
         return false;
     }
     setPortName(args[0]);
@@ -38,7 +41,7 @@ bool SerialLink::setConfiguration(const QString& arg)
 bool SerialLink::finishConnection()
 {
     close();
-    qDebug() << "port closed";
+    qCDebug(PING_PROTOCOL_SERIALLINK) << "port closed";
     return true;
 }
 
