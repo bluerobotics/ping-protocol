@@ -106,6 +106,7 @@ void Sensor::connectLinkLog(const QString& connString)
         return;
     }
 
+    connect(link(), &AbstractLink::newData, linkLog(), &AbstractLink::sendData);
     emit linkLogUpdate();
 }
 
