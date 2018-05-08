@@ -152,7 +152,7 @@ void Ping::handleMessage(PingMessage msg)
 //    printStatus();
 }
 
-void Ping::firmwareUpdate(QString fileUrl)
+void Ping::firmwareUpdate(QString fileUrl, bool sendPingGotoBootloader)
 {
     SerialLink* serialLink = dynamic_cast<SerialLink*>(link());
 
@@ -166,11 +166,14 @@ void Ping::firmwareUpdate(QString fileUrl)
 
     setPollFrequency(0);
 
-    qDebug() << "Put it in bootloader mode.";
-    ping_msg_gen_goto_bootloader m;
-    m.updateChecksum();
-    link()->sendData(QByteArray(reinterpret_cast<const char*>(m.msgData.data()), m.msgData.size()));
+    if (sendPingGotoBootloader) {
+        qDebug() << "Put it in bootloader mode.";
+        ping_msg_gen_goto_bootloader m;
+        m.updateChecksum();
+        link()->sendData(QByteArray(reinterpret_cast<const char*>(m.msgData.data()), m.msgData.size()));
+    }
 
+    // Wait for bytes to be written before finishing the connection
     while (serialLink->QSerialPort::bytesToWrite()) {
         qDebug() << "Waiting for bytes to be written...";
         serialLink->QSerialPort::waitForBytesWritten();
