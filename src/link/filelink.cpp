@@ -2,10 +2,13 @@
 
 #include <QDebug>
 #include <QDir>
+#include <QLoggingCategory>
 #include <QTimer>
 #include <QUrl>
 
 #include "filelink.h"
+
+Q_LOGGING_CATEGORY(PING_PROTOCOL_FILELINK, "ping.protocol.filelink")
 
 FileLink::FileLink():
      _openModeFlag(QIODevice::ReadWrite)
@@ -35,15 +38,15 @@ void FileLink::_writeData(const QByteArray& data)
 bool FileLink::setConfiguration(const QString& arg)
 {
     QStringList args = arg.split(':');
-    qDebug() << args;
+    qCDebug(PING_PROTOCOL_FILELINK) << args;
     if(args.length() != 2) {
-        qDebug() << "Wrong argument E.g: path/file:format";
-        qDebug() << arg;
+        qCDebug(PING_PROTOCOL_FILELINK) << "Wrong argument E.g: path/file:format";
+        qCDebug(PING_PROTOCOL_FILELINK) << arg;
         return false;
     }
     if(args[0].isEmpty() || args[1].isEmpty()) {
-        qDebug() << "Wrong argument E.g: path/file:format";
-        qDebug() << arg;
+        qCDebug(PING_PROTOCOL_FILELINK) << "Wrong argument E.g: path/file:format";
+        qCDebug(PING_PROTOCOL_FILELINK) << arg;
         return false;
     }
 
@@ -79,7 +82,7 @@ bool FileLink::startConnection() {
 
             // Check if we have a new package
             if(pack.time.isEmpty()) {
-                qDebug() << "No more packages !";
+                qCDebug(PING_PROTOCOL_FILELINK) << "No more packages !";
                 break;
             }
 

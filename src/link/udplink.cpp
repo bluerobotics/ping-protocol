@@ -1,7 +1,10 @@
 #include <QDebug>
+#include <QLoggingCategory>
 #include <QNetworkDatagram>
 
 #include "udplink.h"
+
+Q_LOGGING_CATEGORY(PING_PROTOCOL_UDPLINK, "ping.protocol.udplink")
 
 UDPLink::UDPLink()
 {
@@ -19,15 +22,15 @@ UDPLink::UDPLink()
 bool UDPLink::setConfiguration(const QString& arg)
 {
     QStringList args = arg.split(':');
-    qDebug() << args;
+    qCDebug(PING_PROTOCOL_UDPLINK) << args;
     if(args.length() != 2) {
-        qDebug() << "Wrong argument E.g: 0.0.0.0:1234";
-        qDebug() << arg;
+        qCDebug(PING_PROTOCOL_UDPLINK) << "Wrong argument E.g: 0.0.0.0:1234";
+        qCDebug(PING_PROTOCOL_UDPLINK) << arg;
         return false;
     }
     if(args[0].isEmpty() || args[1].isEmpty()) {
-        qDebug() << "Wrong argument E.g: 0.0.0.0:1234";
-        qDebug() << arg;
+        qCDebug(PING_PROTOCOL_UDPLINK) << "Wrong argument E.g: 0.0.0.0:1234";
+        qCDebug(PING_PROTOCOL_UDPLINK) << arg;
         return false;
     }
     _hostAddress = QHostAddress(args[0]);

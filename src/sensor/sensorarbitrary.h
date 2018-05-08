@@ -1,7 +1,7 @@
 #pragma once
 
 #include <QJsonObject>
-#include <QJsonValue>
+#include <QVariant>
 
 #include "parsers/parser_json.h"
 #include "sensor.h"
