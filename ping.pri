@@ -6,4 +6,3 @@ INCLUDEPATH += $$SRC_PATH
 
 include($$SRC_PATH/link/link.pri)
 include($$SRC_PATH/protocol/protocol.pri)
-include($$SRC_PATH/sensor/sensor.pri)
