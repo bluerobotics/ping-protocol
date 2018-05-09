@@ -64,10 +64,10 @@ void ProtocolDetector::scan() {
         auto ports = QSerialPortInfo::availablePorts();
 
         for (auto it = ports.begin(); it != ports.end(); ++it) { // Scan all available ports
-            qCDebug(PING_PROTOCOL_PROTOCOLDETECTOR) << "Probing Serial" << it->portName();
 
             QSerialPort p(*it);
             for (const int baudrate : {115200, 921600}) {
+                qCDebug(PING_PROTOCOL_PROTOCOLDETECTOR) << "Probing Serial" << it->portName() << baudrate;
                 if (p.open(QIODevice::ReadWrite)) { // Attempt to open port
                     p.setBaudRate(baudrate);
 
