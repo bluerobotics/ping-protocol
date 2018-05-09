@@ -10,8 +10,9 @@ class ProtocolDetector : public QThread
 {
     Q_OBJECT
 public:
-    ProtocolDetector() {};
-    ~ProtocolDetector() {};
+    ProtocolDetector(){
+        connect(this, &QThread::finished, [this]{ _active = false; });
+    };
 
     void scan();
 

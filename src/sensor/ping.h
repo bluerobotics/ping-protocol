@@ -14,7 +14,7 @@ class Ping : public Sensor
 public:
 
     Ping();
-    ~Ping() {}
+    ~Ping() { _detector.terminate(); _detector.wait(); }
 
     void connectLink(const QString& connString);
     void printStatus(); // console debug
