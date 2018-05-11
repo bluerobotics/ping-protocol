@@ -17,6 +17,19 @@ SerialLink::SerialLink()
     QObject::connect(this, &AbstractLink::sendData, [=](const QByteArray& data) {
         write(data);
     });
+
+    QObject::connect(this, &QSerialPort::errorOccurred, [=](QSerialPort::SerialPortError error) {
+        qCWarning(PING_PROTOCOL_SERIALLINK) << "Error:" << error;
+        switch(error) {
+            case QSerialPort::DeviceNotFoundError...QSerialPort::UnknownError:
+                qCWarning(PING_PROTOCOL_SERIALLINK) << "Error is critical ! Port need to be closed.";
+                finishConnection();
+                break;
+            default:
+                qCDebug(PING_PROTOCOL_SERIALLINK) << "Error appear to be not critical. Nothing will be done about it.";
+                break;
+        }
+    });
 }
 
 bool SerialLink::setConfiguration(const QString& arg)
