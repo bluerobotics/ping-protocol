@@ -125,7 +125,8 @@
       },
       "device_id": {
         "id": "1201",
-        "payload": []
+        "payload": [],
+        "deprecated": "true"
       },
       "voltage_5": {
         "id": "1202",
