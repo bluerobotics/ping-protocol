@@ -1,0 +1,58 @@
+sudo: false
+language: cpp
+python:
+  - "3.6"
+matrix:
+  include:
+    - os: linux
+      dist: trusty
+      sudo: require
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7
+      env:
+        - DESC="AppImage deploy"
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+        - QTV="qt510"
+
+    - os: osx
+      osx_image: xcode9.3
+      compiler: clang
+      env:
+        - DESC="dmg deploy"
+        - MATRIX_EVAL="COMPILER=clang++"
+
+install:
+- pip install --user --upgrade pip;
+- pip install --user jinja2;
+- if [[ "${TRAVIS_OS_NAME}" = "linux" && -z $TEST ]]; then
+    if [ "${QTV}" = "qt59" ]; then
+      sudo add-apt-repository --yes ppa:beineri/opt-qt594-trusty;
+    else
+      sudo add-apt-repository --yes ppa:beineri/opt-qt-5.10.1-trusty;
+    fi;
+    sudo apt update -qq;
+    sudo apt install build-essential ${QTV}-meta-minimal ${QTV}charts-no-lgpl
+    ${QTV}quickcontrols ${QTV}quickcontrols2 ${QTV}serialport
+    ${QTV}graphicaleffects ${QTV}svg ${QTV}scxml git;
+  fi
+- if [ "${TRAVIS_OS_NAME}" = "osx" ]; then
+    brew update > /dev/null;
+    brew install qt5;
+    chmod -R 755 /usr/local/opt/qt5/*;
+    export QTDIR="/usr/local/opt/qt5";
+    export PATH="$QTDIR/bin:$PATH";
+  fi
+
+script:
+- if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
+    source /opt/qt*/bin/qt*-env.sh;
+  fi
+- cd example;
+- mkdir build;
+- cd build;
+- qmake .. -Wall -Wlogic -Wparser;
+- make;
