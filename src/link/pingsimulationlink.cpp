@@ -21,7 +21,7 @@ void PingSimulationLink::randomUpdate()
     uint32_t peak = peakMult * (stop1 + stop2);
     uint8_t conf = 400 / (stop2 - stop1);
 
-    static ping_msg_es_profile profile;
+    static ping_msg_ping1D_profile profile;
 
     profile.set_distance(peak);
     profile.set_confidence(conf);
