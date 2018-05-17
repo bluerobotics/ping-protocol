@@ -1,6 +1,6 @@
 INCLUDEPATH += $$PWD
 
-QT += serialport
+QT += serialport network
 
 HEADERS += \
     $$PWD/abstractlink.h \
