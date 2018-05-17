@@ -264,7 +264,9 @@
         "payload": [
           {
             "name": "temp",
-            "type": "u16"
+            "type": "u16",
+            "units": "centiC",
+            "notes": "PCB Board temperature, 100 * degrees Centigrade"
           }
         ]
       },
@@ -273,7 +275,9 @@
         "payload": [
           {
             "name": "temp",
-            "type": "u16"
+            "type": "u16",
+            "units": "centiC",
+            "notes": "100 * degrees Centigrade"
           }
         ]
       },
