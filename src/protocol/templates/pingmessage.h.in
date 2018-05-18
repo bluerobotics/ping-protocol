@@ -47,3 +47,22 @@ public:
         return checksum;
     }
 };
+
+class ping_msg_ping1D_empty : public PingMessage
+{
+public:
+    ping_msg_ping1D_empty(QByteArray buf) : PingMessage(buf) {}
+    ping_msg_ping1D_empty(PingMessage& msg) : PingMessage(msg) {}
+    ping_msg_ping1D_empty() {
+        msgData = std::vector<uint8_t>(8 + 2 + 0, 0);
+        msgData[0] = 'B';
+        msgData[1] = 'R';
+        (uint16_t&)msgData[2] = 0; // payload size
+        (uint16_t&)msgData[4] = 0; // ID
+        msgData[6] = 0;
+        msgData[7] = 0;
+    }
+
+    void set_id(uint16_t id) { memcpy((msgData.data() + 4 + 0), &id, 2);};
+
+};
