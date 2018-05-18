@@ -1,9 +1,19 @@
 sudo: false
 language: cpp
-python:
-  - "3.6"
 matrix:
   include:
+    - os: linux
+      dist: trusty
+      sudo: require
+      addons:
+        apt:
+          sources: [deadsnakes]
+          packages: [python3.6-dev]
+      env:
+        - DESC="Check json"
+        - TEST="true"
+        - PYTHON=3.6
+
     - os: linux
       dist: trusty
       sudo: require
@@ -26,8 +36,17 @@ matrix:
         - MATRIX_EVAL="COMPILER=clang++"
 
 install:
-- pip install --user --upgrade pip;
-- pip install --user jinja2;
+- if [ ! -z $TEST ]; then
+    cd src/protocol/templates;
+    echo "CHECK JSON";
+    python3.6 -m json.tool ping_protocol.json >> temp.json;
+    echo "CHECK JSON STYLE";
+    comm -2 -3 ping_protocol.json temp.json;
+  fi
+- if [ -z $TEST ]; then
+    pip install --user --upgrade pip;
+    pip install --user jinja2;
+  fi
 - if [[ "${TRAVIS_OS_NAME}" = "linux" && -z $TEST ]]; then
     if [ "${QTV}" = "qt59" ]; then
       sudo add-apt-repository --yes ppa:beineri/opt-qt594-trusty;
@@ -48,11 +67,13 @@ install:
   fi
 
 script:
-- if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
+- if [[ "${TRAVIS_OS_NAME}" = "linux" && -z $TEST ]]; then
     source /opt/qt*/bin/qt*-env.sh;
   fi
-- cd example;
-- mkdir build;
-- cd build;
-- qmake .. -Wall -Wlogic -Wparser;
-- make;
+- if [ -z $TEST ]; then
+    cd example;
+    mkdir build;
+    cd build;
+    qmake .. -Wall -Wlogic -Wparser;
+    make;
+  fi
