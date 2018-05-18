@@ -7,7 +7,7 @@
 
 #include "detector.h"
 #include "pingmessage/pingmessage.h"
-#include "pingmessage/pingmessage_gen.h"
+#include "pingmessage/pingmessage_ping1D.h"
 
 Q_LOGGING_CATEGORY(PING_PROTOCOL_PROTOCOLDETECTOR, "ping.protocol.protocoldetector")
 
@@ -16,8 +16,8 @@ void ProtocolDetector::scan() {
     _active = true;
 
     // To find a ping, we this message on a link, then wait for a reply
-    ping_msg_gen_cmd_request req;
-    req.set_request_id(PingMessage::gen_version);
+    ping_msg_ping1D_empty req;
+    req.set_id(PingMessage::ping1D_fw_version);
     req.updateChecksum();
 
     // Scan until we find a ping, then stop
