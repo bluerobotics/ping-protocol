@@ -17,7 +17,7 @@ void ProtocolDetector::scan() {
 
     // To find a ping, we this message on a link, then wait for a reply
     ping_msg_ping1D_empty req;
-    req.set_id(PingMessage::ping1D_fw_version);
+    req.set_id(Ping1DNamespace::Fw_version);
     req.updateChecksum();
 
     // Scan until we find a ping, then stop

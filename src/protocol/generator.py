@@ -96,6 +96,8 @@ def get_type_string(t, pointer=False, name=''):
 def is_vector(t):
     return t.find('[') != -1
 
+def capitalize(s):
+    return s[0].capitalize() + s[1:]
 
 if __name__ == "__main__":
     # Get list of all class names
@@ -118,6 +120,7 @@ if __name__ == "__main__":
         # Create our lovely jinja env
         j2_env = Environment(loader=FileSystemLoader(JINJA_PATH), trim_blocks=True)
         j2_env.globals.update(calc_payload=calc_payload)
+        j2_env.globals.update(capitalize=capitalize)
         j2_env.globals.update(convert_short_type=convert_short_type)
         j2_env.globals.update(get_c_size=get_c_size)
         j2_env.globals.update(get_type_base_size=get_type_base_size)
