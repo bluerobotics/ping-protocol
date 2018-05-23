@@ -144,8 +144,3 @@ if __name__ == "__main__":
         f = open(os.path.join(output_path, "{0}_all.h".format(file_prefix_name)), "w")
         f.write(j2_env.get_template('_all.h.in').render(protocol_data))
         f.close()
-
-    # Create all header with all subclasses
-    f = open(os.path.join(PATH, "generator.pri"), "w")
-    f.write(j2_env.get_template('_generator.pri.in').render(protocol_data))
-    f.close()
