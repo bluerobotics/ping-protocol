@@ -96,6 +96,8 @@ def get_type_string(t, pointer=False, name=''):
 def is_vector(t):
     return t.find('[') != -1
 
+def capitalize(s):
+    return s[0].capitalize() + s[1:]
 
 if __name__ == "__main__":
     # Get list of all class names
@@ -118,6 +120,7 @@ if __name__ == "__main__":
         # Create our lovely jinja env
         j2_env = Environment(loader=FileSystemLoader(JINJA_PATH), trim_blocks=True)
         j2_env.globals.update(calc_payload=calc_payload)
+        j2_env.globals.update(capitalize=capitalize)
         j2_env.globals.update(convert_short_type=convert_short_type)
         j2_env.globals.update(get_c_size=get_c_size)
         j2_env.globals.update(get_type_base_size=get_type_base_size)
@@ -141,8 +144,3 @@ if __name__ == "__main__":
         f = open(os.path.join(output_path, "{0}_all.h".format(file_prefix_name)), "w")
         f.write(j2_env.get_template('_all.h.in').render(protocol_data))
         f.close()
-
-    # Create all header with all subclasses
-    f = open(os.path.join(PATH, "generator.pri"), "w")
-    f.write(j2_env.get_template('_generator.pri.in').render(protocol_data))
-    f.close()
