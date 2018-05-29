@@ -91,11 +91,11 @@
                 "payload": [
                     {
                         "name": "start_mm",
-                        "type": "u8"
+                        "type": "u32"
                     },
                     {
                         "name": "length_mm",
-                        "type": "u8"
+                        "type": "u32"
                     }
                 ]
             },
