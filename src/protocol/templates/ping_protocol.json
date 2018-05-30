@@ -275,7 +275,27 @@
                 "id": "1210",
                 "payload": [
                     {
+                        "name": "vers_major",
+                        "type": "u16"
+                    },
+                    {
+                        "name": "vers_minor",
+                        "type": "u16"
+                    },
+                    {
+                        "name": "mvolts",
+                        "type": "u16"
+                    },
+                    {
+                        "name": "msec_per_ping",
+                        "type": "u16"
+                    },
+                    {
                         "name": "gain_index",
+                        "type": "u8"
+                    },
+                    {
+                        "name": "is_auto",
                         "type": "u8"
                     }
                 ]
