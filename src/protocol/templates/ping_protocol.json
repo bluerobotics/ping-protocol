@@ -250,8 +250,24 @@
                 "id": "1209",
                 "payload": [
                     {
+                        "name": "depth_mm",
+                        "type": "u32"
+                    },
+                    {
+                        "name": "milli_confidence",
+                        "type": "u16"
+                    },
+                    {
                         "name": "gain_index",
-                        "type": "u8"
+                        "type": "u16"
+                    },
+                    {
+                        "name": "range_mm",
+                        "type": "u32"
+                    },
+                    {
+                        "name": "rms_goertzel_noise",
+                        "type": "u32"
                     }
                 ]
             },
