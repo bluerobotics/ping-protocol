@@ -171,7 +171,12 @@
             },
             "device_id": {
                 "id": "1201",
-                "payload": [],
+                "payload": [
+                    {
+                        "name": "device_id",
+                        "type": "u8"
+                    }
+                ],
                 "deprecated": "true"
             },
             "voltage_5": {
