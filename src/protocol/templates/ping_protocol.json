@@ -322,7 +322,7 @@
                     },
                     {
                         "name": "confidence",
-                        "type": "u8"
+                        "type": "u16"
                     },
                     {
                         "name": "pulse_usec",
