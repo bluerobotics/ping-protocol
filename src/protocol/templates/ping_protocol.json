@@ -233,7 +233,7 @@
                 "payload": [
                     {
                         "name": "gain_index",
-                        "type": "u8"
+                        "type": "u32"
                     }
                 ]
             },
