@@ -41,6 +41,7 @@ public:
     uint16_t   message_id()        { return *(uint16_t*)(msgData.data() + 4); } // This is ok only because alignment is static
     uint8_t    src_device_id()     { return *(msgData.data() + 6); }
     uint8_t    dst_device_id()     { return *(msgData.data() + 7); }
+    uint8_t*   payload_data(int offset=0)      { return (msgData.data() + 8 + offset); }
     uint16_t   checksum()          { uint16_t d; memcpy(&d, (msgData.data() + msgData.size() - 2), 2); return d; } // This is required because alignment may be incorrect
 
     bool verifyChecksum() {
