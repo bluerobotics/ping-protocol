@@ -11,13 +11,14 @@ PingSimulationLink::PingSimulationLink()
 
 void PingSimulationLink::randomUpdate()
 {
-    static uint counter = 0;
-    counter++;
+    static uint counter = 1;
     static const float numPoints = 200;
+    static const float maxDepth = 48903;
     const float stop1 = numPoints / 2.0 - 10 * qSin(counter / 10.0);
     const float stop2 = 3 * numPoints / 5.0 + 6 * qCos(counter / 5.5);
+    const float osc =  maxDepth*(1.3 + qCos(counter / 40.0)) / 2.3;
 
-    static const float peakMult = 50000.0f / 2 / 255;
+    static const float peakMult = maxDepth / 2 / 255;
     uint32_t peak = peakMult * (stop1 + stop2);
     uint8_t conf = 400 / (stop2 - stop1);
 
@@ -27,8 +28,8 @@ void PingSimulationLink::randomUpdate()
     profile.set_confidence(conf);
     profile.set_pulse_usec(200);
     profile.set_ping_number(counter);
-    profile.set_start_mm(500);
-    profile.set_length_mm(50000);
+    profile.set_start_mm(0);
+    profile.set_length_mm(osc);
     profile.set_gain_index(4);
     profile.set_num_points(200);
 
@@ -46,4 +47,6 @@ void PingSimulationLink::randomUpdate()
 
     profile.updateChecksum();
     emit newData(QByteArray(reinterpret_cast<const char*>(profile.msgData.data()), profile.msgData.size()));
+
+    counter++;
 }
