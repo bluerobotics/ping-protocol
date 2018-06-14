@@ -84,7 +84,12 @@
             },
             "ascii_text": {
                 "id": "3",
-                "payload": []
+                "payload": [
+                    {
+                        "name": "msg",
+                        "type": "u8[var]"
+                    }
+                ]
             },
             "set_device_id": {
                 "id": "1000",
