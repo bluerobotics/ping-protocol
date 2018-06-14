@@ -12,7 +12,10 @@ JINJA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates
 def calc_payload(payloads):
     total_size = 0
     for payload in payloads:
-        total_size = total_size + get_c_size(payload["type"])
+        if(not is_var_size(payload["type"])):
+            total_size = total_size + get_c_size(payload["type"])
+        else:
+            total_size = '{0} + {1}'.format(total_size, get_c_size(payload["type"]))
     return total_size
 
 def convert_short_type(t):
@@ -38,6 +41,9 @@ def convert_c_name(name):
 
 def get_c_size(t):
     # Remove vector info
+    if is_var_size(t):
+        return "0 /*cant send var size*/"
+
     vector_size = 1
     if t.find('[') != -1:
         vector_size = int(t.split('[')[1].split(']')[0])
@@ -99,6 +105,9 @@ def is_vector(t):
 def capitalize(s):
     return s[0].capitalize() + s[1:]
 
+def is_var_size(t):
+    return ('[var]' in t)
+
 if __name__ == "__main__":
     # Get list of all class names
     class_names = []
@@ -125,6 +134,7 @@ if __name__ == "__main__":
         j2_env.globals.update(get_c_size=get_c_size)
         j2_env.globals.update(get_type_base_size=get_type_base_size)
         j2_env.globals.update(get_type_string=get_type_string)
+        j2_env.globals.update(is_var_size=is_var_size)
         j2_env.globals.update(is_vector=is_vector)
         j2_env.globals.update(_actual_message_type='')
 
