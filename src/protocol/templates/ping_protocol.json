@@ -71,7 +71,16 @@
             },
             "nack": {
                 "id": "2",
-                "payload": []
+                "payload": [
+                    {
+                        "name": "id_to_nack",
+                        "type": "u16"
+                    },
+                    {
+                        "name": "err_msg",
+                        "type": "u8[var]"
+                    }
+                ]
             },
             "ascii_text": {
                 "id": "3",
