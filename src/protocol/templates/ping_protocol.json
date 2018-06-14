@@ -541,11 +541,23 @@
             },
             "continuous_start": {
                 "id": "1400",
-                "payload": []
+                "payload": [
+                    {
+                        "name": "id",
+                        "type": "u16",
+                        "notes": "Id can be 0 (profile), 1 (full_profile) or 2 (raw_data)"
+                    }
+                ]
             },
             "continuous_stop": {
                 "id": "1401",
-                "payload": []
+                "payload": [
+                    {
+                        "name": "id",
+                        "type": "u16",
+                        "notes": "Id can be 0 (profile), 1 (full_profile) or 2 (raw_data)"
+                    }
+                ]
             }
         }
     }
