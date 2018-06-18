@@ -21,6 +21,7 @@ signals:
 
 protected:
     void run() { scan(); }
+    bool canOpenPort(QSerialPortInfo& port, int msTimeout);
 
 private:
     bool _active { false };
