@@ -4,6 +4,8 @@
 
 #include "parser_ping.h"
 
+class QSerialPortInfo;
+
 /// This class will scan network ports and serial ports for a ping device
 /// TODO subclass and support discovery of other protocols/devices
 class ProtocolDetector : public QThread
@@ -14,6 +16,10 @@ public:
         connect(this, &QThread::finished, [this]{ _active = false; });
     };
 
+    static const QStringList& invalidSerialPortNames() {
+        return _invalidSerialPortNames;
+    };
+    bool isValidPort(QSerialPortInfo& serialPortInfo);
     void scan();
 
 signals:
@@ -26,4 +32,5 @@ protected:
 private:
     bool _active { false };
     PingParser _parser;
+    static const QStringList _invalidSerialPortNames;
 };
