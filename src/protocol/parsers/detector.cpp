@@ -70,43 +70,43 @@ void ProtocolDetector::scan() {
         }
 
         // Not found on UDP, now try all available serial ports
-        auto ports = QSerialPortInfo::availablePorts();
+        auto portsInfo = QSerialPortInfo::availablePorts();
 
         // Scan all available ports
-        for (auto& port : ports) {
+        for (auto& portInfo : portsInfo) {
             // Do not run with invalid ports
-            if(!isValidPort(port)) {
+            if(!isValidPort(portInfo)) {
                 continue;
             }
 
             // Check if port can be opened
-            if(!canOpenPort(port, 500)) {
-                qCDebug(PING_PROTOCOL_PROTOCOLDETECTOR) << "Couldn't open port" << port.portName();
+            if(!canOpenPort(portInfo, 500)) {
+                qCDebug(PING_PROTOCOL_PROTOCOLDETECTOR) << "Couldn't open port" << portInfo.portName();
                 continue;
             }
 
-            QSerialPort p(port);
+            QSerialPort port(portInfo);
 
             for (const int baudrate : {115200, 921600}) {
                 qCDebug(PING_PROTOCOL_PROTOCOLDETECTOR) << "Probing Serial" << port.portName() << baudrate;
 
-                if(!p.open(QIODevice::ReadWrite)) {
+                if(!port.open(QIODevice::ReadWrite)) {
                     qCDebug(PING_PROTOCOL_PROTOCOLDETECTOR) << "Fail to open";
                     break;
                 }
                 qCDebug(PING_PROTOCOL_PROTOCOLDETECTOR) << "Port is open";
-                p.setBaudRate(baudrate);
+                port.setBaudRate(baudrate);
 
                 // Probe
-                p.write(reinterpret_cast<const char*>(req.msgData.data()), (uint16_t)req.msgData.size());
-                p.waitForBytesWritten();
+                port.write(reinterpret_cast<const char*>(req.msgData.data()), (uint16_t)req.msgData.size());
+                port.waitForBytesWritten();
 
                 bool detected = false;
                 int attempts = 0;
 
                 while (!detected && attempts < 10) { // Try to get a valid response, timeout after 40 ms
-                    p.waitForReadyRead(50);
-                    auto buf = p.readAll();
+                    port.waitForReadyRead(50);
+                    auto buf = port.readAll();
                     for (auto byte = buf.begin(); byte != buf.end(); ++byte) {
                         detected = _parser.parseByte(*byte) == PingParser::NEW_MESSAGE;
                         if (detected) {
@@ -116,11 +116,11 @@ void ProtocolDetector::scan() {
                     attempts++;
                 }
 
-                p.close();
+                port.close();
 
                 if (detected) {
-                    qCDebug(PING_PROTOCOL_PROTOCOLDETECTOR) << "Ping detected on" << p.portName() << baudrate;
-                    emit _detected(QString("2:%1:%2").arg(p.portName()).arg(baudrate));
+                    qCDebug(PING_PROTOCOL_PROTOCOLDETECTOR) << "Ping detected on" << port.portName() << baudrate;
+                    emit _detected(QString("2:%1:%2").arg(port.portName()).arg(baudrate));
                     _active = false;
                     return;
                 } else {
