@@ -35,18 +35,17 @@ void FileLink::_writeData(const QByteArray& data)
     }
 }
 
-bool FileLink::setConfiguration(const QString& arg)
+bool FileLink::setConfiguration(const QStringList& args)
 {
-    QStringList args = arg.split(':');
     qCDebug(PING_PROTOCOL_FILELINK) << args;
     if(args.length() != 2) {
         qCDebug(PING_PROTOCOL_FILELINK) << "Wrong argument E.g: path/file:format";
-        qCDebug(PING_PROTOCOL_FILELINK) << arg;
+        qCDebug(PING_PROTOCOL_FILELINK) << args;
         return false;
     }
     if(args[0].isEmpty() || args[1].isEmpty()) {
         qCDebug(PING_PROTOCOL_FILELINK) << "Wrong argument E.g: path/file:format";
-        qCDebug(PING_PROTOCOL_FILELINK) << arg;
+        qCDebug(PING_PROTOCOL_FILELINK) << args;
         return false;
     }
 

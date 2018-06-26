@@ -11,7 +11,7 @@ public:
     ~UDPLink();
 
     bool isOpen() final { return isWritable() && isReadable(); };
-    bool setConfiguration(const QString& arg) final;
+    bool setConfiguration(const QStringList& args) final;
     bool startConnection() final { return open(QIODevice::ReadWrite); };
     bool finishConnection() final;
     QString errorString() final { return QUdpSocket::errorString(); };

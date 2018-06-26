@@ -19,18 +19,17 @@ UDPLink::UDPLink()
     });
 }
 
-bool UDPLink::setConfiguration(const QString& arg)
+bool UDPLink::setConfiguration(const QStringList& args)
 {
-    QStringList args = arg.split(':');
     qCDebug(PING_PROTOCOL_UDPLINK) << args;
     if(args.length() != 2) {
         qCDebug(PING_PROTOCOL_UDPLINK) << "Wrong argument E.g: 0.0.0.0:1234";
-        qCDebug(PING_PROTOCOL_UDPLINK) << arg;
+        qCDebug(PING_PROTOCOL_UDPLINK) << args;
         return false;
     }
     if(args[0].isEmpty() || args[1].isEmpty()) {
         qCDebug(PING_PROTOCOL_UDPLINK) << "Wrong argument E.g: 0.0.0.0:1234";
-        qCDebug(PING_PROTOCOL_UDPLINK) << arg;
+        qCDebug(PING_PROTOCOL_UDPLINK) << args;
         return false;
     }
     _hostAddress = QHostAddress(args[0]);

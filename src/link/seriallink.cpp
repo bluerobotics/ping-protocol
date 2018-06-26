@@ -35,17 +35,16 @@ SerialLink::SerialLink()
     });
 }
 
-bool SerialLink::setConfiguration(const QString& arg)
+bool SerialLink::setConfiguration(const QStringList& args)
 {
-    QStringList args = arg.split(':');
     if(args.length() != 2) {
         qCDebug(PING_PROTOCOL_SERIALLINK) << "Wrong argument E.g: /dev/ttyUSB0:115200";
-        qCDebug(PING_PROTOCOL_SERIALLINK) << arg;
+        qCDebug(PING_PROTOCOL_SERIALLINK) << args;
         return false;
     }
     if(args[0].isEmpty() || args[1].isEmpty()) {
         qCDebug(PING_PROTOCOL_SERIALLINK) << "Wrong argument E.g: /dev/ttyUSB0:115200";
-        qCDebug(PING_PROTOCOL_SERIALLINK) << arg;
+        qCDebug(PING_PROTOCOL_SERIALLINK) << args;
         return false;
     }
     setPortName(args[0]);
