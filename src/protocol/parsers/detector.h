@@ -23,7 +23,7 @@ public:
     void scan();
 
 signals:
-    void _detected(QString config); // Todo can we send a pre-configured, pre-connected link object with the signal?
+    void _detected(QStringList config); // Todo can we send a pre-configured, pre-connected link object with the signal?
 
 protected:
     void run() { scan(); }
