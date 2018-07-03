@@ -1,0 +1,42 @@
+# Ping Protocol
+
+## Table of Contents
+* [Format](#format)
+{% for msg_group in messages %}
+* [{{msg_group}} Messages](#{{msg_group}}-messages)
+{% for msg in messages[msg_group] %}
+  * [{{msg}}](#{{messages[msg_group][msg].id}}-{{msg}})
+{% endfor %}
+{% endfor %}
+
+## Format
+
+| Byte | Type | Name             | Description                                                      |
+|------|------|------------------|------------------------------------------------------------------|
+{% for field in format %}
+| {{field.index}} | {{field.type}} | {{field.name}} | {{field.description}} |
+{% endfor %}
+{% for msg_group in messages %}
+
+## {{msg_group}} Messages
+
+{% for msg in messages[msg_group] %}
+
+### {{messages[msg_group][msg].id}} {{msg}}
+{% if messages[msg_group][msg].description %}
+
+{{messages[msg_group][msg].description}}
+
+{% endif %}
+{% if not messages[msg_group][msg].payload %}
+No payload
+{% else %}
+| Type | Name             | Description                                                      | Units |
+|------|------------------|------------------------------------------------------------------|-------|
+{% for field in messages[msg_group][msg].payload %}
+| {{field.type}} | {{field.name}} | {{field.description}} | {{field.units}} |
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endfor %}
+
