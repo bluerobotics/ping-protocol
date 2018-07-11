@@ -42,7 +42,7 @@ void ProtocolDetector::scan() {
 
         qCDebug(PING_PROTOCOL_PROTOCOLDETECTOR) << "Probing UDP" << _hostAddress.toString() << _port;
         // sockit.setSocketOption(QAbstractSocket::KeepAliveOption, 1);
-        sockit.writeDatagram(reinterpret_cast<const char*>(req.msgData.data()), req.msgData.size(), _hostAddress, _port); // probe
+        sockit.writeDatagram(reinterpret_cast<const char*>(req.msgData), req.msgDataLength(), _hostAddress, _port); // probe
 
         bool detected = false;
         int attempts = 0;
@@ -98,7 +98,7 @@ void ProtocolDetector::scan() {
                 port.setBaudRate(baudrate);
 
                 // Probe
-                port.write(reinterpret_cast<const char*>(req.msgData.data()), (uint16_t)req.msgData.size());
+                port.write(reinterpret_cast<const char*>(req.msgData), (uint16_t)req.msgDataLength());
                 port.waitForBytesWritten();
 
                 bool detected = false;
