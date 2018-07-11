@@ -16,7 +16,8 @@ public:
     {{subclass_info.name}}{{message_type}}_{{message}}(QByteArray& buf) : {{class_info.name}}(buf) {}
     {{subclass_info.name}}{{message_type}}_{{message}}(PingMessage& msg) : {{class_info.name}}(msg) {}
     {{subclass_info.name}}{{message_type}}_{{message}}() {
-        msgData = std::vector<uint8_t>(8 + {{total_payload}} + 2, 0);
+        _msgDataLength = {{8 + total_payload + 2}};
+        msgData = (uint8_t*)malloc(sizeof(uint8_t) * _msgDataLength);
         msgData[0] = 'B';
         msgData[1] = 'R';
         (uint16_t&)msgData[2] = {{total_payload}}; // payload size
