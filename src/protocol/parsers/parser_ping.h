@@ -96,7 +96,7 @@ public:
             break;
         case WAIT_CHECKSUM_H:
             parseBuf.append(byte);
-            PingMessage msg(parseBuf);
+            PingMessage msg((uint8_t*)parseBuf.data(), parseBuf.length());
             if (!msg.verifyChecksum()) {
                 errors++;
             } else {
