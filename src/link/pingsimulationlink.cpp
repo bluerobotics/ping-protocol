@@ -44,7 +44,7 @@ void PingSimulationLink::randomUpdate()
     }
 
     profile.updateChecksum();
-    emit newData(QByteArray(reinterpret_cast<const char*>(profile.msgData.data()), profile.msgData.size()));
+    emit newData(QByteArray(reinterpret_cast<const char*>(profile.msgData), profile.msgDataLength()));
 
     counter++;
 }
