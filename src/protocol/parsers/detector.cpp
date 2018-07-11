@@ -47,7 +47,7 @@ void ProtocolDetector::scan() {
         bool detected = false;
         int attempts = 0;
 
-        while (!detected && attempts < 10) { // Try to get a valid response, timeout after 40 ms
+        while (!detected && attempts < 10) { // Try to get a valid response, timeout after 10 * 50 ms
             sockit.waitForReadyRead(50);
             QNetworkDatagram datagram = sockit.receiveDatagram();
             auto buf = datagram.data();
@@ -104,7 +104,7 @@ void ProtocolDetector::scan() {
                 bool detected = false;
                 int attempts = 0;
 
-                while (!detected && attempts < 10) { // Try to get a valid response, timeout after 40 ms
+                while (!detected && attempts < 10) { // Try to get a valid response, timeout after 10 * 50 ms
                     port.waitForReadyRead(50);
                     auto buf = port.readAll();
                     for (auto byte = buf.begin(); byte != buf.end(); ++byte) {
