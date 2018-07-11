@@ -26,40 +26,65 @@ namespace {{capitalize(message_type)}}Namespace {
 };
 {% endfor %}
 
-class {{class_info.name}} // TODO inherit vector?
+class {{class_info.name}}
 {
 public:
     {{class_info.name}}() {}
-    {{class_info.name}}(QByteArray& buf) { msgData = std::vector<uint8_t>(buf.begin(), buf.end()); }
-    {{class_info.name}}(std::vector<uint8_t>& buf) { msgData = buf; }
-    {{class_info.name}}({{class_info.name}}& msg) { msgData = msg.msgData; }
-    ~{{class_info.name}}() {}
 
-    std::vector<uint8_t> msgData;
+    {{class_info.name}}(const {{class_info.name}} &msg) {
+        _msgDataLength = msg.msgDataLength();
+        msgData = (uint8_t*)malloc(sizeof(uint8_t) * _msgDataLength);
+        memcpy(msgData, msg.msgData, _msgDataLength);
+    }
 
-    uint16_t   payload_length()    { return *(uint16_t*)(msgData.data() + 2); } // This is ok only because alignment is static
-    uint16_t   message_id()        { return *(uint16_t*)(msgData.data() + 4); } // This is ok only because alignment is static
-    uint8_t    src_device_id()     { return *(msgData.data() + 6); }
-    uint8_t    dst_device_id()     { return *(msgData.data() + 7); }
-    uint8_t*   payload_data(int offset=0)      { return (msgData.data() + 8 + offset); }
-    uint16_t   checksum()          { uint16_t d; memcpy(&d, (msgData.data() + msgData.size() - 2), 2); return d; } // This is required because alignment may be incorrect
+    {{class_info.name}}(uint8_t* buf, uint16_t length) {
+        _msgDataLength = length;
+        msgData = (uint8_t*)malloc(sizeof(uint8_t) * _msgDataLength);
+        memcpy(msgData, buf, _msgDataLength);
+    }
+
+    {{class_info.name}}(QByteArray& buf) : {{class_info.name}}((uint8_t*)buf.data(), buf.length()) { }
+    {{class_info.name}}& operator = (const {{class_info.name}} &msg) {
+        _msgDataLength = msg.msgDataLength();
+        if(msgData) free(msgData);
+        msgData = (uint8_t*)malloc(sizeof(uint8_t) * _msgDataLength);
+        memcpy(msgData, msg.msgData, _msgDataLength);
+        return *this;
+    }
+
+    ~{{class_info.name}}() { if(msgData) free(msgData); }
+
+    uint8_t* msgData;
+    uint16_t msgDataLength() const { return _msgDataLength; };
+
+    uint16_t   payload_length()                { return *(uint16_t*)(msgData + 2); } // This is ok only because alignment is static
+    uint16_t   message_id()                    { return *(uint16_t*)(msgData + 4); } // This is ok only because alignment is static
+    uint8_t    src_device_id()                 { return *(msgData + 6); }
+    uint8_t    dst_device_id()                 { return *(msgData + 7); }
+    uint8_t*   payload_data(int offset=0)      { return (msgData + 8 + offset); }
+    uint16_t   checksum()                      { return *(uint16_t*)(msgData + _msgDataLength - checksumLength); }
+
+    static const uint8_t checksumLength = 2;
 
     bool verifyChecksum() {
-        return checksum() == calculateChecksum();;
+        return checksum() == calculateChecksum();
     }
 
     void updateChecksum() {
-        uint16_t cs = calculateChecksum();
-        memcpy(msgData.data() + msgData.size() - 2, &cs, 2);
+        *(uint16_t*)(msgData + _msgDataLength - 2) = calculateChecksum();
     }
 
     uint16_t calculateChecksum() {
         uint16_t checksum = 0;
-        for(uint32_t i = 0; i < msgData.size()-2 /*checksumbytes*/; i++) {
-            checksum += msgData.at(i);
+        for(uint32_t i = 0; i < _msgDataLength - checksumLength; i++) {
+            checksum += msgData[i];
         }
         return checksum;
     }
+
+protected:
+    uint16_t _msgDataLength;
+
 };
 
 class ping_msg_ping1D_empty : public PingMessage
@@ -68,7 +93,8 @@ public:
     ping_msg_ping1D_empty(QByteArray buf) : PingMessage(buf) {}
     ping_msg_ping1D_empty(PingMessage& msg) : PingMessage(msg) {}
     ping_msg_ping1D_empty() {
-        msgData = std::vector<uint8_t>(8 + 2 + 0, 0);
+	_msgDataLength = 8 + 2;
+        msgData = (uint8_t*)malloc(sizeof(uint8_t) * _msgDataLength);
         msgData[0] = 'B';
         msgData[1] = 'R';
         (uint16_t&)msgData[2] = 0; // payload size
@@ -77,6 +103,5 @@ public:
         msgData[7] = 0;
     }
 
-    void set_id(uint16_t id) { memcpy((msgData.data() + 4 + 0), &id, 2);};
-
+    void set_id(uint16_t id) { memcpy((msgData + 4 + 0), &id, 2); }
 };
