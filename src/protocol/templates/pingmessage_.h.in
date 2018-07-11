@@ -13,7 +13,6 @@
 class {{subclass_info.name}}{{message_type}}_{{message}} : public {{class_info.name}}
 {
 public:
-    {{subclass_info.name}}{{message_type}}_{{message}}(QByteArray& buf) : {{class_info.name}}(buf) {}
     {{subclass_info.name}}{{message_type}}_{{message}}(PingMessage& msg) : {{class_info.name}}(msg) {}
     {{subclass_info.name}}{{message_type}}_{{message}}() {
         _msgDataLength = {{8 + total_payload + 2}};

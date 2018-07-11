@@ -43,7 +43,6 @@ public:
         memcpy(msgData, buf, _msgDataLength);
     }
 
-    {{class_info.name}}(QByteArray& buf) : {{class_info.name}}((uint8_t*)buf.data(), buf.length()) { }
     {{class_info.name}}& operator = (const {{class_info.name}} &msg) {
         _msgDataLength = msg.msgDataLength();
         if(msgData) free(msgData);
@@ -90,7 +89,6 @@ protected:
 class ping_msg_ping1D_empty : public PingMessage
 {
 public:
-    ping_msg_ping1D_empty(QByteArray buf) : PingMessage(buf) {}
     ping_msg_ping1D_empty(PingMessage& msg) : PingMessage(msg) {}
     ping_msg_ping1D_empty() {
 	_msgDataLength = 8 + 2;
