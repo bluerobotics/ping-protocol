@@ -12,10 +12,8 @@ JINJA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates
 def calc_payload(payloads):
     total_size = 0
     for payload in payloads:
-        if(not is_var_size(payload["type"])):
-            total_size = total_size + get_c_size(payload["type"])
-        else:
-            total_size = '{0} + {1}'.format(total_size, get_c_size(payload["type"]))
+        total_size = total_size + get_c_size(payload["type"])
+
     return total_size
 
 def convert_short_type(t):
@@ -42,7 +40,7 @@ def convert_c_name(name):
 def get_c_size(t):
     # Remove vector info
     if is_var_size(t):
-        return "0 /*cant send var size*/"
+        return 0
 
     vector_size = 1
     if t.find('[') != -1:
