@@ -75,6 +75,4 @@ QStringList SerialLink::listAvailableConnections()
     return list;
 }
 
-SerialLink::~SerialLink()
-{
-}
+SerialLink::~SerialLink() = default;

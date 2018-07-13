@@ -37,6 +37,4 @@ Link::Link(AbstractLink::LinkType linkType, QString name)
     _abstractLink->setName(name);
 }
 
-Link::~Link()
-{
-}
+Link::~Link() = default;

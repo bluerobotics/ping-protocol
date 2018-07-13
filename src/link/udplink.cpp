@@ -44,6 +44,4 @@ bool UDPLink::finishConnection()
     return true;
 }
 
-UDPLink::~UDPLink()
-{
-}
+UDPLink::~UDPLink() = default;
