@@ -51,6 +51,4 @@ QTime LogThread::elapsedTime()
     return QTime::fromMSecsSinceStartOfDay(elapsedMSecs);
 }
 
-LogThread::~LogThread()
-{
-}
+LogThread::~LogThread() = default;
