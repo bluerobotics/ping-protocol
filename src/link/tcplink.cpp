@@ -2,10 +2,6 @@
 
 #include "tcplink.h"
 
-TCPLink::TCPLink()
-{
-}
+TCPLink::TCPLink() = default;
 
-TCPLink::~TCPLink()
-{
-}
+TCPLink::~TCPLink() = default;

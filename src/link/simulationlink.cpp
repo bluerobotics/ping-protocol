@@ -1,4 +1,3 @@
 #include "simulationlink.h"
 
-SimulationLink::SimulationLink()
-{}
+SimulationLink::SimulationLink() = default;
