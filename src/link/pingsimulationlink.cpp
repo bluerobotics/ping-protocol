@@ -13,18 +13,16 @@ void PingSimulationLink::randomUpdate()
 {
     static uint counter = 1;
     static const float numPoints = 200;
-    static const float maxDepth = 48903;
+    static const float maxDepth = 70000;
     const float stop1 = numPoints / 2.0 - 10 * qSin(counter / 10.0);
     const float stop2 = 3 * numPoints / 5.0 + 6 * qCos(counter / 5.5);
     const float osc =  maxDepth*(1.3 + qCos(counter / 40.0)) / 2.3;
 
-    static const float peakMult = maxDepth / 2 / 255;
-    uint32_t peak = peakMult * (stop1 + stop2);
     uint8_t conf = 400 / (stop2 - stop1);
 
     static ping_msg_ping1D_profile profile;
 
-    profile.set_distance(peak);
+    profile.set_distance(osc*(stop2+stop1)/(numPoints*2));
     profile.set_confidence(conf);
     profile.set_pulse_usec(200);
     profile.set_ping_number(counter);
