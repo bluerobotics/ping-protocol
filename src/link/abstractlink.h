@@ -69,7 +69,7 @@ signals:
     void availableConnectionsChanged();
     void nameChanged(const QString& name);
     void autoConnectChanged();
-    void linkChanged(LinkType link);
+    void linkChanged(AbstractLink::LinkType link);
     void newData(const QByteArray& data);
     void sendData(const QByteArray& data);
 
