@@ -6,7 +6,6 @@
 class AbstractLink : public QObject
 {
     Q_OBJECT
-    Q_ENUMS(LinkType)
 public:
     AbstractLink();
     ~AbstractLink();
@@ -19,6 +18,7 @@ public:
         Tcp,
         PingSimulation,
     };
+    Q_ENUM(LinkType)
 
     const AbstractLink& operator=(const AbstractLink& other);
 
