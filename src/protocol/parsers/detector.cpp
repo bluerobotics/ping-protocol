@@ -159,7 +159,7 @@ bool ProtocolDetector::canOpenPort(QSerialPortInfo& port, int msTimeout) {
 }
 
 bool ProtocolDetector::isValidPort(QSerialPortInfo& serialPortInfo) {
-    for(auto name : _invalidSerialPortNames) {
+    for(const auto& name : _invalidSerialPortNames) {
         if(serialPortInfo.portName().contains(name, Qt::CaseInsensitive)) {
             return false;
         }
