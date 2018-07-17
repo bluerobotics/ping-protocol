@@ -29,16 +29,18 @@ namespace {{capitalize(message_type)}}Namespace {
 class {{class_info.name}}
 {
 public:
-    {{class_info.name}}() {}
+    {{class_info.name}}() : msgData(nullptr) {}
 
-    {{class_info.name}}(const {{class_info.name}} &msg) {
-        _msgDataLength = msg.msgDataLength();
+    {{class_info.name}}(const {{class_info.name}} &msg)
+        : _msgDataLength(msg.msgDataLength())
+    {
         msgData = (uint8_t*)malloc(sizeof(uint8_t) * _msgDataLength);
         memcpy(msgData, msg.msgData, _msgDataLength);
     }
 
-    {{class_info.name}}(uint8_t* buf, uint16_t length) {
-        _msgDataLength = length;
+    {{class_info.name}}(uint8_t* buf, uint16_t length)
+        : _msgDataLength(length)
+    {
         msgData = (uint8_t*)malloc(sizeof(uint8_t) * _msgDataLength);
         memcpy(msgData, buf, _msgDataLength);
     }
