@@ -13,8 +13,8 @@ class {{subclass_info.name}}{{message_type}}_{{message}} : public {{class_info.n
 public:
     {{subclass_info.name}}{{message_type}}_{{message}}(PingMessage& msg) : {{class_info.name}}(msg) {}
     {{subclass_info.name}}{{message_type}}_{{message}}() {
-        _msgDataLength = {{8 + total_payload + 2}};
-        msgData = (uint8_t*)malloc(sizeof(uint8_t) * _msgDataLength);
+        _bufferLength = {{8 + total_payload + 2}};
+        msgData = (uint8_t*)malloc(sizeof(uint8_t) * _bufferLength);
         msgData[0] = 'B';
         msgData[1] = 'R';
         (uint16_t&)msgData[2] = {{total_payload}}; // payload size

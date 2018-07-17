@@ -32,39 +32,45 @@ public:
     {{class_info.name}}() : msgData(nullptr) {}
 
     {{class_info.name}}(const {{class_info.name}} &msg)
-        : _msgDataLength(msg.msgDataLength())
+        : _bufferLength(msg.msgDataLength())
     {
-        msgData = (uint8_t*)malloc(sizeof(uint8_t) * _msgDataLength);
-        memcpy(msgData, msg.msgData, _msgDataLength);
+        msgData = (uint8_t*)malloc(sizeof(uint8_t) * _bufferLength);
+        memcpy(msgData, msg.msgData, _bufferLength);
     }
 
     {{class_info.name}}(uint8_t* buf, uint16_t length)
-        : _msgDataLength(length)
+        : _bufferLength(length)
     {
-        msgData = (uint8_t*)malloc(sizeof(uint8_t) * _msgDataLength);
-        memcpy(msgData, buf, _msgDataLength);
+        msgData = (uint8_t*)malloc(sizeof(uint8_t) * _bufferLength);
+        memcpy(msgData, buf, _bufferLength);
     }
 
     {{class_info.name}}& operator = (const {{class_info.name}} &msg) {
-        _msgDataLength = msg.msgDataLength();
+        _bufferLength = msg.msgDataLength();
         if(msgData) free(msgData);
-        msgData = (uint8_t*)malloc(sizeof(uint8_t) * _msgDataLength);
-        memcpy(msgData, msg.msgData, _msgDataLength);
+        msgData = (uint8_t*)malloc(sizeof(uint8_t) * _bufferLength);
+        memcpy(msgData, msg.msgData, _bufferLength);
         return *this;
     }
 
     ~{{class_info.name}}() { if(msgData) free(msgData); }
 
+protected:
+    uint16_t _bufferLength;
+
+public:
     uint8_t* msgData;
-    uint16_t msgDataLength() const { return _msgDataLength; };
+    uint16_t bufferLength() const { return _bufferLength; }; // size of internal buffer allocation
+    uint16_t msgDataLength() const { return headerLength + payload_length() + checksumLength; }; // size of entire message buffer (header, payload, and checksum)
 
     uint16_t   payload_length()                const { return *(uint16_t*)(msgData + 2); } // This is ok only because alignment is static
     uint16_t   message_id()                    const { return *(uint16_t*)(msgData + 4); } // This is ok only because alignment is static
     uint8_t    src_device_id()                 const { return *(msgData + 6); }
     uint8_t    dst_device_id()                 const { return *(msgData + 7); }
     uint8_t*   payload_data(int offset=0)      const { return (msgData + 8 + offset); }
-    uint16_t   checksum()                      const { return *(uint16_t*)(msgData + _msgDataLength - checksumLength); }
+    uint16_t   checksum()                      const { return *(uint16_t*)(msgData + msgDataLength() - checksumLength); }
 
+    static const uint8_t headerLength = 8;
     static const uint8_t checksumLength = 2;
 
     bool verifyChecksum() {
@@ -72,20 +78,16 @@ public:
     }
 
     void updateChecksum() {
-        *(uint16_t*)(msgData + _msgDataLength - 2) = calculateChecksum();
+        *(uint16_t*)(msgData + msgDataLength() - 2) = calculateChecksum();
     }
 
     uint16_t calculateChecksum() {
         uint16_t checksum = 0;
-        for(uint32_t i = 0; i < _msgDataLength - checksumLength; i++) {
+        for(uint32_t i = 0; i < msgDataLength() - checksumLength; i++) {
             checksum += msgData[i];
         }
         return checksum;
     }
-
-protected:
-    uint16_t _msgDataLength;
-
 };
 
 class ping_msg_ping1D_empty : public PingMessage
@@ -93,8 +95,8 @@ class ping_msg_ping1D_empty : public PingMessage
 public:
     ping_msg_ping1D_empty(PingMessage& msg) : PingMessage(msg) {}
     ping_msg_ping1D_empty() {
-	_msgDataLength = 8 + 2;
-        msgData = (uint8_t*)malloc(sizeof(uint8_t) * _msgDataLength);
+        _bufferLength = 8 + 2;
+        msgData = (uint8_t*)malloc(sizeof(uint8_t) * _bufferLength);
         msgData[0] = 'B';
         msgData[1] = 'R';
         (uint16_t&)msgData[2] = 0; // payload size
