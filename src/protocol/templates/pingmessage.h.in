@@ -92,7 +92,7 @@ public:
 
         if(msgDataLength() <= bufferLength()) {
             for(uint32_t i = 0; i < msgDataLength() - checksumLength; i++) {
-                checksum += msgData[i];
+                checksum += static_cast<uint8_t>(msgData[i]);
             }
         }
 
