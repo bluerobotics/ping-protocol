@@ -89,9 +89,13 @@ public:
 
     uint16_t calculateChecksum() {
         uint16_t checksum = 0;
-        for(uint32_t i = 0; i < msgDataLength() - checksumLength; i++) {
-            checksum += msgData[i];
+
+        if(msgDataLength() <= bufferLength()) {
+            for(uint32_t i = 0; i < msgDataLength() - checksumLength; i++) {
+                checksum += msgData[i];
+            }
         }
+
         return checksum;
     }
 };
