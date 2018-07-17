@@ -84,7 +84,7 @@ public:
     }
 
     void updateChecksum() {
-        *(uint16_t*)(msgData + msgDataLength() - 2) = calculateChecksum();
+        *(uint16_t*)(msgData + msgDataLength() - checksumLength) = calculateChecksum();
     }
 
     uint16_t calculateChecksum() {
