@@ -29,25 +29,24 @@ namespace {{capitalize(message_type)}}Namespace {
 class {{class_info.name}}
 {
 public:
-    {{class_info.name}}() : msgData(nullptr) {}
+    {{class_info.name}}() : msgData { nullptr } {}
 
     {{class_info.name}}(const {{class_info.name}} &msg)
-        : _bufferLength(msg.msgDataLength())
+        : _bufferLength { msg.msgDataLength() }
+        , msgData { (uint8_t*)malloc(sizeof(uint8_t) * _bufferLength) }
     {
-        msgData = (uint8_t*)malloc(sizeof(uint8_t) * _bufferLength);
         memcpy(msgData, msg.msgData, _bufferLength);
     }
 
     {{class_info.name}}(uint16_t bufferLength)
-        : _bufferLength(bufferLength)
-    {
-        msgData = (uint8_t*)malloc(sizeof(uint8_t) * _bufferLength);
-    }
+        : _bufferLength { bufferLength }
+        , msgData { (uint8_t*)malloc(sizeof(uint8_t) * _bufferLength) }
+    {}
 
     {{class_info.name}}(uint8_t* buf, uint16_t length)
-        : _bufferLength(length)
+        : _bufferLength { length }
+        , msgData { (uint8_t*)malloc(sizeof(uint8_t) * _bufferLength) }
     {
-        msgData = (uint8_t*)malloc(sizeof(uint8_t) * _bufferLength);
         memcpy(msgData, buf, _bufferLength);
     }
 
@@ -103,10 +102,10 @@ public:
 class ping_msg_ping1D_empty : public PingMessage
 {
 public:
-    ping_msg_ping1D_empty(PingMessage& msg) : PingMessage(msg) {}
-    ping_msg_ping1D_empty() {
-        _bufferLength = 8 + 2;
-        msgData = (uint8_t*)malloc(sizeof(uint8_t) * _bufferLength);
+    ping_msg_ping1D_empty(PingMessage& msg) : PingMessage { msg } {}
+    ping_msg_ping1D_empty()
+        : {{class_info.name}} { 8 + 2 }
+    {
         msgData[0] = 'B';
         msgData[1] = 'R';
         (uint16_t&)msgData[2] = 0; // payload size
