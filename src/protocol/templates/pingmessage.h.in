@@ -38,6 +38,12 @@ public:
         memcpy(msgData, msg.msgData, _bufferLength);
     }
 
+    {{class_info.name}}(uint16_t bufferLength)
+        : _bufferLength(bufferLength)
+    {
+        msgData = (uint8_t*)malloc(sizeof(uint8_t) * _bufferLength);
+    }
+
     {{class_info.name}}(uint8_t* buf, uint16_t length)
         : _bufferLength(length)
     {
