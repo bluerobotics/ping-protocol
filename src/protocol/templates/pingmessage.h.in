@@ -58,12 +58,12 @@ public:
     uint8_t* msgData;
     uint16_t msgDataLength() const { return _msgDataLength; };
 
-    uint16_t   payload_length()                { return *(uint16_t*)(msgData + 2); } // This is ok only because alignment is static
-    uint16_t   message_id()                    { return *(uint16_t*)(msgData + 4); } // This is ok only because alignment is static
-    uint8_t    src_device_id()                 { return *(msgData + 6); }
-    uint8_t    dst_device_id()                 { return *(msgData + 7); }
-    uint8_t*   payload_data(int offset=0)      { return (msgData + 8 + offset); }
-    uint16_t   checksum()                      { return *(uint16_t*)(msgData + _msgDataLength - checksumLength); }
+    uint16_t   payload_length()                const { return *(uint16_t*)(msgData + 2); } // This is ok only because alignment is static
+    uint16_t   message_id()                    const { return *(uint16_t*)(msgData + 4); } // This is ok only because alignment is static
+    uint8_t    src_device_id()                 const { return *(msgData + 6); }
+    uint8_t    dst_device_id()                 const { return *(msgData + 7); }
+    uint8_t*   payload_data(int offset=0)      const { return (msgData + 8 + offset); }
+    uint16_t   checksum()                      const { return *(uint16_t*)(msgData + _msgDataLength - checksumLength); }
 
     static const uint8_t checksumLength = 2;
 
