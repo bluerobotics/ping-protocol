@@ -89,7 +89,7 @@
                     },
                     {
                         "name": "err_msg",
-                        "type": "u8[var]",
+                        "type": "char[var]",
                         "description": "ASCII text message."
                     }
                 ]
@@ -100,7 +100,7 @@
                 "payload": [
                     {
                         "name": "msg",
-                        "type": "u8[var]",
+                        "type": "char[var]",
                         "description": "ASCII text message."
                     }
                 ]

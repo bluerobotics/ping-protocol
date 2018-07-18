@@ -3,8 +3,6 @@
 
 #pragma once
 
-#include <string.h>
-
 #include "pingmessage.h"
 
 {% set message_type = _actual_message_type %}
@@ -13,10 +11,10 @@
 class {{subclass_info.name}}{{message_type}}_{{message}} : public {{class_info.name}}
 {
 public:
-    {{subclass_info.name}}{{message_type}}_{{message}}(QByteArray& buf) : {{class_info.name}}(buf) {}
-    {{subclass_info.name}}{{message_type}}_{{message}}(PingMessage& msg) : {{class_info.name}}(msg) {}
-    {{subclass_info.name}}{{message_type}}_{{message}}() {
-        msgData = std::vector<uint8_t>(8 + {{total_payload}} + 2, 0);
+    {{subclass_info.name}}{{message_type}}_{{message}}(PingMessage& msg) : {{class_info.name}} { msg } {}
+    {{subclass_info.name}}{{message_type}}_{{message}}()
+        : {{class_info.name}} { {{8 + total_payload + 2}} }
+    {
         msgData[0] = 'B';
         msgData[1] = 'R';
         (uint16_t&)msgData[2] = {{total_payload}}; // payload size
@@ -28,8 +26,8 @@ public:
 {% set byte = namespace(offset=0, func='') %}
 {% if messages[message_type][message].payload %}
 {% for payload in messages[message_type][message].payload %}
-{% if is_var_size(payload.type) %}
-    const std::string {{payload.name}}() { return std::string(reinterpret_cast<const char *>(payload_data({{byte.offset}})), payload_length() - {{byte.offset}}); }
+{% if is_var_size(payload.type) %}{# ex type = 'u8[var]' #}
+    {{get_type_string(payload.type, pointer=True)}} {{payload.name}}() { return ({{get_type_string(payload.type, pointer=True)}})(payload_data({{byte.offset}})); }
 {% set byte.func = '{0} + {1}'.format(byte.func, get_c_size(payload.type)) %}
 {% else %}
 {% if is_vector(payload.type) %}

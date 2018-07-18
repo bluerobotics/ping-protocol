@@ -42,12 +42,12 @@ void ProtocolDetector::scan() {
 
         qCDebug(PING_PROTOCOL_PROTOCOLDETECTOR) << "Probing UDP" << _hostAddress.toString() << _port;
         // sockit.setSocketOption(QAbstractSocket::KeepAliveOption, 1);
-        sockit.writeDatagram(reinterpret_cast<const char*>(req.msgData.data()), req.msgData.size(), _hostAddress, _port); // probe
+        sockit.writeDatagram(reinterpret_cast<const char*>(req.msgData), req.msgDataLength(), _hostAddress, _port); // probe
 
         bool detected = false;
         int attempts = 0;
 
-        while (!detected && attempts < 10) { // Try to get a valid response, timeout after 40 ms
+        while (!detected && attempts < 10) { // Try to get a valid response, timeout after 10 * 50 ms
             sockit.waitForReadyRead(50);
             QNetworkDatagram datagram = sockit.receiveDatagram();
             auto buf = datagram.data();
@@ -98,13 +98,13 @@ void ProtocolDetector::scan() {
                 port.setBaudRate(baudrate);
 
                 // Probe
-                port.write(reinterpret_cast<const char*>(req.msgData.data()), (uint16_t)req.msgData.size());
+                port.write(reinterpret_cast<const char*>(req.msgData), (uint16_t)req.msgDataLength());
                 port.waitForBytesWritten();
 
                 bool detected = false;
                 int attempts = 0;
 
-                while (!detected && attempts < 10) { // Try to get a valid response, timeout after 40 ms
+                while (!detected && attempts < 10) { // Try to get a valid response, timeout after 10 * 50 ms
                     port.waitForReadyRead(50);
                     auto buf = port.readAll();
                     for (auto byte = buf.begin(); byte != buf.end(); ++byte) {
