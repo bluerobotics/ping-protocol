@@ -2,6 +2,9 @@
 
 #include "tcplink.h"
 
-TCPLink::TCPLink() = default;
+TCPLink::TCPLink(QObject* parent)
+    : AbstractLink(parent)
+{
+}
 
 TCPLink::~TCPLink() = default;
