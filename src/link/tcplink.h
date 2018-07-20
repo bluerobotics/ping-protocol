@@ -5,6 +5,6 @@
 class TCPLink : public AbstractLink
 {
 public:
-    TCPLink();
+    TCPLink(QObject* parent = nullptr);
     ~TCPLink();
 };
