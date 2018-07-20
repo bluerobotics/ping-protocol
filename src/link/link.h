@@ -8,7 +8,7 @@ class Link : public QObject
 {
     Q_OBJECT
 public:
-    Link(AbstractLink::LinkType linkType = AbstractLink::LinkType::None, QString name = QString());
+    Link(AbstractLink::LinkType linkType = AbstractLink::LinkType::None, QString name = QString(), QObject* parent = nullptr);
     ~Link();
 
     //This will handle the connection change
