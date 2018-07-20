@@ -7,6 +7,7 @@ class SimulationLink : public AbstractLink
 {
 public:
     SimulationLink(QObject* parent = nullptr);
+    bool isWritable() final { return false; };
 
 private:
     Parser _parser;
