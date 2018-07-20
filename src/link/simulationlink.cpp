@@ -1,3 +1,6 @@
 #include "simulationlink.h"
 
-SimulationLink::SimulationLink() = default;
+SimulationLink::SimulationLink(QObject* parent)
+    : AbstractLink(parent)
+{
+}
