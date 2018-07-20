@@ -44,7 +44,7 @@ public:
     Q_INVOKABLE virtual bool isOpen() { return true;};
 
     // Control offline source (E.g: Files)
-    Q_INVOKABLE virtual bool isOnline() { return true; };
+    Q_INVOKABLE virtual bool isWritable() { return true; };
     Q_INVOKABLE virtual void start() {};
     Q_INVOKABLE virtual void pause() {};
     Q_PROPERTY(qint64 byteSize READ byteSize NOTIFY byteSizeChanged)

@@ -19,7 +19,7 @@ public:
     bool finishConnection() final;
     QString errorString() final { return _file.errorString(); };
 
-    bool isOnline() final { return false; };
+    bool isWritable() final { return false; };
     void start() final { if(_logThread) _logThread->startJob(); };
     void pause() final { if(_logThread) _logThread->pauseJob(); };
     qint64 byteSize() final { return _file.bytesAvailable(); };
