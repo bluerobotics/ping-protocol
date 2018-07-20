@@ -1,24 +1,27 @@
 #include <QDebug>
 #include <QLoggingCategory>
+#include <QSerialPortInfo>
 #include <QTimer>
 
 #include "seriallink.h"
 
 Q_LOGGING_CATEGORY(PING_PROTOCOL_SERIALLINK, "ping.protocol.seriallink")
 
-SerialLink::SerialLink()
+SerialLink::SerialLink(QObject* parent)
+    : AbstractLink(parent)
+    , _port(new QSerialPort(parent))
 {
     setType(AbstractLink::LinkType::Serial);
 
-    QObject::connect(this, &QIODevice::readyRead, [=]() {
-        emit newData(readAll());
+    QObject::connect(_port, &QIODevice::readyRead, [=]() {
+        emit newData(_port->readAll());
     });
 
     QObject::connect(this, &AbstractLink::sendData, [=](const QByteArray& data) {
-        write(data);
+        _port->write(data);
     });
 
-    QObject::connect(this, &QSerialPort::errorOccurred, [=](QSerialPort::SerialPortError error) {
+    QObject::connect(_port, &QSerialPort::errorOccurred, [=](QSerialPort::SerialPortError error) {
         switch(error) {
             case QSerialPort::NoError:
                 break;
@@ -47,15 +50,15 @@ bool SerialLink::setConfiguration(const QStringList& args)
         qCDebug(PING_PROTOCOL_SERIALLINK) << args;
         return false;
     }
-    setPortName(args[0]);
-    setBaudRate(args[1].toInt());
+    _port->setPortName(args[0]);
+    _port->setBaudRate(args[1].toInt());
 
     return true;
 }
 
 bool SerialLink::finishConnection()
 {
-    close();
+    _port->close();
     qCDebug(PING_PROTOCOL_SERIALLINK) << "port closed";
     return true;
 }
@@ -65,7 +68,7 @@ QStringList SerialLink::listAvailableConnections()
     static QStringList list;
     auto oldList = list;
     list.clear();
-    auto ports = availablePorts();
+    auto ports = QSerialPortInfo::availablePorts();
     for(const auto& port : ports) {
         list.append(port.portName());
     }
@@ -75,4 +78,7 @@ QStringList SerialLink::listAvailableConnections()
     return list;
 }
 
-SerialLink::~SerialLink() = default;
+SerialLink::~SerialLink()
+{
+    delete _port;
+}

@@ -1,21 +1,24 @@
 #pragma once
 
 #include <QSerialPort>
-#include <QSerialPortInfo>
 
 #include "abstractlink.h"
 
-class SerialLink : public AbstractLink, public QSerialPort, public QSerialPortInfo
+class SerialLink : public AbstractLink
 {
 
 public:
-    SerialLink();
+    SerialLink(QObject* parent = nullptr);
     ~SerialLink();
 
-    bool isOpen() final { return isWritable() && isReadable(); };
+    bool isOpen() final { return _port->isWritable() && _port->isReadable(); };
     bool setConfiguration(const QStringList& args) final;
-    bool startConnection() final { return open(QIODevice::ReadWrite); };
+    bool startConnection() final { return _port->open(QIODevice::ReadWrite); };
     bool finishConnection() final;
-    QString errorString() final { return QSerialPort::errorString(); };
+    QString errorString() final { return _port->errorString(); };
     QStringList listAvailableConnections() final;
+    QSerialPort* port() { return _port; };
+
+private:
+    QSerialPort* _port;
 };
