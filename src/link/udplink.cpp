@@ -6,16 +6,18 @@
 
 Q_LOGGING_CATEGORY(PING_PROTOCOL_UDPLINK, "ping.protocol.udplink")
 
-UDPLink::UDPLink()
+UDPLink::UDPLink(QObject* parent)
+    : AbstractLink(parent)
+    , _udpSocket(new QUdpSocket(parent))
 {
     setType(AbstractLink::LinkType::Udp);
 
-    QObject::connect(this, &QIODevice::readyRead, [=]() {
-        emit newData(receiveDatagram().data());
+    QObject::connect(_udpSocket, &QIODevice::readyRead, [=]() {
+        emit newData(_udpSocket->receiveDatagram().data());
     });
 
     QObject::connect(this, &AbstractLink::sendData, [=](const QByteArray& data) {
-        writeDatagram(data, _hostAddress, _port);
+        _udpSocket->writeDatagram(data, _hostAddress, _port);
     });
 }
 
@@ -40,7 +42,7 @@ bool UDPLink::setConfiguration(const QStringList& args)
 
 bool UDPLink::finishConnection()
 {
-    close();
+    _udpSocket->close();
     return true;
 }
 

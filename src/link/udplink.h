@@ -4,19 +4,21 @@
 
 #include "abstractlink.h"
 
-class UDPLink : public AbstractLink, QUdpSocket
+class UDPLink : public AbstractLink
 {
 public:
-    UDPLink();
+    UDPLink(QObject* parent = nullptr);
     ~UDPLink();
 
-    bool isOpen() final { return isWritable() && isReadable(); };
+    bool isOpen() final { return _udpSocket->isWritable() && _udpSocket->isReadable(); };
     bool setConfiguration(const QStringList& args) final;
-    bool startConnection() final { return open(QIODevice::ReadWrite); };
+    bool startConnection() final { return _udpSocket->open(QIODevice::ReadWrite); };
     bool finishConnection() final;
-    QString errorString() final { return QUdpSocket::errorString(); };
+    QString errorString() final { return _udpSocket->errorString(); };
+    QUdpSocket* udpSocket() { return _udpSocket; };
 
 private:
     QHostAddress _hostAddress;
+    QUdpSocket* _udpSocket;
     uint _port;
 };
