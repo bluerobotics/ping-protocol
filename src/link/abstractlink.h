@@ -7,7 +7,7 @@ class AbstractLink : public QObject
 {
     Q_OBJECT
 public:
-    AbstractLink();
+    AbstractLink(QObject* parent = nullptr);
     ~AbstractLink();
 
     enum LinkType {
