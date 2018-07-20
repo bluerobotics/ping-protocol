@@ -30,7 +30,7 @@ void ProtocolDetector::scan() {
     req.updateChecksum();
 
     // Scan until we find a ping, then stop
-    while (_active) {
+    while (_active && !currentThread()->isInterruptionRequested()) {
 
         // Try BlueROV2 standard udp port first
         QUdpSocket sockit;
