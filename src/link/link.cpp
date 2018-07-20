@@ -12,8 +12,9 @@
 
 Q_LOGGING_CATEGORY(PING_PROTOCOL_LINK, "ping.protocol.link")
 
-Link::Link(AbstractLink::LinkType linkType, QString name)
-    : _abstractLink(nullptr)
+Link::Link(AbstractLink::LinkType linkType, QString name, QObject* parent)
+    : QObject(parent)
+    , _abstractLink(nullptr)
 {
     switch(linkType) {
         case AbstractLink::LinkType::File :
