@@ -6,7 +6,7 @@
 class PingSimulationLink : public SimulationLink
 {
 public:
-    PingSimulationLink();
+    PingSimulationLink(QObject* parent = nullptr);
     void randomUpdate();
 
     QTimer _randomUpdateTimer;
