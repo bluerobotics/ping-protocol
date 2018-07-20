@@ -10,7 +10,7 @@
 class FileLink : public AbstractLink
 {
 public:
-    FileLink();
+    FileLink(QObject* parent = nullptr);
     ~FileLink();
 
     bool isOpen() final { return _file.isWritable() && _file.isReadable(); };

@@ -10,11 +10,12 @@
 
 Q_LOGGING_CATEGORY(PING_PROTOCOL_FILELINK, "ping.protocol.filelink")
 
-FileLink::FileLink():
-     _openModeFlag(QIODevice::ReadWrite)
-    ,_time(QTime::currentTime())
-    ,_inout(&_file)
-    ,_logThread(nullptr)
+FileLink::FileLink(QObject* parent)
+    : AbstractLink(parent)
+    , _openModeFlag(QIODevice::ReadWrite)
+    , _time(QTime::currentTime())
+    , _inout(&_file)
+    , _logThread(nullptr)
 {
     setType(AbstractLink::LinkType::File);
 
