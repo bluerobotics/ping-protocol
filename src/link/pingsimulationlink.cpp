@@ -3,7 +3,8 @@
 #include "pingsimulationlink.h"
 #include "pingmessage/pingmessage_all.h"
 
-PingSimulationLink::PingSimulationLink()
+PingSimulationLink::PingSimulationLink(QObject* parent)
+    : SimulationLink(parent)
 {
     connect(&_randomUpdateTimer, &QTimer::timeout, this, &PingSimulationLink::randomUpdate);
     _randomUpdateTimer.start(50);
