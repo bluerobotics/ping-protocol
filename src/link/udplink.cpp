@@ -12,11 +12,11 @@ UDPLink::UDPLink(QObject* parent)
 {
     setType(AbstractLink::LinkType::Udp);
 
-    QObject::connect(_udpSocket, &QIODevice::readyRead, [=]() {
+    connect(_udpSocket, &QIODevice::readyRead, this, [this]() {
         emit newData(_udpSocket->receiveDatagram().data());
     });
 
-    QObject::connect(this, &AbstractLink::sendData, [=](const QByteArray& data) {
+    connect(this, &AbstractLink::sendData, this, [this](const QByteArray& data) {
         _udpSocket->writeDatagram(data, _hostAddress, _port);
     });
 }
