@@ -13,15 +13,15 @@ SerialLink::SerialLink(QObject* parent)
 {
     setType(AbstractLink::LinkType::Serial);
 
-    QObject::connect(_port, &QIODevice::readyRead, [=]() {
+    connect(_port, &QIODevice::readyRead, this, [this]() {
         emit newData(_port->readAll());
     });
 
-    QObject::connect(this, &AbstractLink::sendData, [=](const QByteArray& data) {
+    connect(this, &AbstractLink::sendData, this, [this](const QByteArray& data) {
         _port->write(data);
     });
 
-    QObject::connect(_port, &QSerialPort::errorOccurred, [=](QSerialPort::SerialPortError error) {
+    connect(_port, &QSerialPort::errorOccurred, this, [this](QSerialPort::SerialPortError error) {
         switch(error) {
             case QSerialPort::NoError:
                 break;
