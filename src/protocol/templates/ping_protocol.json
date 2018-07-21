@@ -31,7 +31,7 @@
             "description": "'R'"
         },
         {
-            "name": "length",
+            "name": "payload_length",
             "type": "u16",
             "index": "2-3",
             "description": "Number of bytes in payload."
