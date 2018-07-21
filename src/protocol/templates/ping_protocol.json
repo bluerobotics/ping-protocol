@@ -90,7 +90,7 @@
                     {
                         "name": "err_msg",
                         "type": "char[var]",
-                        "description": "ASCII text message."
+                        "description": " NULL terminated ASCII text message."
                     }
                 ]
             },
@@ -101,7 +101,7 @@
                     {
                         "name": "msg",
                         "type": "char[var]",
-                        "description": "ASCII text message."
+                        "description": " NULL terminated ASCII text message."
                     }
                 ]
             },
