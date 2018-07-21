@@ -66,16 +66,16 @@ bool FileLink::startConnection() {
         Pack pack;
         if(_logThread) {
             // Disconnect LogThread
-            QObject::disconnect(_logThread, &LogThread::newPackage, this, &FileLink::newData);
-            QObject::disconnect(_logThread, &LogThread::packageIndexChanged, this, &FileLink::packageIndexChanged);
-            QObject::disconnect(_logThread, &LogThread::packageIndexChanged, this, &FileLink::elapsedTimeChanged);
+            disconnect(_logThread, &LogThread::newPackage, this, &FileLink::newData);
+            disconnect(_logThread, &LogThread::packageIndexChanged, this, &FileLink::packageIndexChanged);
+            disconnect(_logThread, &LogThread::packageIndexChanged, this, &FileLink::elapsedTimeChanged);
 
             delete _logThread;
         }
         _logThread = new LogThread();
-        QObject::connect(_logThread, &LogThread::newPackage, this, &FileLink::newData);
-        QObject::connect(_logThread, &LogThread::packageIndexChanged, this, &FileLink::packageIndexChanged);
-        QObject::connect(_logThread, &LogThread::packageIndexChanged, this, &FileLink::elapsedTimeChanged);
+        connect(_logThread, &LogThread::newPackage, this, &FileLink::newData);
+        connect(_logThread, &LogThread::packageIndexChanged, this, &FileLink::packageIndexChanged);
+        connect(_logThread, &LogThread::packageIndexChanged, this, &FileLink::elapsedTimeChanged);
         while(true) {
             // Get data
             _inout >> pack.time >> pack.data;
