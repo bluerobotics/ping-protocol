@@ -153,7 +153,7 @@
                     {
                         "name": "mode",
                         "type": "u8",
-                        "description": "0: auto mode. 1: manual mode."
+                        "description": "0: manual mode. 1: auto mode."
                     }
                 ]
             },
@@ -283,7 +283,7 @@
                     {
                         "name": "auto_manual",
                         "type": "u8",
-                        "description": "0: auto mode, 1: manual mode"
+                        "description": "0: manual mode, 1: auto mode"
                     }
                 ]
             },
