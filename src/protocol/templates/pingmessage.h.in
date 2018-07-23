@@ -90,7 +90,7 @@ public:
         uint16_t checksum = 0;
 
         if(msgDataLength() <= bufferLength()) {
-            for(uint32_t i = 0; i < msgDataLength() - checksumLength; i++) {
+            for(uint32_t i = 0, data_size = msgDataLength() - checksumLength; i < data_size; i++) {
                 checksum += static_cast<uint8_t>(msgData[i]);
             }
         }
