@@ -77,9 +77,15 @@ public:
             state++;
             break;
         case WAIT_SRC_ID:
+            parseBuf.append(byte);
+            state++;
+            break;
         case WAIT_DST_ID:
             parseBuf.append(byte);
             state++;
+            if (payload_length == 0) { // no payload bytes
+                state++;
+            }
             break;
         case WAIT_PAYLOAD:
             parseBuf.append(byte);
