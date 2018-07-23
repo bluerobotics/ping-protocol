@@ -350,7 +350,7 @@
                     },
                     {
                         "name": "gain_index",
-                        "type": "u32",
+                        "type": "u8",
                         "description": "The current gain setting. 0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB"
                     },
                     {
