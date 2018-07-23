@@ -45,8 +45,6 @@ public:
             if (byte == 'B') {
                 parseBuf.append(byte);
                 state++;
-            } else {
-                errors++;
             }
             break;
         case WAIT_HEADER:
@@ -54,7 +52,6 @@ public:
                 parseBuf.append(byte);
                 state++;
             } else {
-                errors++;
                 parseBuf.clear();
                 state = WAIT_START;
             }
@@ -99,6 +96,7 @@ public:
             PingMessage msg((uint8_t*)parseBuf.data(), parseBuf.length());
             if (!msg.verifyChecksum()) {
                 errors++;
+                emit parseError();
             } else {
                 emit newMessage(msg);
                 parsed++;
@@ -119,4 +117,5 @@ public:
 
 signals:
     void newMessage(PingMessage msg);
+    void parseError();
 };
