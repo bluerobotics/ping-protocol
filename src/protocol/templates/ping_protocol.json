@@ -77,7 +77,13 @@
                 "ack": {
                     "id": "1",
                     "description": "Acknowledged.",
-                    "payload": []
+                    "payload": [
+                        {
+                            "name": "acked_id",
+                            "type": "u16",
+                            "description": "The message ID that is ACKnowledged."
+                        }
+                    ]
                 },
                 "nack": {
                     "id": "2",
