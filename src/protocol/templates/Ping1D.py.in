@@ -27,14 +27,14 @@ class Ping1D:
             print("Failed to open the given serial port")
             print("\t", e)
             exit(1)
-            
+
         # A helper class to take care of decoding the input stream
         self.parser = PingMessage.PingParser()
         self.my_id = 255 # device id of this Ping1D object
 
     # Consume rx buffer data until a new message is successfully decoded
-    # Return a new message as soon as it is parsed and stop dequeuing data 
-    # Return None if the buffer is empty or no message has been parsed 
+    # Return a new message as soon as it is parsed and stop dequeuing data
+    # Return None if the buffer is empty or no message has been parsed
     def read(self):
         while(self.iodev.in_waiting):
             b = self.iodev.read()
@@ -140,7 +140,7 @@ class Ping1D:
         if self.request(PingMessage.PING1D_{{msg|replace("set_", "")|upper}}) is None:
             return False
         # Read back the data and check that changes have been applied
-        if (verify 
+        if (verify
 {% if messages["ping1D"]["set"][msg].payload %}
               and {% for field in messages["ping1D"]["set"][msg].payload %}self.{{field.name}} != {{field.name}}
               or {% endfor %}False):
@@ -180,4 +180,4 @@ if __name__ == "__main__":
     # print("  > > pass: %s < <" % p.set_ping_enable(0))
 
     print(p)
-    
+
