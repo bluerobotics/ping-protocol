@@ -300,8 +300,14 @@ class PingParser(object):
         return self.state
 
 if __name__ == "__main__":
+    import argparse
     import serial
     import time
+
+    parser = argparse.ArgumentParser(description="Ping python library example.")
+    parser.add_argument('--device', action="store", required=True, type=str, help="Ping device port.")
+    parser.add_argument('--baudrate', action="store", type=int, default=115200, help="Ping device baudrate.")
+    args = parser.parse_args()
 
     p = PingParser()
 
@@ -337,7 +343,7 @@ if __name__ == "__main__":
     print("\n\n\n")
 
     # Connect to a device
-    s = serial.Serial("/dev/ttyUSB1", 115200)
+    s = serial.Serial(args.device, args.baudrate)
     while True:
         m = {{class_info.name}}(PING1D_SET_PING_RATE)
         m.ping_rate = 40
