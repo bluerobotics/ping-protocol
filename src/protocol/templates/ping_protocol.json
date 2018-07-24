@@ -90,14 +90,14 @@
                     "description": "Not acknowledged.",
                     "payload": [
                         {
-                            "name": "id_to_nack",
+                            "name": "nacked_id",
                             "type": "u16",
-                            "description": "The message ID being NACKed."
+                            "description": "The message ID that is Not ACKnowledged."
                         },
                         {
-                            "name": "err_msg",
+                            "name": "nack_msg",
                             "type": "char[var]",
-                            "description": " NULL terminated ASCII text message."
+                            "description": "ASCII text message indicating NACK condition."
                         }
                     ]
                 },
@@ -130,13 +130,13 @@
                     "description": "Set the scan range for acoustic measurements.",
                     "payload": [
                         {
-                            "name": "start_mm",
+                            "name": "scan_start",
                             "type": "u32",
                             "description:": "The beginning of the scan range in mm from the transducer.",
                             "units": "mm"
                         },
                         {
-                            "name": "length_mm",
+                            "name": "scan_length",
                             "type": "u32",
                             "description": "The length of the scan range.",
                             "units": "mm"
@@ -148,7 +148,7 @@
                     "description": "Set the speed of sound used for distance calculations.",
                     "payload": [
                         {
-                            "name": "speed",
+                            "name": "speed_of_sound",
                             "type": "u32",
                             "description": "The speed of sound in the measurement medium. ~1,500,000 mm/s for water.",
                             "units": "mm/s"
@@ -166,12 +166,12 @@
                         }
                     ]
                 },
-                "set_ping_rate_msec": {
+                "set_ping_rate": {
                     "id": "1004",
                     "description": "The interval between acoustic measurements.",
                     "payload": [
                         {
-                            "name": "rate_msec",
+                            "name": "ping_rate",
                             "type": "u16",
                             "description": "The interval between acoustic measurements.",
                             "units": "ms"
@@ -183,7 +183,7 @@
                     "description": "Set the current gain selection.",
                     "payload": [
                         {
-                            "name": "index",
+                            "name": "gain_index",
                             "type": "u8",
                             "description": "0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB"
                         }
@@ -257,25 +257,25 @@
                     "description": "The speed of sound used for distance calculations.",
                     "payload": [
                         {
-                            "name": "speed_mmps",
+                            "name": "speed_of_sound",
                             "type": "u32",
-                            "description": "The speed of sound.",
+                            "description": "The speed of sound in the measurement medium. ~1,500,000 mm/s for water.",
                             "units": "mm/s"
                         }
                     ]
                 },
                 "range": {
                     "id": "1204",
-                    "description": "The scan range for acoustic measurements. Measurements returned by the device will lie in the range (start_mm, start_mm + length_mm).",
+                    "description": "The scan range for acoustic measurements. Measurements returned by the device will lie in the range (scan_start, scan_start + scan_length).",
                     "payload": [
                         {
-                            "name": "start_mm",
+                            "name": "scan_start",
                             "type": "u32",
                             "description": "The beginning of the scan range in mm from the transducer.",
                             "units": "mm"
                         },
                         {
-                            "name": "length_mm",
+                            "name": "scan_length",
                             "type": "u32",
                             "description": "The length of the scan range.",
                             "units": "mm"
@@ -293,12 +293,12 @@
                         }
                     ]
                 },
-                "ping_rate_msec": {
+                "ping_rate": {
                     "id": "1206",
                     "description": "The interval between acoustic measurements.",
                     "payload": [
                         {
-                            "name": "msec_per_ping",
+                            "name": "ping_rate",
                             "type": "u16",
                             "description": "The interval between acoustic measurements.",
                             "units": "ms"
@@ -333,12 +333,12 @@
                     "description": "General information.",
                     "payload": [
                         {
-                            "name": "vers_major",
+                            "name": "fw_version_major",
                             "type": "u16",
                             "description": "Firmware major version."
                         },
                         {
-                            "name": "vers_minor",
+                            "name": "fw_version_minor",
                             "type": "u16",
                             "description": "Firmware minor version."
                         },
@@ -349,7 +349,7 @@
                             "units": "mV"
                         },
                         {
-                            "name": "msec_per_ping",
+                            "name": "ping_rate",
                             "type": "u16",
                             "description": "The interval between acoustic measurements.",
                             "units": "ms"
@@ -411,13 +411,13 @@
                             "description": "The pulse/measurement count since boot."
                         },
                         {
-                            "name": "start_mm",
+                            "name": "scan_start",
                             "type": "u32",
                             "description": "The beginning of the scan region in mm from the transducer.",
                             "units": "mm"
                         },
                         {
-                            "name": "length_mm",
+                            "name": "scan_length",
                             "type": "u32",
                             "description": "The length of the scan region.",
                             "units": "mm"
@@ -455,7 +455,7 @@
                 },
                 "profile": {
                     "id": "1300",
-                    "description": "A profile produced from a single acoustic measurement. The data returned is an array of response strength at even intervals across the scan region. The scan region defined the region between <start_mm> and <start_mm + length_mm> millimeters away from the transducer. A distance measurement to the target is also provided.",
+                    "description": "A profile produced from a single acoustic measurement. The data returned is an array of response strength at even intervals across the scan region. The scan region defined the region between <scan_start> and <scan_start + scan_length> millimeters away from the transducer. A distance measurement to the target is also provided.",
                     "payload": [
                         {
                             "name": "distance",
@@ -481,13 +481,13 @@
                             "description": "The pulse/measurement count since boot."
                         },
                         {
-                            "name": "start_mm",
+                            "name": "scan_start",
                             "type": "u32",
                             "description": "The beginning of the scan region in mm from the transducer.",
                             "units": "mm"
                         },
                         {
-                            "name": "length_mm",
+                            "name": "scan_length",
                             "type": "u32",
                             "description": "The length of the scan region.",
                             "units": "mm"
