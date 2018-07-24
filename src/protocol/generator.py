@@ -124,6 +124,16 @@ if __name__ == "__main__":
         if not os.path.exists(output_path):
             os.makedirs(output_path)
 
+        # Create a new dictionary with all message keys for convenience in the template
+        messageDict = protocol_data['messages']['ping1D']
+
+        allMessages = dict(messageDict['get'])
+        allMessages.update(messageDict['set'])
+        allMessages.update(messageDict['control'])
+        allMessages.update(messageDict['general'])
+
+        protocol_data['messages']['ping1D']['all_msgs'] = allMessages
+
         # Create our lovely jinja env
         j2_env = Environment(loader=FileSystemLoader(JINJA_PATH), trim_blocks=True)
         j2_env.globals.update(calc_payload=calc_payload)
