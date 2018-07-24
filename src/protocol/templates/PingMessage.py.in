@@ -237,6 +237,8 @@ class PingParser(object):
     # If the byte fed completes a valid message, return PingParser.NEW_MESSAGE
     # The decoded message will be available in the self.rxMsg attribute until a new message is decoded
     def parseByte(self, byte):
+        if type(byte) != int:
+            byte = ord(byte)
         #print("byte: %d, state: %d, rem: %d, id: %d" % (byte, self.state, self.payload_length, self.message_id))
         if self.state == PingParser.WAIT_START:
             if byte == ord('B'):
@@ -352,7 +354,7 @@ if __name__ == "__main__":
         time.sleep(0.01)
         print(m)
         while s.in_waiting:
-            if p.parseByte(ord(s.read())) == PingParser.NEW_MESSAGE:
+            if p.parseByte(s.read()) == PingParser.NEW_MESSAGE:
                 print(p.rxMsg)
 
         m = {{class_info.name}}()
@@ -361,21 +363,21 @@ if __name__ == "__main__":
         s.write(m.msgData)
         time.sleep(0.05)
         while s.in_waiting:
-            if p.parseByte(ord(s.read())) == PingParser.NEW_MESSAGE:
+            if p.parseByte(s.read()) == PingParser.NEW_MESSAGE:
                 print(p.rxMsg)
         m.request_id = PING1D_VOLTAGE_5
         m.packMsgData()
         s.write(m.msgData)
         time.sleep(0.01)
         while s.in_waiting:
-            if p.parseByte(ord(s.read())) == PingParser.NEW_MESSAGE:
+            if p.parseByte(s.read()) == PingParser.NEW_MESSAGE:
                 print(p.rxMsg)
         m.request_id = PING1D_DISTANCE_SIMPLE
         m.packMsgData()
         s.write(m.msgData)
         time.sleep(0.01)
         while s.in_waiting:
-            if p.parseByte(ord(s.read())) == PingParser.NEW_MESSAGE:
+            if p.parseByte(s.read()) == PingParser.NEW_MESSAGE:
                 print(p.rxMsg)
         print("parsed: %d errors: %d" % (p.parsed, p.errors))
 
