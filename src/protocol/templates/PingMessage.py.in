@@ -320,22 +320,22 @@ if __name__ == "__main__":
     print("\n\n---Testing voltage_5---\n")
     for byte in test_voltage_5_buf:
         p.parseByte(byte)
-    print p.rxMsg
-    
+    print(p.rxMsg)
+
     # A text message
     print("\n\n---Testing nack---\n")
     for byte in test_nack_buf:
         p.parseByte(byte)
-    print p.rxMsg
-    
+    print(p.rxMsg)
+
     # A dynamic vector message
     print("\n\n---Testing profile---\n")
     for byte in test_profile_buf:
         p.parseByte(byte)
-    print p.rxMsg
-    
-    print "\n\n\n"
-    
+    print(p.rxMsg)
+
+    print("\n\n\n")
+
     # Connect to a device
     s = serial.Serial("/dev/ttyUSB1", 115200)
     while True:
@@ -344,10 +344,10 @@ if __name__ == "__main__":
         m.packMsgData()
         s.write(m.msgData)
         time.sleep(0.01)
-        print m
+        print(m)
         while s.in_waiting:
             if p.parseByte(ord(s.read())) == PingParser.NEW_MESSAGE:
-                print p.rxMsg
+                print(p.rxMsg)
 
         m = {{class_info.name}}()
         m.request_id = PING1D_PROFILE
@@ -356,20 +356,20 @@ if __name__ == "__main__":
         time.sleep(0.05)
         while s.in_waiting:
             if p.parseByte(ord(s.read())) == PingParser.NEW_MESSAGE:
-                print p.rxMsg
+                print(p.rxMsg)
         m.request_id = PING1D_VOLTAGE_5
         m.packMsgData()
         s.write(m.msgData)
         time.sleep(0.01)
         while s.in_waiting:
             if p.parseByte(ord(s.read())) == PingParser.NEW_MESSAGE:
-                print p.rxMsg
+                print(p.rxMsg)
         m.request_id = PING1D_DISTANCE_SIMPLE
         m.packMsgData()
         s.write(m.msgData)
         time.sleep(0.01)
         while s.in_waiting:
             if p.parseByte(ord(s.read())) == PingParser.NEW_MESSAGE:
-                print p.rxMsg
+                print(p.rxMsg)
         print("parsed: %d errors: %d" % (p.parsed, p.errors))
 
