@@ -49,7 +49,7 @@ def is_var_size(t):
     return ('[' in t)
 
 def is_payload_var(payload):
-    print payload
+    print(payload)
     if not payload:
         return False
     #return True
