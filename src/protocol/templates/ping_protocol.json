@@ -508,6 +508,17 @@
                             "description": "An array of return strength measurements taken at regular intervals across the scan region."
                         }
                     ]
+                },
+                "protocol_version": {
+                    "id": "5",
+                    "description": "The protocol version",
+                    "payload": [
+                        {
+                            "name": "protocol_version",
+                            "type": "u32",
+                            "descritpion": "The protocol version"
+                        }
+                    ]
                 }
             },
             "control": {
