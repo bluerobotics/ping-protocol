@@ -27,8 +27,8 @@ void PingSimulationLink::randomUpdate()
     profile.set_confidence(conf);
     profile.set_pulse_usec(200);
     profile.set_ping_number(counter);
-    profile.set_start_mm(0);
-    profile.set_length_mm(osc);
+    profile.set_scan_start(0);
+    profile.set_scan_length(osc);
     profile.set_gain_index(4);
     profile.set_num_points(200);
 
