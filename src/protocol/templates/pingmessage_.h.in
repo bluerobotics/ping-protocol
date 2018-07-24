@@ -12,6 +12,7 @@ class {{subclass_info.name}}{{message_type}}_{{message}} : public {{class_info.n
 {
 public:
     {{subclass_info.name}}{{message_type}}_{{message}}(PingMessage& msg) : {{class_info.name}} { msg } {}
+    {{subclass_info.name}}{{message_type}}_{{message}}(uint8_t* buf, uint16_t length) : {{class_info.name}} { buf, length } {}
     {{subclass_info.name}}{{message_type}}_{{message}}()
         : {{class_info.name}} { {{8 + total_payload + 2}} }
     {
