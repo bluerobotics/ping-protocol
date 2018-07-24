@@ -10,8 +10,8 @@
 #include "pingmessage.h"
 
 {% set message_type = _actual_message_type %}
-{% for message in messages[message_type] %}
-{% set total_payload = calc_payload(messages[message_type][message].payload) %}
+{% for message in messages[message_type]['all_msgs'] %}
+{% set total_payload = calc_payload(messages[message_type]['all_msgs'][message].payload) %}
 class {{subclass_info.name}}{{message_type}}_{{message}} : public {{class_info.name}}
 {
 public:
@@ -23,14 +23,14 @@ public:
         msgData[0] = 'B';
         msgData[1] = 'R';
         (uint16_t&)msgData[2] = {{total_payload}}; // payload size
-        (uint16_t&)msgData[4] = {{messages[message_type][message].id}}; // ID
+        (uint16_t&)msgData[4] = {{messages[message_type]['all_msgs'][message].id}}; // ID
         msgData[6] = 0;
         msgData[7] = 0;
     }
 
 {% set byte = namespace(offset=0, func='') %}
-{% if messages[message_type][message].payload %}
-{% for payload in messages[message_type][message].payload %}
+{% if messages[message_type]['all_msgs'][message].payload %}
+{% for payload in messages[message_type]['all_msgs'][message].payload %}
 {% if is_var_size(payload.type) %}{# ex type = 'u8[var]' #}
     {{get_type_string(payload.type, pointer=True)}} {{payload.name}}() { return ({{get_type_string(payload.type, pointer=True)}})(payload_data({{byte.offset}})); }
 {% set byte.func = '{0} + {1}'.format(byte.func, get_c_size(payload.type)) %}
