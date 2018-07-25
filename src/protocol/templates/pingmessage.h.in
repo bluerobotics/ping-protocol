@@ -23,8 +23,8 @@ namespace {{capitalize(message_type)}}Namespace {
     Q_NAMESPACE
 #endif
     enum msg_{{message_type}}_id {
-{% for message in messages[message_type]['all_msgs'] %}
-        {{capitalize(message)}} = {{messages[message_type]['all_msgs'][message].id}},
+{% for message in messages[message_type] %}
+        {{capitalize(message)}} = {{messages[message_type][message].id}},
 {% endfor %}
     };
 #ifdef QT_CORE_LIB
