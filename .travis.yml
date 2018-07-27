@@ -7,12 +7,14 @@ matrix:
       sudo: require
       addons:
         apt:
-          sources: [deadsnakes]
-          packages: [python3.6-dev]
+          sources: [deadsnakes, ubuntu-toolchain-r-test]
+          packages: [python3.6-dev, g++-7]
       env:
-        - DESC="Check json"
+        - DESC="Check json and protocol"
         - TEST="true"
         - PYTHON=3.6
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+        - QTV="qt510"
 
     - os: linux
       dist: trusty
@@ -43,11 +45,9 @@ install:
     echo "CHECK JSON STYLE";
     comm -2 -3 ping_protocol.json temp.json;
   fi
-- if [ -z $TEST ]; then
-    pip install --user --upgrade pip;
-    pip install --user jinja2;
-  fi
-- if [[ "${TRAVIS_OS_NAME}" = "linux" && -z $TEST ]]; then
+- pip install --user --upgrade pip;
+- pip install --user jinja2;
+- if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
     if [ "${QTV}" = "qt59" ]; then
       sudo add-apt-repository --yes ppa:beineri/opt-qt594-trusty;
     else
@@ -67,6 +67,20 @@ install:
   fi
 
 script:
+- if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
+    sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 60;
+  fi
+- if [ ! -z $TEST ]; then
+    source /opt/qt*/bin/qt*-env.sh;
+    export TEST="true";
+    echo "Test cpp protocol!";
+    cd ../../../;
+    cd test;
+    mkdir build && cd build;
+    qmake ..;
+    make;
+    ./test;
+  fi
 - if [[ "${TRAVIS_OS_NAME}" = "linux" && -z $TEST ]]; then
     source /opt/qt*/bin/qt*-env.sh;
   fi
