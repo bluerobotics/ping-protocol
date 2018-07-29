@@ -102,12 +102,13 @@ public:
     }
 };
 
-class ping_msg_ping1D_empty : public PingMessage
+{% for message_type in messages %}
+class {{subclass_info.name}}{{message_type}}_empty : public {{class_info.name}}
 {
 public:
-    ping_msg_ping1D_empty(PingMessage& msg) : PingMessage { msg } {}
-    ping_msg_ping1D_empty(uint8_t* buf, uint16_t length) : {{class_info.name}} { buf, length } {}
-    ping_msg_ping1D_empty()
+    {{subclass_info.name}}{{message_type}}_empty({{class_info.name}}& msg) : {{class_info.name}} { msg } {}
+    {{subclass_info.name}}{{message_type}}_empty(uint8_t* buf, uint16_t length) : {{class_info.name}} { buf, length } {}
+    {{subclass_info.name}}{{message_type}}_empty()
         : {{class_info.name}} { 8 + 2 }
     {
         msgData[0] = 'B';
@@ -120,3 +121,4 @@ public:
 
     void set_id(uint16_t id) { memcpy((msgData + 4 + 0), &id, 2); }
 };
+{% endfor %}
