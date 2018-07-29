@@ -106,6 +106,7 @@ class ping_msg_ping1D_empty : public PingMessage
 {
 public:
     ping_msg_ping1D_empty(PingMessage& msg) : PingMessage { msg } {}
+    ping_msg_ping1D_empty(uint8_t* buf, uint16_t length) : {{class_info.name}} { buf, length } {}
     ping_msg_ping1D_empty()
         : {{class_info.name}} { 8 + 2 }
     {
