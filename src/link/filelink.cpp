@@ -96,6 +96,32 @@ bool FileLink::startConnection() {
     return ok;
 };
 
+QList<QByteArray> FileLink::getPackages()
+{
+    bool ok = _file.open(QIODevice::ReadOnly);
+    if(!ok || _openModeFlag != QIODevice::ReadOnly) {
+        qCCritical(PING_PROTOCOL_FILELINK) << "It's not possible to get packages!";
+        qCDebug(PING_PROTOCOL_FILELINK) << "Ok:" << ok;
+        qCDebug(PING_PROTOCOL_FILELINK) << "ReadWrite:" << ok;
+        return QList<QByteArray>();
+    }
+
+    Pack pack;
+    QList<QByteArray> output;
+    while(true) {
+        // Get data
+        _inout >> pack.time >> pack.data;
+
+        // Check if we have a new package
+        if(pack.time.isEmpty()) {
+            qCDebug(PING_PROTOCOL_FILELINK) << "No more packages !";
+            break;
+        }
+        output.append(pack.data);
+    }
+    return output;
+}
+
 bool FileLink::finishConnection()
 {
     _file.close();
