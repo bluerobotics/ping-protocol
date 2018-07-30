@@ -79,6 +79,9 @@ public:
     static const uint8_t checksumLength = 2;
 
     bool verifyChecksum() {
+        if(msgDataLength() > bufferLength()) {
+            return false;
+        }
         return checksum() == calculateChecksum();
     }
 
