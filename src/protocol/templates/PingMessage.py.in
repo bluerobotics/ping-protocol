@@ -44,12 +44,23 @@ payloadDict = {
 asciiMsgs = [PING1D_NACK, PING1D_ASCII_TEXT]
 varMsgs = [PING1D_PROFILE,]
 
-class {{class_info.name}}:
+class {{class_info.name}}(object):
+    ## header start byte 1
     start_1 = ord("B")
+
+    ## header start byte 2
     start_2 = ord("R")
+
+    ## header struct format
     header_format = "BBHHBB"
+
+    ## checksum struct format
     checksum_format = "H"
+
+    ## data endianness for struct formatting
     endianess = "<"
+    
+    ## names of the header fields
     header_field_names = (
         "start_1",
         "start_2",
@@ -58,46 +69,68 @@ class {{class_info.name}}:
         "src_device_id",
         "dst_device_id")
 
-    # number of bytes
+    ## number of bytes in a header
     headerLength = 8
+
+    ## number of bytes in a checksum
     checksumLength = 2
 
-    # Ex request:
+    ## Messge constructor
+    #
+    # @parEx request:
+    # @code
     # m = PingMessage()
     # m.request_id = m_id
     # m.packMsgData()
     # write(m.msgData)
-    #
-    # Ex set:
+    # @endcode
+    # 
+    # @par Ex set:
+    # @code
     # m = PingMessage(PING1D_SET_RANGE)
     # m.start_mm = 1000
     # m.length_mm = 2000
     # m.update_checksum()
     # write(m.msgData)
-    #
-    # Ex receive:
+    # @endcode
+    # 
+    # @par Ex receive:
+    # @code
     # m = PingMessage(rxByteArray)
     # if m.message_id == PING1D_RANGE
     #     start_mm = m.start_mm
     #     length_mm = m.length_mm
+    # @endcode
     def __init__(self, id=0, msgData=None):
 
+        ## The message id
         self.message_id = id
-        self.request_id = None # flag/hack for message request handling
+        ## The request id for request messages
+        self.request_id = None
+        ## Number of bytes in the message payload
         self.payload_length = payloadDict[id]["payload_length"]
+        ## The message destination
         self.dst_device_id = 0
+        ## The message source
         self.src_device_id = 0
+        ## The message checksum
         self.checksum = 0
 
+        ## The raw data buffer for this message
+        # update with packMsgData()
+        self.msgData = None
         if msgData is not None:
             self.unpackMsgData(msgData)
 
+        ## The name of this message
         self.name = payloadDict[self.message_id]["name"]
+        ## The struct formatting string for the message payload
         self.payload_format = payloadDict[id]["format"]
+        ## The field names of this message
         self.payload_field_names = payloadDict[id]["field_names"]
 
-    # Pack object attributes into self.msgData (bytearray)
-    # Returns self.msgData
+    ## Pack object attributes into self.msgData (bytearray)
+    # @return self.msgData
     def packMsgData(self):
         # Prepare struct packing format string
         format = {{class_info.name}}.endianess + {{class_info.name}}.header_format + self.getPayloadFormat()
@@ -122,7 +155,7 @@ class {{class_info.name}}:
 
         return self.msgData
 
-    # Unpack a bytearray into object attributes
+    ## Unpack a bytearray into object attributes
     def unpackMsgData(self, msgData):
         self.msgData = msgData
 
@@ -146,24 +179,25 @@ class {{class_info.name}}:
         # Extract checksum
         self.checksum = struct.unpack({{class_info.name}}.endianess + {{class_info.name}}.checksum_format, self.msgData[{{class_info.name}}.headerLength + self.payload_length: {{class_info.name}}.headerLength + self.payload_length + {{class_info.name}}.checksumLength])[0]
 
-    # Calculate the checksum from the internal bytearray self.msgData
+    ## Calculate the checksum from the internal bytearray self.msgData
     def calculateChecksum(self):
         checksum = 0
         for byte in self.msgData[0:{{class_info.name}}.headerLength + self.payload_length]:
             checksum += byte
         return checksum
 
-    # Update the object checksum value
-    # Return the object checksum value
+    ## Update the object checksum value
+    # @return the object checksum value
     def updateChecksum(self):
         self.checksum = self.calculateChecksum()
         return self.checksum
 
-    # Verify that the object checksum attribute is equal to the checksum calculated according to the internal bytearray self.msgData
+    ## Verify that the object checksum attribute is equal to the checksum calculated according to the internal bytearray self.msgData
     def verifyChecksum(self):
         return self.checksum == self.calculateChecksum()
 
-    # Get the python struct formatting string for the message payload
+    ## Get the python struct formatting string for the message payload
+    # @return the payload struct format string
     def getPayloadFormat(self):
         if self.message_id in varMsgs or self.message_id in asciiMsgs:
             varLength = self.payload_length - payloadDict[self.message_id]["payload_length"] # Subtract static length portion from payload length
@@ -174,7 +208,8 @@ class {{class_info.name}}:
         else:
             return payloadDict[self.message_id]["format"]
 
-    # Dump object into string representation
+    ## Dump object into string representation
+    # @return string representation of the object
     def __repr__(self):
         headerString = "Header:"
         for attr in {{class_info.name}}.header_field_names:
@@ -278,7 +313,7 @@ class PingParser(object):
             self.state += 1
             if (self.payload_length == 0): # no payload bytes
                 self.state +=1
-        elif self.state == PingParser.WAIT_PAYLOAD: # bug for messages with no payload?
+        elif self.state == PingParser.WAIT_PAYLOAD:
             self.buf.append(byte)
             self.payload_length -= 1
             if self.payload_length == 0:
