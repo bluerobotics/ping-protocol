@@ -1,5 +1,6 @@
 # python project generator
 generator.pri
 
-# generated code folder
+# generated code folders
 pingmessage
+python
