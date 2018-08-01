@@ -12,7 +12,7 @@ import PingMessage
 import serial
 import time
 
-class Ping1D:
+class Ping1D(object):
     def __init__(self, deviceName, baudrate=115200):
         if deviceName is None:
             print("Device name is required")
@@ -20,6 +20,8 @@ class Ping1D:
 
         try:
             print("Opening %s at %d bps") % (deviceName, baudrate)
+
+            ## Serial object for device communication
             self.iodev = serial.Serial(deviceName, baudrate)
             self.iodev.timeout = 1
 
@@ -28,13 +30,15 @@ class Ping1D:
             print("\t", e)
             exit(1)
 
-        # A helper class to take care of decoding the input stream
+        ## A helper class to take care of decoding the input stream
         self.parser = PingMessage.PingParser()
-        self.my_id = 255 # device id of this Ping1D object
 
-    # Consume rx buffer data until a new message is successfully decoded
-    # Return a new message as soon as it is parsed and stop dequeuing data
-    # Return None if the buffer is empty or no message has been parsed
+        ## device id of this Ping1D object, used for dst_device_id in outgoing messages
+        self.my_id = 255
+
+    ## Consume rx buffer data until a new message is successfully decoded
+    # @return A new PingMessage: as soon as a message is parsed (there may be data remaining in the buffer to be parsed, thus requiring subsequent calls to read())
+    # @return None: if the buffer is empty and no message has been parsed
     def read(self):
         while(self.iodev.in_waiting):
             b = self.iodev.read()
@@ -44,10 +48,11 @@ class Ping1D:
                 return self.parser.rxMsg
         return None
 
+    ## Write data to device
     def write(self, data):
         return self.iodev.write(data)
 
-    # Make sure there is a device on the line and read some initial data
+    ## Make sure there is a device on the line and read some initial data
     # Return True if the device replies with expected data
     # Return False otherwise
     def initialize(self):
@@ -55,7 +60,7 @@ class Ping1D:
             return False
         return True
 
-    # Request the given message ID
+    ## Request the given message ID
     # Return response if it is rxed within timeout period, None otherwise
     # TODO handle nack to exit without blocking
     def request(self, m_id, timeout=0.35):
@@ -65,7 +70,7 @@ class Ping1D:
         self.write(msg.msgData)
         return self.waitReply(m_id, timeout)
 
-    # Wait for the device to send a message with the desired message_id for timeout s
+    ## Wait for the device to send a message with the desired message_id for timeout s
     # Return True if a valid message is received from the device with the desired message_id before the timeout period expires
     # Return False otherwise
     def waitReply(self, message_id, timeout=0.5):
@@ -77,7 +82,7 @@ class Ping1D:
                     return msg
         return None
 
-    # Handle an incoming messge from the device
+    ## Handle an incoming messge from the device
     # Extract message fields into self attributes
     def handleMessage(self, msg):
         if msg.message_id in PingMessage.payloadDict:
@@ -86,7 +91,7 @@ class Ping1D:
         else:
             print("Unrecognized message: %d", msg)
 
-    # Dump object into string representation
+    ## Dump object into string representation
     def __repr__(self):
         representation = "---------------------------------------------------------\n~Ping1D Object~"
 
@@ -107,6 +112,11 @@ class Ping1D:
     # If there is no reply return None, otherwise return a dictionary of the updated values
 
 {% for msg in messages["ping1D"]["get"] %}
+    ## {{messages["ping1D"]["get"][msg].description}}
+    #  Returns a dictionary of the reply payload
+{% for field in messages["ping1D"]["get"][msg].payload %}
+    #  @return {{field.name}}: {% if field.units %}Units: {{field.units}}; {% endif %}{{field.description}}
+{% endfor%}
     def get_{{msg}}(self):
         if self.request(PingMessage.PING1D_{{msg|upper}}) is None:
             return None
@@ -127,8 +137,8 @@ class Ping1D:
 
 {% for msg in messages["ping1D"]["set"] %}
 {% for field in messages["ping1D"]["set"][msg].payload %}
-
-    # @{{field.name}} - {% if field.units %}Units: {{field.units}}; {% endif %}{{field.description}}
+    ## {{messages["ping1D"]["set"][msg].description}}
+    #  @param {{field.name}} - {% if field.units %}Units: {{field.units}}; {% endif %}{{field.description}}
 {% endfor %}
     def {{msg}}(self{% for field in messages["ping1D"]["set"][msg].payload %}, {{field.name}}{% endfor %}, verify=True):
         m = PingMessage.PingMessage(PingMessage.PING1D_{{msg|upper}})
