@@ -78,11 +78,16 @@ j2_env.globals.update(calc_payload = calc_payload)
 j2_env.globals.update(get_c_size = get_c_size)
 j2_env.globals.update(is_payload_var = is_payload_var)
 
-f = open('PingMessage.py', "w")
+# Create output file
+output_path = os.path.join(PATH, "python/")
+if not os.path.exists(output_path):
+    os.makedirs(output_path)
+
+f = open(os.path.join(output_path, "PingMessage.py"), "w")
 f.write(j2_env.get_template("PingMessage.py.in").render(jsondata))
 f.close()
 
-f = open('Ping1D.py', "w")
+f = open(os.path.join(output_path, "Ping1D.py"), "w")
 f.write(j2_env.get_template("Ping1D.py.in").render(jsondata))
 f.close()
 
