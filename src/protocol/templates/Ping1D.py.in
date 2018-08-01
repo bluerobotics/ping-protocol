@@ -161,7 +161,14 @@ class Ping1D(object):
 {% endfor %}
 
 if __name__ == "__main__":
-    p = Ping1D("/dev/ttyUSB1", 115200)
+    import argparse
+
+    parser = argparse.ArgumentParser(description="Ping python library example.")
+    parser.add_argument('--device', action="store", required=True, type=str, help="Ping device port.")
+    parser.add_argument('--baudrate', action="store", type=int, default=115200, help="Ping device baudrate.")
+    args = parser.parse_args()
+
+    p = Ping1D(args.device, args.baudrate)
 
     print("Initialized: %s" % p.initialize())
 
