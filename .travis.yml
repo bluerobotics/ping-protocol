@@ -44,6 +44,12 @@ install:
     python3.6 -m json.tool ping_protocol.json >> temp.json;
     echo "CHECK JSON STYLE";
     comm -2 -3 ping_protocol.json temp.json;
+    echo "CHECK JSON DOCUMENTATION";
+    cd ..;
+    pip install --user --upgrade pip;
+    pip install --user jinja2;
+    python generate-doc.py;
+    cmp ping-doc.md ../../README.md;
   fi
 - pip install --user --upgrade pip;
 - pip install --user jinja2;
