@@ -2,10 +2,15 @@
 
 ## Table of Contents
 * [Format](#format)
-{% for msg_group in messages %}
-* [{{msg_group}} Messages](#{{msg_group}}-messages)
-{% for msg in messages[msg_group] %}
-  * [{{msg}}](#{{messages[msg_group][msg].id}}-{{msg}})
+{% for sensor_msgs in messages %}
+* [{{sensor_msgs}} Messages](#{{sensor_msgs}}-messages)
+{% for msg_type in messages[sensor_msgs] %}
+  * [{{msg_type}}](#{{msg_type}})
+{% for msg in messages[sensor_msgs][msg_type] %}
+{% if msg != 'description' %}
+    * [{{msg}}](#{{messages[sensor_msgs][msg_type][msg].id}}-{{msg}})
+{% endif %}
+{% endfor %}
 {% endfor %}
 {% endfor %}
 
@@ -16,27 +21,36 @@
 {% for field in format %}
 | {{field.index}} | {{field.type}} | {{field.name}} | {{field.description}} |
 {% endfor %}
-{% for msg_group in messages %}
+{% for sensor_msgs in messages %}
 
-## {{msg_group}} Messages
+## {{sensor_msgs}} Messages
+{% for msg_type in messages[sensor_msgs] %}
 
-{% for msg in messages[msg_group] %}
-
-### {{messages[msg_group][msg].id}} {{msg}}
-{% if messages[msg_group][msg].description %}
-
-{{messages[msg_group][msg].description}}
-
+### {{msg_type}}
+{% if messages[sensor_msgs][msg_type].description %}
+{{messages[sensor_msgs][msg_type].description}}
 {% endif %}
-{% if not messages[msg_group][msg].payload %}
-No payload
-{% else %}
+
+{% for msg in messages[sensor_msgs][msg_type] %}
+{% if msg != 'description' %}
+#### {{messages[sensor_msgs][msg_type][msg].id}} {{msg}}
+{% if messages[sensor_msgs][msg_type][msg].description %}
+{{messages[sensor_msgs][msg_type][msg].description}}
+{% endif %}
+
+{% if messages[sensor_msgs][msg_type][msg].payload %}
 | Type | Name             | Description                                                      | Units |
 |------|------------------|------------------------------------------------------------------|-------|
-{% for field in messages[msg_group][msg].payload %}
+{% for field in messages[sensor_msgs][msg_type][msg].payload %}
 | {{field.type}} | {{field.name}} | {{field.description}} | {{field.units}} |
 {% endfor %}
+
+{% else %}
+No payload.
+
 {% endif %}
+{% endif %}
+{% endfor %}
 {% endfor %}
 {% endfor %}
 
