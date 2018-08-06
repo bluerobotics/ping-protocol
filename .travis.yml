@@ -79,8 +79,10 @@ script:
 - if [ ! -z $TEST ]; then
     source /opt/qt*/bin/qt*-env.sh;
     export TEST="true";
+    cd ../../;
+    pwd;
+    ls;
     echo "Test cpp protocol!";
-    cd ../../../;
     cd test;
     mkdir build && cd build;
     qmake ..;
