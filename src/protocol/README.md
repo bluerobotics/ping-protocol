@@ -1,6 +1,8 @@
 # Protocol
 Each sensor can have a parser and a protocol, a json/template structure was created to help the development.
 
+[![Travis Build Status](https://travis-ci.org/bluerobotics/ping-protocol-cpp.svg?branch=dev)](https://travis-ci.org/bluerobotics/ping-protocol-cpp) [![Build status](https://ci.appveyor.com/api/projects/status/3bvhlq9wn3ioj6o7?svg=true)](https://ci.appveyor.com/project/blueroboticsappveyor/ping-protocol-cpp) [![Last Releases](https://img.shields.io/github/release/bluerobotics/ping-protocol-cpp.svg)](https://github.com/bluerobotics/ping-protocol-cpp/releases) [![Discuss](https://img.shields.io/badge/discuss-online-green.svg)](https://discuss.bluerobotics.com/)
+
 #### Json file example:
 ```json
 {
