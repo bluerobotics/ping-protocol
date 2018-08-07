@@ -8,7 +8,7 @@
 # DO NOT EDIT
 #~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!
 
-from . import PingMessage
+import PingMessage
 import serial
 import time
 
