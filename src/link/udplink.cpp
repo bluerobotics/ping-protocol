@@ -10,7 +10,7 @@ UDPLink::UDPLink(QObject* parent)
     : AbstractLink(parent)
     , _udpSocket(new QUdpSocket(parent))
 {
-    setType(AbstractLink::LinkType::Udp);
+    setType(LinkType::Udp);
 
     connect(_udpSocket, &QIODevice::readyRead, this, [this]() {
         emit newData(_udpSocket->receiveDatagram().data());
@@ -21,21 +21,19 @@ UDPLink::UDPLink(QObject* parent)
     });
 }
 
-bool UDPLink::setConfiguration(const QStringList& args)
+bool UDPLink::setConfiguration(const LinkConfiguration& linkConfiguration)
 {
-    qCDebug(PING_PROTOCOL_UDPLINK) << args;
-    if(args.length() != 2) {
-        qCDebug(PING_PROTOCOL_UDPLINK) << "Wrong argument E.g: 0.0.0.0:1234";
-        qCDebug(PING_PROTOCOL_UDPLINK) << args;
+
+    qCDebug(PING_PROTOCOL_UDPLINK) << linkConfiguration.toString();
+    if(!linkConfiguration.isValid()) {
+        qCDebug(PING_PROTOCOL_UDPLINK) << LinkConfiguration::errorToString(linkConfiguration.error());
         return false;
     }
-    if(args[0].isEmpty() || args[1].isEmpty()) {
-        qCDebug(PING_PROTOCOL_UDPLINK) << "Wrong argument E.g: 0.0.0.0:1234";
-        qCDebug(PING_PROTOCOL_UDPLINK) << args;
-        return false;
-    }
-    _hostAddress = QHostAddress(args[0]);
-    _port = args[1].toInt();
+
+    setName(linkConfiguration.name());
+
+    _hostAddress = QHostAddress(linkConfiguration.args()->at(0));
+    _port = linkConfiguration.args()->at(1).toInt();
 
     return true;
 }
