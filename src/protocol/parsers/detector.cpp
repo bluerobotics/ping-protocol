@@ -64,7 +64,7 @@ void ProtocolDetector::scan() {
 
         if (detected) {
             qCDebug(PING_PROTOCOL_PROTOCOLDETECTOR) << "Ping detected on UDP";
-            emit _detected(QStringList({QStringLiteral("3"), _hostAddress.toString(), QString::number(_port)}));
+            emit connectionDetected(LinkType::Udp, {_hostAddress.toString(), QString::number(_port)});
             _active = false;
             return;
         }
@@ -120,7 +120,7 @@ void ProtocolDetector::scan() {
 
                 if (detected) {
                     qCDebug(PING_PROTOCOL_PROTOCOLDETECTOR) << "Ping detected on" << port.portName() << baudrate;
-                    emit _detected(QStringList({QStringLiteral("2"), port.portName(), QString::number(baudrate)}));
+                    emit connectionDetected(LinkType::Serial, {port.portName(), QString::number(baudrate)});
                     _active = false;
                     return;
                 } else {

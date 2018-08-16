@@ -3,6 +3,8 @@
 #include <QObject>
 #include <QTime>
 
+#include "linkconfiguration.h"
+
 class AbstractLink : public QObject
 {
     Q_OBJECT
@@ -10,19 +12,9 @@ public:
     AbstractLink(QObject* parent = nullptr);
     ~AbstractLink();
 
-    enum LinkType {
-        None = 0,
-        File,
-        Serial,
-        Udp,
-        Tcp,
-        PingSimulation,
-    };
-    Q_ENUM(LinkType)
-
     const AbstractLink& operator=(const AbstractLink& other);
 
-    virtual bool setConfiguration(const QStringList& args) { Q_UNUSED(args) return true; }
+    virtual bool setConfiguration(const LinkConfiguration& linkConfiguration) { Q_UNUSED(linkConfiguration) return true; }
 
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
     void setName(const QString& name) { _name = name; emit nameChanged(_name); };
@@ -69,7 +61,7 @@ signals:
     void availableConnectionsChanged();
     void nameChanged(const QString& name);
     void autoConnectChanged();
-    void linkChanged(AbstractLink::LinkType link);
+    void linkChanged(AbstractLinkNamespace::LinkType link);
     void newData(const QByteArray& data);
     void sendData(const QByteArray& data);
 

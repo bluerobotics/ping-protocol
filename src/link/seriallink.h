@@ -12,7 +12,7 @@ public:
     ~SerialLink();
 
     bool isOpen() final { return _port->isWritable() && _port->isReadable(); };
-    bool setConfiguration(const QStringList& args) final;
+    bool setConfiguration(const LinkConfiguration& linkConfiguration) final;
     bool startConnection() final { return _port->open(QIODevice::ReadWrite); };
     bool finishConnection() final;
     QString errorString() final { return _port->errorString(); };

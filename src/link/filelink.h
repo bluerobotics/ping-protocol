@@ -14,7 +14,7 @@ public:
     ~FileLink();
 
     bool isOpen() final { return _file.isWritable() && _file.isReadable(); };
-    bool setConfiguration(const QStringList& args) final;
+    bool setConfiguration(const LinkConfiguration& linkConfiguration) final;
     bool startConnection() final;
     bool finishConnection() final;
     QString errorString() final { return _file.errorString(); };

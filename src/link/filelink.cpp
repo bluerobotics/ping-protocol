@@ -17,7 +17,7 @@ FileLink::FileLink(QObject* parent)
     , _inout(&_file)
     , _logThread(nullptr)
 {
-    setType(AbstractLink::LinkType::File);
+    setType(LinkType::File);
 
     connect(this, &AbstractLink::sendData, this, &FileLink::_writeData);
 }
@@ -36,25 +36,21 @@ void FileLink::_writeData(const QByteArray& data)
     }
 }
 
-bool FileLink::setConfiguration(const QStringList& args)
+bool FileLink::setConfiguration(const LinkConfiguration& linkConfiguration)
 {
-    qCDebug(PING_PROTOCOL_FILELINK) << args;
-    if(args.length() != 2) {
-        qCDebug(PING_PROTOCOL_FILELINK) << "Wrong argument E.g: path/file:format";
-        qCDebug(PING_PROTOCOL_FILELINK) << args;
+    qCDebug(PING_PROTOCOL_FILELINK) << linkConfiguration.toString();
+    if(!linkConfiguration.isValid()) {
+        qCDebug(PING_PROTOCOL_FILELINK) << LinkConfiguration::errorToString(linkConfiguration.error());
         return false;
     }
-    if(args[0].isEmpty() || args[1].isEmpty()) {
-        qCDebug(PING_PROTOCOL_FILELINK) << "Wrong argument E.g: path/file:format";
-        qCDebug(PING_PROTOCOL_FILELINK) << args;
-        return false;
-    }
+
+    setName(linkConfiguration.name());
 
     // Read or create the log ?
     // This flag does not change how the file will be open (ReadWrite)
-    _openModeFlag = args[1][0] == "r" ? QIODevice::ReadOnly : QIODevice::WriteOnly;
+    _openModeFlag = linkConfiguration.args()->at(1)[0] == "r" ? QIODevice::ReadOnly : QIODevice::WriteOnly;
 
-    _file.setFileName(args[0]);
+    _file.setFileName(linkConfiguration.args()->at(0));
 
     return true;
 }

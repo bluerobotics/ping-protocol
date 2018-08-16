@@ -11,7 +11,7 @@ SerialLink::SerialLink(QObject* parent)
     : AbstractLink(parent)
     , _port(new QSerialPort(parent))
 {
-    setType(AbstractLink::LinkType::Serial);
+    setType(LinkType::Serial);
 
     connect(_port, &QIODevice::readyRead, this, [this]() {
         emit newData(_port->readAll());
@@ -38,20 +38,18 @@ SerialLink::SerialLink(QObject* parent)
     });
 }
 
-bool SerialLink::setConfiguration(const QStringList& args)
+bool SerialLink::setConfiguration(const LinkConfiguration& linkConfiguration)
 {
-    if(args.length() != 2) {
-        qCDebug(PING_PROTOCOL_SERIALLINK) << "Wrong argument E.g: /dev/ttyUSB0:115200";
-        qCDebug(PING_PROTOCOL_SERIALLINK) << args;
+    qCDebug(PING_PROTOCOL_SERIALLINK) << linkConfiguration.toString();
+    if(!linkConfiguration.isValid()) {
+        qCDebug(PING_PROTOCOL_SERIALLINK) << LinkConfiguration::errorToString(linkConfiguration.error());
         return false;
     }
-    if(args[0].isEmpty() || args[1].isEmpty()) {
-        qCDebug(PING_PROTOCOL_SERIALLINK) << "Wrong argument E.g: /dev/ttyUSB0:115200";
-        qCDebug(PING_PROTOCOL_SERIALLINK) << args;
-        return false;
-    }
-    _port->setPortName(args[0]);
-    _port->setBaudRate(args[1].toInt());
+
+    setName(linkConfiguration.name());
+
+    _port->setPortName(linkConfiguration.args()->at(0));
+    _port->setBaudRate(linkConfiguration.args()->at(1).toInt());
 
     return true;
 }
