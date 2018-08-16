@@ -3,18 +3,22 @@ language: cpp
 matrix:
   include:
     - os: linux
-      dist: trusty
+      dist: xenial
       sudo: require
       addons:
         apt:
-          sources: [deadsnakes, ubuntu-toolchain-r-test]
-          packages: [python3.6-dev, g++-7]
+          sources:
+            - sourceline: "ppa:deadsnakes/ppa"
+            - sourceline: "ppa:ubuntu-toolchain-r/test"
+          packages:
+            - python3.6
+            - g++-7
       env:
         - DESC="Check json and protocol"
         - TEST="true"
         - PYTHON=3.6
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
-        - QTV="qt510"
+        - QTV="qt511"
 
     - os: linux
       dist: trusty
