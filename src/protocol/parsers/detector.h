@@ -2,6 +2,7 @@
 
 #include <QThread>
 
+#include "abstractlink.h"
 #include "parser_ping.h"
 
 class QSerialPortInfo;
@@ -23,7 +24,7 @@ public:
     void scan();
 
 signals:
-    void _detected(QStringList config); // Todo can we send a pre-configured, pre-connected link object with the signal?
+    void connectionDetected(AbstractLinkNamespace::LinkType connType, QStringList config); // Todo can we send a pre-configured, pre-connected link object with the signal?
 
 protected:
     void run() { scan(); }

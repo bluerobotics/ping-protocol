@@ -10,10 +10,10 @@ environment:
   matrix:
     - MSVC_VERSION: 15
       RUNTIME_LINKAGE: static
-      QT_VERSION: 5.10
+      QT_VERSION: 5.11
       QT_LINKAGE: static
       COVERITY_BUILD_CANDIDATE: True
-      QTDIR: C:\Qt\5.10.1\mingw53_32
+      QTDIR: C:\Qt\%QT_VERSION%\mingw53_32
       MGWDIR: C:\Qt\Tools\mingw530_32\bin
 
 configuration:
@@ -43,4 +43,4 @@ before_build:
 build_script:
   # Compile it and check for .exe
   - cd %APPVEYOR_BUILD_FOLDER%-build
-  - '%make%'
+  - '%make% -j3'
