@@ -9,6 +9,12 @@
 
 #include "pingmessage.h"
 
+#ifdef QT_CORE_LIB
+#include <functional>
+#include <QMap>
+#include <QVariant>
+
+#endif
 {% set message_type = _actual_message_type %}
 {% for message in messages[message_type]['all_msgs'] %}
 {% set total_payload = calc_payload(messages[message_type]['all_msgs'][message].payload) %}
@@ -27,6 +33,16 @@ public:
         msgData[6] = 0;
         msgData[7] = 0;
     }
+
+#ifdef QT_CORE_LIB
+    const QMap<QString, std::function<float()> > function_map {
+{% for payload in messages[message_type][message].payload %}
+{% if not is_vector(payload.type) %}
+        {"{{payload.name}}", [this]()->float{return this->{{payload.name}}();}},
+{% endif %}
+{% endfor %}
+    };
+#endif
 
 {% set byte = namespace(offset=0, func='') %}
 {% if messages[message_type]['all_msgs'][message].payload %}

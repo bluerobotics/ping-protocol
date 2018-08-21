@@ -14,7 +14,9 @@
 /// script found in this directory
 
 #ifdef QT_CORE_LIB
+#include <functional>
 #include <QObject>
+#include <QMap>
 
 #endif
 {% for message_type in messages %}
@@ -69,6 +71,9 @@ public:
 
 protected:
     uint16_t _bufferLength;
+#ifdef QT_CORE_LIB
+    const QMap<QString, std::function<float()> > function_map;
+#endif
 
 public:
     uint8_t* msgData;

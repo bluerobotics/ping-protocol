@@ -28,7 +28,7 @@ public:
     void setPackageIndex(int index) { if(_logThread) _logThread->setPackageIndex(index); }
     QTime totalTime() final { return _logThread ? _logThread->totalTime() : QTime(); };
     QTime elapsedTime() final { return _logThread ? _logThread->elapsedTime() : QTime(); };
-
+    QList<QByteArray> getPackages();
 private:
     struct Pack {
         QString time;
