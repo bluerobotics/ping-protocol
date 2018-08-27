@@ -13,7 +13,7 @@ public:
     FileLink(QObject* parent = nullptr);
     ~FileLink();
 
-    bool isOpen() final { return _file.isWritable() && _file.isReadable(); };
+    bool isOpen() final;
     bool setConfiguration(const LinkConfiguration& linkConfiguration) final;
     bool startConnection() final;
     bool finishConnection() final;
