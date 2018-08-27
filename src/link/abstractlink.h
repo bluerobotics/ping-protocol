@@ -14,7 +14,9 @@ public:
 
     const AbstractLink& operator=(const AbstractLink& other);
 
+    Q_PROPERTY(LinkConfiguration* configuration READ configuration CONSTANT)
     virtual bool setConfiguration(const LinkConfiguration& linkConfiguration) { Q_UNUSED(linkConfiguration) return true; }
+    LinkConfiguration* configuration() { return &_linkConfiguration; }
 
     Q_PROPERTY(QString name READ name WRITE setName NOTIFY nameChanged)
     void setName(const QString& name) { _name = name; emit nameChanged(_name); };
@@ -73,6 +75,7 @@ signals:
 
 protected:
     static const QString _timeFormat;
+    LinkConfiguration _linkConfiguration;
 
 private:
     bool _autoConnect;
