@@ -7,7 +7,7 @@
 
 #include "abstractlinknamespace.h"
 
-class LinkConfiguration : QObject
+class LinkConfiguration : public QObject
 {
     Q_OBJECT
 
@@ -37,12 +37,12 @@ public:
     ~LinkConfiguration() = default;
 
     const QStringList* args() const { return &_linkConf.args; };
-    QStringList argsAsConst() const { return _linkConf.args; };
+    Q_INVOKABLE QStringList argsAsConst() const { return _linkConf.args; };
 
-    QString name() const { return _linkConf.name; };
+    Q_INVOKABLE QString name() const { return _linkConf.name; };
     void setName(QString name) { _linkConf.name = name; };
 
-    LinkType type() const { return _linkConf.type; };
+    Q_INVOKABLE AbstractLinkNamespace::LinkType type() const { return _linkConf.type; };
     void setType(LinkType type) { _linkConf.type = type; };
 
     const QString createConfString() const { return _linkConf.args.join(":"); };
@@ -51,14 +51,21 @@ public:
     const QString createFullConfString() const;
     const QStringList createFullConfStringList() const;
 
-    bool isValid() const { return error() <= NoErrors; }
+    LinkConf configurationStruct() const { return _linkConf; };
+
+    Q_INVOKABLE bool isValid() const { return error() <= NoErrors; }
 
     Error error() const;
 
     static QString errorToString(Error error) { return errorMap[error]; }
 
     //Todo: move to `operator QString()`
-    QString toString() const;
+    Q_INVOKABLE QString toString() const;
+
+    LinkConfiguration& operator = (const LinkConfiguration& other) {
+        this->_linkConf = other.configurationStruct();
+        return *this;
+    }
 
 private:
     LinkConf _linkConf;
