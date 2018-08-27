@@ -37,36 +37,43 @@ void ProtocolDetector::scan() {
 
         // To test locally, change the host to 127.0.0.1 and use something like:
         // nc -kul 127.0.0.1 8888 > /dev/ttyUSB0 < /dev/ttyUSB0
-        auto _hostAddress = QHostAddress("192.168.2.2");
-        int _port = 9090;
+        // or
+        // socat UDP-LISTEN:1234,fork,reuseaddr,ignoreeof FILE:/dev/ttyUSB1,b115200,raw,ignoreeof
 
-        qCDebug(PING_PROTOCOL_PROTOCOLDETECTOR) << "Probing UDP" << _hostAddress.toString() << _port;
-        // sockit.setSocketOption(QAbstractSocket::KeepAliveOption, 1);
-        sockit.writeDatagram(reinterpret_cast<const char*>(req.msgData), req.msgDataLength(), _hostAddress, _port); // probe
+        struct HostPort {
+            QHostAddress host;
+            uint port;
+        };
 
-        bool detected = false;
-        int attempts = 0;
+        for(const HostPort& hostAddress : {HostPort{QHostAddress("192.168.2.2"), 9000}, HostPort{QHostAddress("127.0.0.1"), 1234}}) {
+            qCDebug(PING_PROTOCOL_PROTOCOLDETECTOR) << "Probing UDP" << hostAddress.host.toString() << hostAddress.port;
+            // sockit.setSocketOption(QAbstractSocket::KeepAliveOption, 1);
+            sockit.writeDatagram(reinterpret_cast<const char*>(req.msgData), req.msgDataLength(), hostAddress.host, hostAddress.port); // probe
 
-        while (!detected && attempts < 10) { // Try to get a valid response, timeout after 10 * 50 ms
-            sockit.waitForReadyRead(50);
-            QNetworkDatagram datagram = sockit.receiveDatagram();
-            auto buf = datagram.data();
-            for (auto byte = buf.begin(); byte != buf.end(); ++byte) {
-                detected = _parser.parseByte(*byte) == PingParser::NEW_MESSAGE;
-                if (detected) {
-                    break;
+            bool detected = false;
+            int attempts = 0;
+
+            while (!detected && attempts < 10) { // Try to get a valid response, timeout after 10 * 50 ms
+                sockit.waitForReadyRead(50);
+                QNetworkDatagram datagram = sockit.receiveDatagram();
+                auto buf = datagram.data();
+                for (auto byte = buf.begin(); byte != buf.end(); ++byte) {
+                    detected = _parser.parseByte(*byte) == PingParser::NEW_MESSAGE;
+                    if (detected) {
+                        break;
+                    }
                 }
+                attempts++;
             }
-            attempts++;
-        }
 
-        sockit.close();
+            sockit.close();
 
-        if (detected) {
-            qCDebug(PING_PROTOCOL_PROTOCOLDETECTOR) << "Ping detected on UDP";
-            emit connectionDetected(LinkType::Udp, {_hostAddress.toString(), QString::number(_port)});
-            _active = false;
-            return;
+            if (detected) {
+                qCDebug(PING_PROTOCOL_PROTOCOLDETECTOR) << "Ping detected on UDP";
+                emit connectionDetected(LinkType::Udp, {hostAddress.host.toString(), QString::number(hostAddress.port)});
+                _active = false;
+                return;
+            }
         }
 
         // Not found on UDP, now try all available serial ports
