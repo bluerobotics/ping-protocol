@@ -94,7 +94,10 @@ bool FileLink::startConnection() {
 
 bool FileLink::finishConnection()
 {
-    _file.close();
+    // Only close files that are open
+    if(_file.isOpen()) {
+        _file.close();
+    }
     return true;
 }
 
