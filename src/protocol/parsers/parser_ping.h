@@ -102,10 +102,12 @@ public:
         case WAIT_CHECKSUM_H:
             parseBuf.append(byte);
             PingMessage msg((uint8_t*)parseBuf.data(), parseBuf.length());
+            bool ok = false;
             if (!msg.verifyChecksum()) {
                 errors++;
                 emit parseError();
             } else {
+                ok = true;
                 emit newMessage(msg);
                 parsed++;
             }
@@ -116,10 +118,11 @@ public:
             state = WAIT_START;
 
             // TODO print state of message here after clearing buf
-
-            return NEW_MESSAGE;
+            if (ok) {
+                return NEW_MESSAGE;
+            }
+            return state;
         }
-
         return state;
     }
 
