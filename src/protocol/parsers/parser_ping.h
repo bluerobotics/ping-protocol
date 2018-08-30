@@ -73,7 +73,7 @@ public:
             break;
         case WAIT_MSG_ID_H:
             parseBuf.append(byte);
-             msg_id = (byte << 8) | msg_id;
+            msg_id = (byte << 8) | msg_id;
             state++;
             break;
         case WAIT_SRC_ID:
