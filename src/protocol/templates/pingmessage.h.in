@@ -45,12 +45,12 @@ public:
         memcpy(msgData, msg.msgData, _bufferLength);
     }
 
-    {{class_info.name}}(uint16_t bufferLength)
+    {{class_info.name}}(const uint16_t bufferLength)
         : _bufferLength { bufferLength }
         , msgData { (uint8_t*)malloc(sizeof(uint8_t) * _bufferLength) }
     {}
 
-    {{class_info.name}}(uint8_t* buf, uint16_t length)
+    {{class_info.name}}(const uint8_t* buf, const uint16_t length)
         : _bufferLength { length }
         , msgData { (uint8_t*)malloc(sizeof(uint8_t) * _bufferLength) }
     {
@@ -85,7 +85,7 @@ public:
     static const uint8_t headerLength = 8;
     static const uint8_t checksumLength = 2;
 
-    bool verifyChecksum() {
+    bool verifyChecksum() const {
         if(msgDataLength() > bufferLength()) {
             return false;
         }
@@ -96,7 +96,7 @@ public:
         *(uint16_t*)(msgData + msgDataLength() - checksumLength) = calculateChecksum();
     }
 
-    uint16_t calculateChecksum() {
+    uint16_t calculateChecksum() const {
         uint16_t checksum = 0;
 
         if(msgDataLength() <= bufferLength()) {
@@ -113,8 +113,8 @@ public:
 class {{subclass_info.name}}{{message_type}}_empty : public {{class_info.name}}
 {
 public:
-    {{subclass_info.name}}{{message_type}}_empty({{class_info.name}}& msg) : {{class_info.name}} { msg } {}
-    {{subclass_info.name}}{{message_type}}_empty(uint8_t* buf, uint16_t length) : {{class_info.name}} { buf, length } {}
+    {{subclass_info.name}}{{message_type}}_empty(const {{class_info.name}}& msg) : {{class_info.name}} { msg } {}
+    {{subclass_info.name}}{{message_type}}_empty(const uint8_t* buf, const uint16_t length) : {{class_info.name}} { buf, length } {}
     {{subclass_info.name}}{{message_type}}_empty()
         : {{class_info.name}} { 8 + 2 }
     {
@@ -126,6 +126,6 @@ public:
         msgData[7] = 0;
     }
 
-    void set_id(uint16_t id) { memcpy((msgData + 4 + 0), &id, 2); }
+    void set_id(const uint16_t id) { memcpy((msgData + 4 + 0), &id, 2); }
 };
 {% endfor %}
