@@ -88,8 +88,11 @@ public:
             }
             break;
         case WAIT_PAYLOAD:
-            parseBuf.append(byte);
-            if (--payload_length == 0) {
+            if (payload_length) {
+                parseBuf.append(byte);
+                payload_length--;
+            }
+            if (payload_length == 0) {
                 state++;
             }
             break;
