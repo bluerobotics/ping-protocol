@@ -15,8 +15,8 @@
 class {{subclass_info.name}}{{message_type}}_{{message}} : public {{class_info.name}}
 {
 public:
-    {{subclass_info.name}}{{message_type}}_{{message}}(PingMessage& msg) : {{class_info.name}} { msg } {}
-    {{subclass_info.name}}{{message_type}}_{{message}}(uint8_t* buf, uint16_t length) : {{class_info.name}} { buf, length } {}
+    {{subclass_info.name}}{{message_type}}_{{message}}(const PingMessage& msg) : {{class_info.name}} { msg } {}
+    {{subclass_info.name}}{{message_type}}_{{message}}(const uint8_t* buf, const uint16_t length) : {{class_info.name}} { buf, length } {}
     {{subclass_info.name}}{{message_type}}_{{message}}()
         : {{class_info.name}} { {{8 + total_payload + 2}} }
     {
@@ -32,15 +32,15 @@ public:
 {% if messages[message_type]['all_msgs'][message].payload %}
 {% for payload in messages[message_type]['all_msgs'][message].payload %}
 {% if is_var_size(payload.type) %}{# ex type = 'u8[var]' #}
-    {{get_type_string(payload.type, pointer=True)}} {{payload.name}}() { return ({{get_type_string(payload.type, pointer=True)}})(payload_data({{byte.offset}})); }
+    {{get_type_string(payload.type, pointer=True)}} {{payload.name}}() const { return ({{get_type_string(payload.type, pointer=True)}})(payload_data({{byte.offset}})); }
 {% set byte.func = '{0} + {1}'.format(byte.func, get_c_size(payload.type)) %}
 {% else %}
 {% if is_vector(payload.type) %}
-    {{get_type_string(payload.type, pointer=True)}} {{payload.name}}() { return (payload_data({{byte.offset}})); }
-    void set_{{payload.name}}_at(uint16_t i, uint8_t data) { memcpy((payload_data({{byte.offset}} + i)), &data, 1); }
+    {{get_type_string(payload.type, pointer=True)}} {{payload.name}}() const { return (payload_data({{byte.offset}})); }
+    void set_{{payload.name}}_at(const uint16_t i, const uint8_t data) { memcpy((payload_data({{byte.offset}} + i)), &data, 1); }
 {% else %}
-    {{get_type_string(payload.type)}} {{payload.name}}() { {{get_type_string(payload.type, name='d')}}; memcpy(&d, (payload_data({{byte.offset}})), {{get_c_size(payload.type)}}); return d; };
-    void set_{{payload.name}}({{get_type_string(payload.type)}} {{payload.name}}) { memcpy((payload_data({{byte.offset}})), &{{payload.name}}, {{get_c_size(payload.type)}});};
+    {{get_type_string(payload.type)}} {{payload.name}}() const { {{get_type_string(payload.type, name='d')}}; memcpy(&d, (payload_data({{byte.offset}})), {{get_c_size(payload.type)}}); return d; };
+    void set_{{payload.name}}(const {{get_type_string(payload.type)}} {{payload.name}}) { memcpy((payload_data({{byte.offset}})), &{{payload.name}}, {{get_c_size(payload.type)}});};
 {% endif %}
 {% set byte.offset = byte.offset + get_c_size(payload.type) %}
 {% endif %}
