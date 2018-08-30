@@ -35,7 +35,6 @@ public:
     uint8_t parseByte(const char& byte) override
     {
         static QByteArray parseBuf;
-//        static Message msg(parseBuf);
         static uint16_t payload_length = 0;
         static uint16_t msg_id = 0; // debug purposes only
         static uint8_t state = WAIT_START;
@@ -73,7 +72,7 @@ public:
             break;
         case WAIT_MSG_ID_H:
             parseBuf.append(byte);
-             msg_id = (byte << 8) | msg_id;
+            msg_id = (byte << 8) | msg_id;
             state++;
             break;
         case WAIT_SRC_ID:
@@ -88,8 +87,11 @@ public:
             }
             break;
         case WAIT_PAYLOAD:
-            parseBuf.append(byte);
-            if (--payload_length == 0) {
+            if (payload_length) {
+                parseBuf.append(byte);
+                payload_length--;
+            }
+            if (payload_length == 0) {
                 state++;
             }
             break;
@@ -100,10 +102,12 @@ public:
         case WAIT_CHECKSUM_H:
             parseBuf.append(byte);
             PingMessage msg((uint8_t*)parseBuf.data(), parseBuf.length());
+            bool ok = false;
             if (!msg.verifyChecksum()) {
                 errors++;
                 emit parseError();
             } else {
+                ok = true;
                 emit newMessage(msg);
                 parsed++;
             }
@@ -114,10 +118,11 @@ public:
             state = WAIT_START;
 
             // TODO print state of message here after clearing buf
-
-            return NEW_MESSAGE;
+            if (ok) {
+                return NEW_MESSAGE;
+            }
+            return state;
         }
-
         return state;
     }
 

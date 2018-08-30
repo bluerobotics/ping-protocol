@@ -20,7 +20,7 @@ void Test::messages() {
 {% for i in message.data %}
 {% if type(message.data[i]).__name__ == 'list' %}
         int {{message.name}}_msg_counter = 0;
-        for(const uint8_t i : QList<uint8_t>({
+        for(const uint8_t i : QVector<uint8_t>({
 {% for byte in message.data[i] %}
             {{byte}},
 {% endfor %}

@@ -114,8 +114,8 @@ void ProtocolDetector::scan() {
                 while (!detected && attempts < 10) { // Try to get a valid response, timeout after 10 * 50 ms
                     port.waitForReadyRead(50);
                     auto buf = port.readAll();
-                    for (auto byte = buf.begin(); byte != buf.end(); ++byte) {
-                        detected = _parser.parseByte(*byte) == PingParser::NEW_MESSAGE;
+                    for (const auto& byte : buf) {
+                        detected = _parser.parseByte(byte) == PingParser::NEW_MESSAGE;
                         if (detected) {
                             break;
                         }
