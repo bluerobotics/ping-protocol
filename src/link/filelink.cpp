@@ -26,7 +26,9 @@ void FileLink::_writeData(const QByteArray& data)
 {
     // Check if we have already opened the file
     if(!_file.isOpen()) {
+        qCDebug(PING_PROTOCOL_FILELINK) << "File will be opened.";
         if(!_file.open(QIODevice::ReadWrite)){
+            qCDebug(PING_PROTOCOL_FILELINK) << "File was not open.";
             return;
         }
     }
@@ -36,6 +38,10 @@ void FileLink::_writeData(const QByteArray& data)
         QString time = _time.currentTime().toString(_timeFormat);
         Pack pack{time, data};
         _inout << pack.time << pack.data;
+    } else {
+        qCWarning(PING_PROTOCOL_FILELINK) << "Something is wrong!";
+        qCDebug(PING_PROTOCOL_FILELINK) << "File is opened as write only:" << (_openModeFlag == QIODevice::WriteOnly);
+        qCDebug(PING_PROTOCOL_FILELINK) << "File can be writable:" << _file.isWritable();
     }
 }
 
