@@ -14,7 +14,7 @@ class ProtocolDetector : public QThread
     Q_OBJECT
 public:
     ProtocolDetector(){
-        connect(this, &QThread::finished, [this]{ _active = false; });
+        connect(this, &QThread::finished, this, [this]{ _active = false; });
     };
 
     static const QStringList& invalidSerialPortNames() {
