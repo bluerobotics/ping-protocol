@@ -4,6 +4,8 @@
 #include <QFile>
 #include <QTime>
 
+#include <memory>
+
 #include "abstractlink.h"
 #include "logthread.h"
 
@@ -41,7 +43,7 @@ private:
     QFile _file;
     QDataStream _inout;
 
-    LogThread* _logThread;
+    std::unique_ptr<LogThread> _logThread;
 
     void _writeData(const QByteArray& data);
 };
