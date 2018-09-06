@@ -18,7 +18,7 @@ public:
 
     state_t state;
 
-    uint8_t parseByte(const char& byte) override;
+    uint8_t parseByte(const char byte) override;
 
     void parseBuffer(const QByteArray& buf) override;
 

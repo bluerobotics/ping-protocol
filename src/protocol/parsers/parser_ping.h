@@ -32,7 +32,7 @@ public:
         }
     }
 
-    uint8_t parseByte(const char& byte) override
+    uint8_t parseByte(const char byte) override
     {
         static QByteArray parseBuf;
         static uint16_t payload_length = 0;
