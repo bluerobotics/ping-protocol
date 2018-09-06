@@ -8,8 +8,8 @@ class JsonParser : public Parser
 {
     Q_OBJECT
 public:
-    JsonParser() {}
-    ~JsonParser() {}
+    JsonParser() = default;
+    ~JsonParser() = default;
 
     typedef enum {
         WaitStart = 0,
