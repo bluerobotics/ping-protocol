@@ -8,7 +8,8 @@ class PingParser : public Parser
 {
     Q_OBJECT
 public:
-    PingParser() {}
+    PingParser() = default;
+    ~PingParser() = default;
 
     enum {
         NEW_MESSAGE,   // Just got a complete checksum-verified message
