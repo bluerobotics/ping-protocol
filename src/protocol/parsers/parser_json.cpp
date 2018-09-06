@@ -8,7 +8,7 @@
 
 Q_LOGGING_CATEGORY(PING_PROTOCOL_JSONPARSER, "ping.protocol.jsonparser")
 
-uint8_t JsonParser::parseByte(const char& byte)
+uint8_t JsonParser::parseByte(const char byte)
 {
     static QByteArray buf;
     switch(state) {
