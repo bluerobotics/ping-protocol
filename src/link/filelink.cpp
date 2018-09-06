@@ -80,16 +80,14 @@ bool FileLink::startConnection() {
         Pack pack;
         if(_logThread) {
             // Disconnect LogThread
-            disconnect(_logThread, &LogThread::newPackage, this, &FileLink::newData);
-            disconnect(_logThread, &LogThread::packageIndexChanged, this, &FileLink::packageIndexChanged);
-            disconnect(_logThread, &LogThread::packageIndexChanged, this, &FileLink::elapsedTimeChanged);
-
-            delete _logThread;
+            disconnect(_logThread.get(), &LogThread::newPackage, this, &FileLink::newData);
+            disconnect(_logThread.get(), &LogThread::packageIndexChanged, this, &FileLink::packageIndexChanged);
+            disconnect(_logThread.get(), &LogThread::packageIndexChanged, this, &FileLink::elapsedTimeChanged);
         }
-        _logThread = new LogThread();
-        connect(_logThread, &LogThread::newPackage, this, &FileLink::newData);
-        connect(_logThread, &LogThread::packageIndexChanged, this, &FileLink::packageIndexChanged);
-        connect(_logThread, &LogThread::packageIndexChanged, this, &FileLink::elapsedTimeChanged);
+        _logThread.reset(new LogThread());
+        connect(_logThread.get(), &LogThread::newPackage, this, &FileLink::newData);
+        connect(_logThread.get(), &LogThread::packageIndexChanged, this, &FileLink::packageIndexChanged);
+        connect(_logThread.get(), &LogThread::packageIndexChanged, this, &FileLink::elapsedTimeChanged);
         while(true) {
             // Get data
             _inout >> pack.time >> pack.data;
@@ -128,5 +126,4 @@ bool FileLink::finishConnection()
 
 FileLink::~FileLink()
 {
-    delete _logThread;
 }
