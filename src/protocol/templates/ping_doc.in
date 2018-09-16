@@ -1,0 +1,58 @@
+# Ping Protocol
+
+[![Travis Build Status](https://travis-ci.org/bluerobotics/ping-protocol-cpp.svg?branch=dev)](https://travis-ci.org/bluerobotics/ping-protocol-cpp) [![Build status](https://ci.appveyor.com/api/projects/status/3bvhlq9wn3ioj6o7?svg=true)](https://ci.appveyor.com/project/blueroboticsappveyor/ping-protocol-cpp) [![Last Releases](https://img.shields.io/github/release/bluerobotics/ping-protocol-cpp.svg)](https://github.com/bluerobotics/ping-protocol-cpp/releases) [![Discuss](https://img.shields.io/badge/discuss-online-green.svg)](https://discuss.bluerobotics.com/)
+
+## Table of Contents
+* [Format](#format)
+{% for sensor_msgs in messages %}
+* [{{sensor_msgs}} Messages](#{{sensor_msgs}}-messages)
+{% for msg_type in messages[sensor_msgs] %}
+  * [{{msg_type}}](#{{msg_type}})
+{% for msg in messages[sensor_msgs][msg_type] %}
+{% if msg != 'description' %}
+    * [{{msg}}](#{{messages[sensor_msgs][msg_type][msg].id}}-{{msg}})
+{% endif %}
+{% endfor %}
+{% endfor %}
+{% endfor %}
+
+## Format
+
+| Byte | Type | Name             | Description                                                      |
+|------|------|------------------|------------------------------------------------------------------|
+{% for field in format %}
+| {{field.index}} | {{field.type}} | {{field.name}} | {{field.description}} |
+{% endfor %}
+{% for sensor_msgs in messages %}
+
+## {{sensor_msgs}} Messages
+{% for msg_type in messages[sensor_msgs] %}
+
+### {{msg_type}}
+{% if messages[sensor_msgs][msg_type].description %}
+{{messages[sensor_msgs][msg_type].description}}
+{% endif %}
+
+{% for msg in messages[sensor_msgs][msg_type] %}
+{% if msg != 'description' %}
+#### {{messages[sensor_msgs][msg_type][msg].id}} {{msg}}
+{% if messages[sensor_msgs][msg_type][msg].description %}
+{{messages[sensor_msgs][msg_type][msg].description}}
+{% endif %}
+
+{% if messages[sensor_msgs][msg_type][msg].payload %}
+| Type | Name             | Description                                                      | Units |
+|------|------------------|------------------------------------------------------------------|-------|
+{% for field in messages[sensor_msgs][msg_type][msg].payload %}
+| {{field.type}} | {{field.name}} | {{field.description}} | {{field.units}} |
+{% endfor %}
+
+{% else %}
+No payload.
+
+{% endif %}
+{% endif %}
+{% endfor %}
+{% endfor %}
+{% endfor %}
+

@@ -1,0 +1,43 @@
+#include <QTest>
+#include <QDebug>
+#include <QRegExp>
+#include "test.h"
+#include "pingmessage/pingmessage_all.h"
+
+void Test::messages() {
+    qDebug() << "Running: {{device}} with protocol version {{protocol_version}}";
+
+{% for message in messages %}
+    qDebug() << "----------------------------------------";
+    qDebug() << "Message: {{message.name}}";
+    std::vector<uint8_t> {{message.name}}_buf = {
+{% for byte in message.bytes %}
+        {{byte}},
+{% endfor %}
+    };
+    ping_msg_ping1D_{{message.name}} {{message.name}}_msg(reinterpret_cast<uint8_t*>({{message.name}}_buf.data()), {{message.name}}_buf.size());
+    QCOMPARE({{message.name}}_msg.verifyChecksum(), true);
+{% for i in message.data %}
+{% if type(message.data[i]).__name__ == 'list' %}
+        int {{message.name}}_msg_counter = 0;
+        for(const uint8_t i : QVector<uint8_t>({
+{% for byte in message.data[i] %}
+            {{byte}},
+{% endfor %}
+        })) {
+            QCOMPARE({{message.name}}_msg.{{i}}()[{{message.name}}_msg_counter], i);
+            {{message.name}}_msg_counter++;
+        }
+{% else %}
+{% if type(message.data[i]).__name__ in ['str', 'unicode'] %}
+    QCOMPARE(QRegExp::escape({{message.name}}_msg.{{i}}()), QRegExp::escape({{correct_str(message.data[i])}}));
+{% else %}
+    QCOMPARE({{message.name}}_msg.{{i}}(), {{message.data[i]}}); //{{type(message.data[i]).__name__}}
+{% endif %}
+{% endif %}
+{% endfor %}
+
+{% endfor %}
+};
+
+QTEST_MAIN(Test)
