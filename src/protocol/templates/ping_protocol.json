@@ -245,7 +245,7 @@
                     "description": "The 5V rail voltage.",
                     "payload": [
                         {
-                            "name": "mvolts",
+                            "name": "voltage_5",
                             "type": "u16",
                             "description": "The 5V rail voltage.",
                             "units": "mV"
@@ -343,7 +343,7 @@
                             "description": "Firmware minor version."
                         },
                         {
-                            "name": "mvolts",
+                            "name": "voltage_5",
                             "type": "u16",
                             "description": "Device supply voltage.",
                             "units": "mV"
