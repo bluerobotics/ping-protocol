@@ -1,0 +1,55 @@
+#!/bin/bash
+
+# Runs some tests for the ping-components project
+# - Json style
+# - Documentation
+# - Protocol parser
+
+# Variables
+bold=$(tput bold)
+normal=$(tput sgr0)
+script_path="$( cd "$(dirname "$0")" ; pwd -P )"
+project_path="${script_path}/.."
+protocol_template_path="${project_path}/src/protocol/templates"
+protocol_scripts="${project_path}/src/protocol"
+
+# Functions
+echob() {
+    echo "${bold}${1}${normal}"
+}
+
+echob "Check protocol file description file."
+
+for filename in $protocol_template_path/*.json; do
+    echob "Checking file: $(basename ${filename})"
+    python3 -m json.tool ${filename} > /tmp/temporary_test_file.json;
+    if ! comm -2 -3 ${filename} /tmp/temporary_test_file.json; then
+        echob "Json file does not follow style."
+        exit 1
+    fi
+done
+
+echob "Check documentation."
+
+filename="$protocol_template_path/ping_protocol.json"
+echob "Checking documentation from file: $(basename ${filename})"
+$protocol_scripts/generate-doc.py
+
+if ! cmp ping-doc.md $project_path/README.md; then
+    echob "Json file and documentation does not match."
+    exit 1
+fi
+
+echob "Run protocol test."
+
+build_test="/tmp/protocol-test-build"
+rm -rf $build_test
+mkdir -p ${build_test}
+qmake -o ${build_test} ${project_path}/test
+make -C ${build_test}
+if ! ${build_test}/test; then
+    echob "Protocol was not able to parse data."
+    exit 1
+fi
+
+echob "Everything is fine."
