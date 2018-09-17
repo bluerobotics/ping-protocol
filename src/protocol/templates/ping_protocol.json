@@ -202,7 +202,7 @@
                 }
             },
             "get": {
-                "fw_version": {
+                "firmware_version": {
                     "id": "1200",
                     "description": "Device information",
                     "payload": [
@@ -217,12 +217,12 @@
                             "description": "Device model. 0: Ping1D"
                         },
                         {
-                            "name": "fw_version_major",
+                            "name": "firmware_version_major",
                             "type": "u16",
                             "description": "Firmware version major number."
                         },
                         {
-                            "name": "fw_version_minor",
+                            "name": "firmware_version_minor",
                             "type": "u16",
                             "description": "Firmware version minor number."
                         }
@@ -333,12 +333,12 @@
                     "description": "General information.",
                     "payload": [
                         {
-                            "name": "fw_version_major",
+                            "name": "firmware_version_major",
                             "type": "u16",
                             "description": "Firmware major version."
                         },
                         {
-                            "name": "fw_version_minor",
+                            "name": "firmware_version_minor",
                             "type": "u16",
                             "description": "Firmware minor version."
                         },
