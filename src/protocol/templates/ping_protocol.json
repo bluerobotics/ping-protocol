@@ -194,7 +194,7 @@
                     "description": "Enable or disable acoustic measurements.",
                     "payload": [
                         {
-                            "name": "enable",
+                            "name": "ping_enabled",
                             "type": "u8",
                             "description": "0: Disable, 1: Enable."
                         }
@@ -458,7 +458,7 @@
                     "description": "Acoustic output enabled state.",
                     "payload": [
                         {
-                            "name": "enable",
+                            "name": "ping_enabled",
                             "type": "u8",
                             "description": "The state of the acoustic output. 0: disabled, 1:enabled"
                         }
