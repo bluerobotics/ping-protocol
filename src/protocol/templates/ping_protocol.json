@@ -316,12 +316,12 @@
                         }
                     ]
                 },
-                "pulse_usec": {
+                "pulse_duration": {
                     "id": "1208",
                     "description": "The duration of the acoustic activation/transmission.",
                     "payload": [
                         {
-                            "name": "pulse_usec",
+                            "name": "pulse_duration",
                             "type": "u16",
                             "description": "Acoustic pulse duration.",
                             "units": "microseconds"
@@ -400,7 +400,7 @@
                             "units": "%"
                         },
                         {
-                            "name": "pulse_usec",
+                            "name": "pulse_duration",
                             "type": "u16",
                             "description": "The acoustic pulse length during acoustic transmission/activation.",
                             "units": "us"
@@ -481,7 +481,7 @@
                             "units": "%"
                         },
                         {
-                            "name": "pulse_usec",
+                            "name": "pulse_duration",
                             "type": "u16",
                             "description": "The acoustic pulse length during acoustic transmission/activation.",
                             "units": "us"
