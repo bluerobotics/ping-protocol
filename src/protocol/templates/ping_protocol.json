@@ -434,7 +434,7 @@
                     "description": "Temperature of the device cpu.",
                     "payload": [
                         {
-                            "name": "temp",
+                            "name": "processor_temperature",
                             "type": "u16",
                             "description": "The temperature in centi-degrees Centigrade (100 * degrees C).",
                             "units": "cC"
@@ -446,7 +446,7 @@
                     "description": "Temperature of the on-board thermistor.",
                     "payload": [
                         {
-                            "name": "temp",
+                            "name": "pcb_temperature",
                             "type": "u16",
                             "description": "The temperature in centi-degrees Centigrade (100 * degrees C).",
                             "units": "cC"
