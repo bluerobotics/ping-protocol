@@ -453,6 +453,17 @@
                         }
                     ]
                 },
+                "ping_enable": {
+                    "id": "1215",
+                    "description": "Acoustic output enabled state.",
+                    "payload": [
+                        {
+                            "name": "enable",
+                            "type": "u8",
+                            "description": "The state of the acoustic output. 0: disabled, 1:enabled"
+                        }
+                    ]
+                },
                 "profile": {
                     "id": "1300",
                     "description": "A profile produced from a single acoustic measurement. The data returned is an array of response strength at even intervals across the scan region. The scan region is defined as the region between <scan_start> and <scan_start + scan_length> millimeters away from the transducer. A distance measurement to the target is also provided.",
