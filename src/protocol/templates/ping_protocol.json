@@ -166,12 +166,12 @@
                         }
                     ]
                 },
-                "set_ping_rate": {
+                "set_ping_interval": {
                     "id": "1004",
                     "description": "The interval between acoustic measurements.",
                     "payload": [
                         {
-                            "name": "ping_rate",
+                            "name": "ping_interval",
                             "type": "u16",
                             "description": "The interval between acoustic measurements.",
                             "units": "ms"
@@ -293,12 +293,12 @@
                         }
                     ]
                 },
-                "ping_rate": {
+                "ping_interval": {
                     "id": "1206",
                     "description": "The interval between acoustic measurements.",
                     "payload": [
                         {
-                            "name": "ping_rate",
+                            "name": "ping_interval",
                             "type": "u16",
                             "description": "The interval between acoustic measurements.",
                             "units": "ms"
@@ -349,7 +349,7 @@
                             "units": "mV"
                         },
                         {
-                            "name": "ping_rate",
+                            "name": "ping_interval",
                             "type": "u16",
                             "description": "The interval between acoustic measurements.",
                             "units": "ms"
