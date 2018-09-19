@@ -86,7 +86,7 @@ script:
     sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 60;
     source /opt/qt*/bin/qt*-env.sh;
   fi
-- if [ ! -z $TEST ]; then
+- if [ "${TEST}" = "true" ]; then
     tools/run-tests.sh;
     tools/update-generated-repositories.sh;
   fi
