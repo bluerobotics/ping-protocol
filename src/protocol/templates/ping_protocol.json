@@ -527,7 +527,7 @@
                         {
                             "name": "protocol_version",
                             "type": "u32",
-                            "descritpion": "The protocol version"
+                            "description": "The protocol version"
                         }
                     ]
                 }
