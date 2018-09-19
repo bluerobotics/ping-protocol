@@ -10,9 +10,14 @@ matrix:
           sources:
             - sourceline: "ppa:deadsnakes/ppa"
             - sourceline: "ppa:ubuntu-toolchain-r/test"
+            - sourceline: "ppa:beineri/opt-qt-5.11.1-xenial"
           packages:
             - python3.6
             - g++-7
+            - build-essential
+            - qt511base
+            - qt511charts-no-lgpl qt511graphicaleffects qt511quickcontrols qt511quickcontrols2 qt511scxml qt511serialport qt511svg
+            - libgl1-mesa-dev
       env:
         - DESC="Check json and protocol"
         - TEST="true"
@@ -27,8 +32,12 @@ matrix:
         apt:
           sources:
             - sourceline: "ppa:ubuntu-toolchain-r/test"
+            - sourceline: "ppa:beineri/opt-qt594-trusty"
           packages:
             - g++-7
+            - build-essential
+            - qt59-meta-minimal
+            - qt59charts-no-lgpl qt59graphicaleffects qt59quickcontrols qt59quickcontrols2 qt59scxml qt59serialport qt59svg
       env:
         - DESC="AppImage deploy Qt59"
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
@@ -41,8 +50,13 @@ matrix:
         apt:
           sources:
             - sourceline: "ppa:ubuntu-toolchain-r/test"
+            - sourceline: "ppa:beineri/opt-qt-5.11.1-xenial"
           packages:
             - g++-7
+            - build-essential
+            - qt511base
+            - qt511charts-no-lgpl qt511graphicaleffects qt511quickcontrols qt511quickcontrols2 qt511scxml qt511serialport qt511svg
+            - libgl1-mesa-dev
       env:
         - DESC="AppImage deploy Qt511"
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
@@ -56,37 +70,8 @@ matrix:
         - MATRIX_EVAL="COMPILER=clang++"
 
 install:
-- if [ ! -z $TEST ]; then
-    cd src/protocol/templates;
-    echo "CHECK JSON";
-    python3.6 -m json.tool ping_protocol.json >> temp.json;
-    echo "CHECK JSON STYLE";
-    comm -2 -3 ping_protocol.json temp.json;
-    echo "CHECK JSON DOCUMENTATION";
-    cd ..;
-    pip install --user --upgrade pip;
-    pip install --user jinja2;
-    python generate-doc.py;
-    cmp ping-doc.md ../../README.md;
-  fi
 - pip install --user --upgrade pip;
 - pip install --user jinja2;
-- if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
-    if [ "${QTV}" = "qt59" ]; then
-      sudo add-apt-repository --yes ppa:beineri/opt-qt594-trusty;
-    else
-      sudo add-apt-repository --yes ppa:beineri/opt-qt-5.11.1-xenial;
-    fi;
-    sudo apt update -qq;
-    sudo apt install build-essential ${QTV}charts-no-lgpl
-    ${QTV}quickcontrols ${QTV}quickcontrols2 ${QTV}serialport
-    ${QTV}graphicaleffects ${QTV}svg ${QTV}scxml git;
-    if [ "${QTV}" = "qt59" ]; then
-      sudo apt install ${QTV}-meta-minimal;
-    else
-      sudo apt install ${QTV}base libgl1-mesa-dev;
-    fi;
-  fi
 - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then
     brew update > /dev/null;
     brew install qt5;
@@ -97,23 +82,12 @@ install:
 
 script:
 - if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
+    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 60;
     sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 60;
+    source /opt/qt*/bin/qt*-env.sh;
   fi
 - if [ ! -z $TEST ]; then
-    source /opt/qt*/bin/qt*-env.sh;
-    export TEST="true";
-    cd ../../;
-    pwd;
-    ls;
-    echo "Test cpp protocol!";
-    cd test;
-    mkdir build && cd build;
-    qmake ..;
-    make;
-    ./test;
-  fi
-- if [[ "${TRAVIS_OS_NAME}" = "linux" && -z $TEST ]]; then
-    source /opt/qt*/bin/qt*-env.sh;
+    tools/run-tests.sh;
   fi
 - if [ -z $TEST ]; then
     cd example;
