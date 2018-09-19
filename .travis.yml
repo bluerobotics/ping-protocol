@@ -20,7 +20,7 @@ matrix:
             - libgl1-mesa-dev
       env:
         - DESC="Check json and protocol"
-        - TEST="true"
+        - PINGTEST="true"
         - PYTHON=3.6
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
         - QTV="qt511"
@@ -86,11 +86,11 @@ script:
     sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 60;
     source /opt/qt*/bin/qt*-env.sh;
   fi
-- if [ "${TEST}" = "true" ]; then
+- if [ "${PINGTEST}" = "true" ]; then
     tools/run-tests.sh;
     tools/update-generated-repositories.sh;
   fi
-- if [ -z $TEST ]; then
+- if [ -z $PINGTEST ]; then
     cd example;
     mkdir build;
     cd build;
