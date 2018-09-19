@@ -95,7 +95,7 @@
                             "description": "The message ID that is Not ACKnowledged."
                         },
                         {
-                            "name": "nack_msg",
+                            "name": "nack_message",
                             "type": "vector",
                             "vector": {
                                 "datatype": "char",
@@ -110,13 +110,13 @@
                     "description": "A message for transmitting text data.",
                     "payload": [
                         {
-                            "name": "msg",
+                            "name": "ascii_message",
                             "type": "vector",
                             "vector": {
                                 "datatype": "char",
                                 "size": "dynamic"
                             },
-                            "description": " NULL terminated ASCII text message."
+                            "description": "NULL terminated ASCII text message."
                         }
                     ]
                 }
