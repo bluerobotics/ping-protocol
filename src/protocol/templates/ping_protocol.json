@@ -96,7 +96,12 @@
                         },
                         {
                             "name": "nack_msg",
-                            "type": "char[var]",
+                            "type": "vector",
+                            "vector":
+                            {
+                                "datatype": "char",
+                                "size": "dynamic"
+                            },
                             "description": "ASCII text message indicating NACK condition."
                         }
                     ]
@@ -107,7 +112,12 @@
                     "payload": [
                         {
                             "name": "msg",
-                            "type": "char[var]",
+                            "type": "vector",
+                            "vector":
+                            {
+                                "datatype": "char",
+                                "size": "dynamic"
+                            },
                             "description": " NULL terminated ASCII text message."
                         }
                     ]
@@ -509,13 +519,14 @@
                             "description": "The current gain setting. 0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB"
                         },
                         {
-                            "name": "num_points",
-                            "type": "u16",
-                            "description": "The number of data points for the profile. (The length of the proceeding array)"
-                        },
-                        {
-                            "name": "data",
-                            "type": "u8[200]",
+                            "name": "profile_data",
+                            "type": "vector",
+                            "vector":
+                            {
+                                "sizetype": "u16",
+                                "datatype": "u8",
+                                "size": "dynamic"
+                            },
                             "description": "An array of return strength measurements taken at regular intervals across the scan region."
                         }
                     ]
