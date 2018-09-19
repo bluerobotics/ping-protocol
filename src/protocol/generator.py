@@ -12,7 +12,16 @@ JINJA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates
 def calc_payload(payloads):
     total_size = 0
     for payload in payloads:
-        total_size = total_size + get_c_size(payload["type"])
+        if is_vector(payload["type"]):
+
+            if payload["vector"]["size"] == "dynamic":
+                if "sizetype" in payload["vector"]:
+                    total_size = total_size + get_c_size(payload["vector"]["sizetype"])
+            else:
+                total_size = total_size + int(payload["vector"]["size"]) * get_c_size(payload["vector"]["datatype"])
+
+        else:
+            total_size = total_size + get_c_size(payload["type"])
 
     return total_size
 
@@ -36,30 +45,19 @@ def convert_c_name(name):
         new_name = new_name + sub_names.title()
     return new_name + 'Update'
 
-
 def get_c_size(t):
-    # Remove vector info
-    if is_var_size(t):
-        return 0
-
-    vector_size = 1
-    if t.find('[') != -1:
-        vector_size = int(t.split('[')[1].split(']')[0])
-        t = t.split('[')[0]
-
     # this regex will get the X in u/intX_t (uint8_t, int16_t)
     match = re.search('[0-9]{1,2}', t)
     if match:
-        return int(int(match.group(0)) / 8)*vector_size
-
+        return int(match.group(0)) / 8
     if t.find('bool') != -1:
-        return 1*vector_size
+        return 1
     if t.find('int') != -1:
-        return 4*vector_size
+        return 4
     if t.find('float') != -1:
-        return 4*vector_size
+        return 4
     if t.find('double') != -1:
-        return 8*vector_size
+        return 8
 
 def get_type_base_size(types):
     # Get total number of bytes in vector, float, int, double
@@ -98,13 +96,10 @@ def get_type_string(t, pointer=False, name=''):
     return s
 
 def is_vector(t):
-    return t.find('[') != -1
+    return t.find('vector') != -1
 
 def capitalize(s):
     return s[0].capitalize() + s[1:]
-
-def is_var_size(t):
-    return ('[var]' in t)
 
 if __name__ == "__main__":
     # Get list of all class names
@@ -142,7 +137,6 @@ if __name__ == "__main__":
         j2_env.globals.update(get_c_size=get_c_size)
         j2_env.globals.update(get_type_base_size=get_type_base_size)
         j2_env.globals.update(get_type_string=get_type_string)
-        j2_env.globals.update(is_var_size=is_var_size)
         j2_env.globals.update(is_vector=is_vector)
         j2_env.globals.update(_actual_message_type='')
 
