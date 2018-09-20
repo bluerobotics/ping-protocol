@@ -44,7 +44,18 @@
 | Type | Name             | Description                                                      | Units |
 |------|------------------|------------------------------------------------------------------|-------|
 {% for field in messages[sensor_msgs][msg_type][msg].payload %}
+{% if field.type == "vector" %}
+{% if field.vector.size == "dynamic" %}
+{% if field.vector.sizetype %}
+| {{field.vector.sizetype}} | {{field.name}}_length | The length of the proceeding vector field | |
+| {{field.vector.datatype}}[] | {{field.name}} | {{field.description}} | {{field.units}} |
+{% else %}
+| {{field.vector.datatype}}[] | {{field.name}} | {{field.description}} Length is derived from payload_length in the header. | {{field.units}} |
+{% endif %}
+{% endif %}
+{% else %}
 | {{field.type}} | {{field.name}} | {{field.description}} | {{field.units}} |
+{% endif %}
 {% endfor %}
 
 {% else %}
