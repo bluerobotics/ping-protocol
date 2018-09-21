@@ -95,8 +95,13 @@
                             "description": "The message ID that is Not ACKnowledged."
                         },
                         {
-                            "name": "nack_msg",
-                            "type": "char[var]",
+                            "name": "nack_message",
+                            "type": "vector",
+                            "vector":
+                            {
+                                "datatype": "char",
+                                "size": "dynamic"
+                            },
                             "description": "ASCII text message indicating NACK condition."
                         }
                     ]
@@ -106,9 +111,14 @@
                     "description": "A message for transmitting text data.",
                     "payload": [
                         {
-                            "name": "msg",
-                            "type": "char[var]",
-                            "description": " NULL terminated ASCII text message."
+                            "name": "ascii_message",
+                            "type": "vector",
+                            "vector":
+                            {
+                                "datatype": "char",
+                                "size": "dynamic"
+                            },
+                            "description": "NULL terminated ASCII text message."
                         }
                     ]
                 }
@@ -166,12 +176,12 @@
                         }
                     ]
                 },
-                "set_ping_rate": {
+                "set_ping_interval": {
                     "id": "1004",
                     "description": "The interval between acoustic measurements.",
                     "payload": [
                         {
-                            "name": "ping_rate",
+                            "name": "ping_interval",
                             "type": "u16",
                             "description": "The interval between acoustic measurements.",
                             "units": "ms"
@@ -194,7 +204,7 @@
                     "description": "Enable or disable acoustic measurements.",
                     "payload": [
                         {
-                            "name": "enable",
+                            "name": "ping_enabled",
                             "type": "u8",
                             "description": "0: Disable, 1: Enable."
                         }
@@ -202,7 +212,7 @@
                 }
             },
             "get": {
-                "fw_version": {
+                "firmware_version": {
                     "id": "1200",
                     "description": "Device information",
                     "payload": [
@@ -217,12 +227,12 @@
                             "description": "Device model. 0: Ping1D"
                         },
                         {
-                            "name": "fw_version_major",
+                            "name": "firmware_version_major",
                             "type": "u16",
                             "description": "Firmware version major number."
                         },
                         {
-                            "name": "fw_version_minor",
+                            "name": "firmware_version_minor",
                             "type": "u16",
                             "description": "Firmware version minor number."
                         }
@@ -245,7 +255,7 @@
                     "description": "The 5V rail voltage.",
                     "payload": [
                         {
-                            "name": "mvolts",
+                            "name": "voltage_5",
                             "type": "u16",
                             "description": "The 5V rail voltage.",
                             "units": "mV"
@@ -293,12 +303,12 @@
                         }
                     ]
                 },
-                "ping_rate": {
+                "ping_interval": {
                     "id": "1206",
                     "description": "The interval between acoustic measurements.",
                     "payload": [
                         {
-                            "name": "ping_rate",
+                            "name": "ping_interval",
                             "type": "u16",
                             "description": "The interval between acoustic measurements.",
                             "units": "ms"
@@ -316,12 +326,12 @@
                         }
                     ]
                 },
-                "pulse_usec": {
+                "pulse_duration": {
                     "id": "1208",
                     "description": "The duration of the acoustic activation/transmission.",
                     "payload": [
                         {
-                            "name": "pulse_usec",
+                            "name": "pulse_duration",
                             "type": "u16",
                             "description": "Acoustic pulse duration.",
                             "units": "microseconds"
@@ -333,23 +343,23 @@
                     "description": "General information.",
                     "payload": [
                         {
-                            "name": "fw_version_major",
+                            "name": "firmware_version_major",
                             "type": "u16",
                             "description": "Firmware major version."
                         },
                         {
-                            "name": "fw_version_minor",
+                            "name": "firmware_version_minor",
                             "type": "u16",
                             "description": "Firmware minor version."
                         },
                         {
-                            "name": "mvolts",
+                            "name": "voltage_5",
                             "type": "u16",
                             "description": "Device supply voltage.",
                             "units": "mV"
                         },
                         {
-                            "name": "ping_rate",
+                            "name": "ping_interval",
                             "type": "u16",
                             "description": "The interval between acoustic measurements.",
                             "units": "ms"
@@ -400,7 +410,7 @@
                             "units": "%"
                         },
                         {
-                            "name": "pulse_usec",
+                            "name": "pulse_duration",
                             "type": "u16",
                             "description": "The acoustic pulse length during acoustic transmission/activation.",
                             "units": "us"
@@ -434,7 +444,7 @@
                     "description": "Temperature of the device cpu.",
                     "payload": [
                         {
-                            "name": "temp",
+                            "name": "processor_temperature",
                             "type": "u16",
                             "description": "The temperature in centi-degrees Centigrade (100 * degrees C).",
                             "units": "cC"
@@ -446,10 +456,21 @@
                     "description": "Temperature of the on-board thermistor.",
                     "payload": [
                         {
-                            "name": "temp",
+                            "name": "pcb_temperature",
                             "type": "u16",
                             "description": "The temperature in centi-degrees Centigrade (100 * degrees C).",
                             "units": "cC"
+                        }
+                    ]
+                },
+                "ping_enable": {
+                    "id": "1215",
+                    "description": "Acoustic output enabled state.",
+                    "payload": [
+                        {
+                            "name": "ping_enabled",
+                            "type": "u8",
+                            "description": "The state of the acoustic output. 0: disabled, 1:enabled"
                         }
                     ]
                 },
@@ -470,7 +491,7 @@
                             "units": "%"
                         },
                         {
-                            "name": "pulse_usec",
+                            "name": "pulse_duration",
                             "type": "u16",
                             "description": "The acoustic pulse length during acoustic transmission/activation.",
                             "units": "us"
@@ -498,13 +519,14 @@
                             "description": "The current gain setting. 0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB"
                         },
                         {
-                            "name": "num_points",
-                            "type": "u16",
-                            "description": "The number of data points for the profile. (The length of the proceeding array)"
-                        },
-                        {
-                            "name": "data",
-                            "type": "u8[200]",
+                            "name": "profile_data",
+                            "type": "vector",
+                            "vector":
+                            {
+                                "sizetype": "u16",
+                                "datatype": "u8",
+                                "size": "dynamic"
+                            },
                             "description": "An array of return strength measurements taken at regular intervals across the scan region."
                         }
                     ]
@@ -516,7 +538,7 @@
                         {
                             "name": "protocol_version",
                             "type": "u32",
-                            "descritpion": "The protocol version"
+                            "description": "The protocol version"
                         }
                     ]
                 }
