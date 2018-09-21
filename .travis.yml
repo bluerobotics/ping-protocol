@@ -89,7 +89,7 @@ script:
     source /opt/qt*/bin/qt*-env.sh;
   fi
 - if [ "${PINGTEST}" = "true" ]; then
-    tools/run-tests.sh;
+    tools/run-tests.sh || travis_terminate 1;
     curl https://bootstrap.pypa.io/get-pip.py | sudo python3.7;
     python3.7 -m pip install --user --upgrade pip;
     python3.7 -m pip install --user jinja2;
