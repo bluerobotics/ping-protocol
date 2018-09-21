@@ -37,7 +37,7 @@ if [[ ${TRAVIS_BRANCH} != "master" ]]; then
 fi
 
 echob "Check git configuration."
-if ! git config --list | grep -q "user.name"; then
+if [ "${TRAVIS}" = "true" ] || ! git config --list | grep -q "user.name"; then
     # Config for auto-building
     echo "- Git configuration does not exist, a new one will be configured."
     git remote rename origin upstream
