@@ -76,6 +76,8 @@ for repo in "${repositories[@]}"; do
 
 From https://github.com/bluerobotics/ping-protocol/tree/"$protocol_githash
         git -C ${repo_path} commit -sm "${COMMIT_MESSAGE}"
+        git -C ${repo_path} push origin master
+    else
+        echo "- Ok."
     fi
-    git -C ${repo_path} push origin master
 done
