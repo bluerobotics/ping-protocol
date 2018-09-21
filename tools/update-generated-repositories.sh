@@ -40,11 +40,8 @@ echob "Check git configuration."
 if [ "${TRAVIS}" = "true" ] || ! git config --list | grep -q "user.name"; then
     # Config for auto-building
     echo "- Git configuration does not exist, a new one will be configured."
-    git remote rename origin upstream
     git config --global user.email "support@bluerobotics.com"
     git config --global user.name "BlueRobotics-CI"
-    git config --global credential.helper "store --file=${HOME}/.git-credentials"
-    echo "https://${GH_TOKEN}:@github.com" > ${HOME}/.git-credentials
 else
     echo "- Git configuration already exist."
 fi
