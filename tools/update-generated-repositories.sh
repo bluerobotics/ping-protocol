@@ -47,7 +47,7 @@ else
 fi
 
 echob "Build python protocol."
-if ! python ${project_path}/src/protocol/generate-python.py; then
+if ! python3.7 ${project_path}/src/protocol/generate-python.py; then
     echo "- Protocol generation failed."
     exit 1
 fi
