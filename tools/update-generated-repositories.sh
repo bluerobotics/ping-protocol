@@ -46,17 +46,19 @@ else
     echo "- Git configuration already exist."
 fi
 
-echob "Build protocol."
+echob "Build python protocol."
 if ! python ${project_path}/src/protocol/generate-python.py; then
     echo "- Protocol generation failed."
     exit 1
 fi
+echo "- Check files"
+ls ${project_path}/src/protocol/python/
 
 echob "Clone repositories."
 for repo in "${repositories[@]}"; do
     echo "- Clone ${repo}"
     rm -rf ${clone_folder}/${repo}
-    git clone https://github.com/bluerobotics/${repo} ${clone_folder}/${repo}
+    git clone https://${GITHUB_TOKEN}@github.com/bluerobotics/${repo} ${clone_folder}/${repo} --single-branch
 done
 
 echob "Update python repository."
