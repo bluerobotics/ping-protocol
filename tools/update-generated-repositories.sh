@@ -24,17 +24,17 @@ echob() {
 
 echob "Check build type."
 # Do not build pull requests
-if [[ ${TRAVIS_PULL_REQUEST} != "false" ]]; then
-    echo "- Do not deploy PRs."
-    exit 0
-fi
+#if [[ ${TRAVIS_PULL_REQUEST} != "false" ]]; then
+#    echo "- Do not deploy PRs."
+#    exit 0
+#fi
 
 echob "Check branch."
 # Do only build master branch
-if [[ ${TRAVIS_BRANCH} != "master" ]]; then
-    echo "- Only master branch will be deployed."
-    exit 0
-fi
+#if [[ ${TRAVIS_BRANCH} != "master" ]]; then
+#    echo "- Only master branch will be deployed."
+#    exit 0
+#fi
 
 echob "Check git configuration."
 if [ "${TRAVIS}" = "true" ] || ! git config --list | grep -q "user.name"; then
