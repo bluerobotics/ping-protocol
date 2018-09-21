@@ -90,6 +90,8 @@ script:
   fi
 - if [ "${PINGTEST}" = "true" ]; then
     tools/run-tests.sh;
+    pip3.6 install --user --upgrade pip;
+    pip3.6 install --user jinja2;
     tools/update-generated-repositories.sh;
   fi
 - if [ -z $PINGTEST ]; then
