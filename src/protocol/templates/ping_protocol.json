@@ -394,6 +394,7 @@
                 },
                 "distance": {
                     "id": "1212",
+                    "description": "The distance to target with confidence estimate. Relevant device parameters during the measurement are also provided.",
                     "payload": [
                         {
                             "name": "distance",
