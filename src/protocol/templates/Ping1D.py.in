@@ -36,7 +36,9 @@ class Ping1D(object):
         ## device id of this Ping1D object, used for dst_device_id in outgoing messages
         self.my_id = 255
 
-    ## Consume rx buffer data until a new message is successfully decoded
+    ##
+    # @brief Consume rx buffer data until a new message is successfully decoded
+    #
     # @return A new PingMessage: as soon as a message is parsed (there may be data remaining in the buffer to be parsed, thus requiring subsequent calls to read())
     # @return None: if the buffer is empty and no message has been parsed
     def read(self):
@@ -48,21 +50,34 @@ class Ping1D(object):
                 return self.parser.rxMsg
         return None
 
-    ## Write data to device
+    ##
+    # @brief Write data to device
+    #
+    # @param data: bytearray to write to device
+    #
+    # @return Number of bytes written
     def write(self, data):
         return self.iodev.write(data)
 
-    ## Make sure there is a device on the line and read some initial data
-    # Return True if the device replies with expected data
-    # Return False otherwise
+    ##
+    # @brief Make sure there is a device on and read some initial data
+    #
+    # @return True if the device replies with expected data, False otherwise
     def initialize(self):
         if self.request(PingMessage.PING1D_VOLTAGE_5) is None:
             return False
         return True
 
-    ## Request the given message ID
-    # Return response if it is rxed within timeout period, None otherwise
-    # TODO handle nack to exit without blocking
+    ##
+    # @brief Request the given message ID
+    #
+    # @param m_id: The message ID to request from the device
+    # @param timeout: The time in seconds to wait for the device to send
+    # the requested message before timing out and returning
+    #
+    # @return PingMessage: the device reply if it is received within timeout period, None otherwise
+    #
+    # @todo handle nack to exit without blocking
     def request(self, m_id, timeout=0.35):
         msg = PingMessage.PingMessage()
         msg.request_id = m_id
@@ -70,9 +85,13 @@ class Ping1D(object):
         self.write(msg.msgData)
         return self.waitReply(m_id, timeout)
 
-    ## Wait for the device to send a message with the desired message_id for timeout s
-    # Return True if a valid message is received from the device with the desired message_id before the timeout period expires
-    # Return False otherwise
+    ##
+    # @brief Wait until we receive a message from the device with the desired message_id for timeout seconds
+    #
+    # @param message_id: The message id to wait to receive from the device
+    # @param timeout: The timeout period in seconds to wait
+    #
+    # @return PingMessage: the message from the device if it is received within timeout period, None otherwise
     def waitReply(self, message_id, timeout=0.5):
         tstart = time.time()
         while(time.time() < tstart + timeout):
@@ -82,8 +101,11 @@ class Ping1D(object):
                     return msg
         return None
 
-    ## Handle an incoming messge from the device
-    # Extract message fields into self attributes
+    ##
+    # @brief Handle an incoming messge from the device.
+    # Extract message fields into self attributes.
+    #
+    # @param msg: the PingMessage to handle.
     def handleMessage(self, msg):
         if msg.message_id in PingMessage.payloadDict:
             for attr in PingMessage.payloadDict[msg.message_id]["field_names"]:
@@ -91,7 +113,10 @@ class Ping1D(object):
         else:
             print("Unrecognized message: %d", msg)
 
-    ## Dump object into string representation
+    ##
+    # @brief Dump object into string representation.
+    #
+    # @return string: a string representation of the object
     def __repr__(self):
         representation = "---------------------------------------------------------\n~Ping1D Object~"
 
@@ -106,16 +131,15 @@ class Ping1D(object):
                 representation += "\n  - " + attr + ": " + str(getattr(self, attr))
         return representation
 
-    # Access Methods
-    ################
-    # Request a message from the device
-    # If there is no reply return None, otherwise return a dictionary of the updated values
-
 {% for msg in messages["ping1D"]["get"] %}
-    ## {{messages["ping1D"]["get"][msg].description}}
-    #  Returns a dictionary of the reply payload
+    ##
+    # @brief Get a {{msg|replace("get_", "")}} message from the device\n
+    # Message description:\n
+    # {{messages["ping1D"]["get"][msg].description}}
+    #
+    # @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
 {% for field in messages["ping1D"]["get"][msg].payload %}
-    #  @return {{field.name}}: {% if field.units %}Units: {{field.units}}; {% endif %}{{field.description}}
+    # {{field.name}}: {% if field.units %}Units: {{field.units}}; {% endif %}{{field.description}}\n
 {% endfor%}
     def get_{{msg}}(self):
         if self.request(PingMessage.PING1D_{{msg|upper}}) is None:
@@ -128,18 +152,19 @@ class Ping1D(object):
         return data
 
 {% endfor %}
-    # Control Methods
-    ###################
-    # Write a new control, and read the values back from the device
-    # If verify is true, fail if the values read back from the device do not match the controls that were written
-    # Return True on success
-    # Return False on failure to read values back or on verification failure
 
 {% for msg in messages["ping1D"]["set"] %}
-    ## {{messages["ping1D"]["set"][msg].description}}
+    ##
+    # @brief Send a {{msg}} message to the device\n
+    # Message description:\n
+    # {{messages["ping1D"]["set"][msg].description}}\n
+    # Send the message to write the device parameters, then read the values back from the device\n
+    #
 {% for field in messages["ping1D"]["set"][msg].payload %}
-    #  @param {{field.name}} - {% if field.units %}Units: {{field.units}}; {% endif %}{{field.description}}
+    # @param {{field.name}} - {% if field.units %}Units: {{field.units}}; {% endif %}{{field.description}}
 {% endfor %}
+    #
+    # @return If verify is False, True on successful communication with the device. If verify is False, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
     def {{msg}}(self{% for field in messages["ping1D"]["set"][msg].payload %}, {{field.name}}{% endfor %}, verify=True):
         m = PingMessage.PingMessage(PingMessage.PING1D_{{msg|upper}})
 {% for field in messages["ping1D"]["set"][msg].payload %}
@@ -197,4 +222,3 @@ if __name__ == "__main__":
     # print("  > > pass: %s < <" % p.set_ping_enable(0))
 
     print(p)
-
