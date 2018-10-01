@@ -78,7 +78,7 @@ class Ping1D(object):
     # @return PingMessage: the device reply if it is received within timeout period, None otherwise
     #
     # @todo handle nack to exit without blocking
-    def request(self, m_id, timeout=0.35):
+    def request(self, m_id, timeout=0.5):
         msg = PingMessage.PingMessage()
         msg.request_id = m_id
         msg.packMsgData()
