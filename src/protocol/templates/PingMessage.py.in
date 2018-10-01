@@ -386,8 +386,8 @@ if __name__ == "__main__":
     # Connect to a device
     s = serial.Serial(args.device, args.baudrate)
     while True:
-        m = {{class_info.name}}(PING1D_SET_PING_RATE)
-        m.ping_rate = 40
+        m = {{class_info.name}}(PING1D_SET_PING_INTERVAL)
+        m.ping_interval = 40
         m.packMsgData()
         s.write(m.msgData)
         time.sleep(0.01)

@@ -37,13 +37,13 @@ def get_c_size(t):
         return int(int(match.group(0)) / 8)*vector_size
 
     if t.find('bool') != -1:
-        return 1*vector_size
+        return 1
     if t.find('int') != -1:
-        return 4*vector_size
+        return 4
     if t.find('float') != -1:
-        return 4*vector_size
+        return 4
     if t.find('double') != -1:
-        return 8*vector_size
+        return 8
 
 def is_var_size(t):
     return ('[' in t)
@@ -90,4 +90,3 @@ f.close()
 f = open(os.path.join(output_path, "Ping1D.py"), "w")
 f.write(j2_env.get_template("Ping1D.py.in").render(jsondata))
 f.close()
-
