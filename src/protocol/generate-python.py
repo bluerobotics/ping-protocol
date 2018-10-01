@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import stat
 import collections
 import json
 import re
@@ -76,11 +77,20 @@ output_path = os.path.join(PATH, "python/")
 if not os.path.exists(output_path):
     os.makedirs(output_path)
 
+try:
+    os.chmod(os.path.join(output_path, "PingMessage.py"), stat.S_IWUSR | stat.S_IWGRP | stat.S_IWOTH)
+except FileNotFoundError as e:
+    pass
 f = open(os.path.join(output_path, "PingMessage.py"), "w")
 f.write(j2_env.get_template("PingMessage.py.in").render(jsondata))
 f.close()
+os.chmod(os.path.join(output_path, "PingMessage.py"), stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
 
+try:
+    os.chmod(os.path.join(output_path, "PingMessage.py"), stat.S_IWUSR | stat.S_IWGRP | stat.S_IWOTH)
+except FileNotFoundError as e:
+    pass
 f = open(os.path.join(output_path, "Ping1D.py"), "w")
 f.write(j2_env.get_template("Ping1D.py.in").render(jsondata))
 f.close()
-
+os.chmod(os.path.join(output_path, "Ping1D.py"), stat.S_IRUSR | stat.S_IRGRP | stat.S_IROTH)
