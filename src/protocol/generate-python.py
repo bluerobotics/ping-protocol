@@ -17,24 +17,24 @@ j2_env = Environment(loader=FileSystemLoader(JINJA_PATH), trim_blocks=True)
 def calc_payload(payloads):
     total_size = 0
     for payload in payloads:
-        total_size = total_size + get_c_size(payload["type"])
+        if is_vector(payload["type"]):
+
+            if payload["vector"]["size"] == "dynamic":
+                if "sizetype" in payload["vector"]:
+                    total_size = total_size + get_c_size(payload["vector"]["sizetype"])
+            else:
+                total_size = total_size + int(payload["vector"]["size"]) * get_c_size(payload["vector"]["datatype"])
+
+        else:
+            total_size = total_size + get_c_size(payload["type"])
 
     return total_size
 
 def get_c_size(t):
-    # Remove vector info
-    if is_var_size(t):
-        return 0
-
-    vector_size = 1
-    if t.find('[') != -1:
-        vector_size = int(t.split('[')[1].split(']')[0])
-        t = t.split('[')[0]
-
     # this regex will get the X in u/intX_t (uint8_t, int16_t)
     match = re.search('[0-9]{1,2}', t)
     if match:
-        return int(int(match.group(0)) / 8)*vector_size
+        return int(int(match.group(0)) / 8)
 
     if t.find('bool') != -1:
         return 1*vector_size
@@ -45,15 +45,8 @@ def get_c_size(t):
     if t.find('double') != -1:
         return 8*vector_size
 
-def is_var_size(t):
-    return ('[' in t)
-
-def is_payload_var(payload):
-    print(payload)
-    if not payload:
-        return False
-    #return True
-    return ('[' in payload[len(payload)-1]["type"])
+def is_vector(payload):
+    return ('vector' in payload)
 
 structToken = { "u8":"B",
                 "u16":"H",
@@ -76,7 +69,7 @@ jsondata['all_msgs'] = allMessages
 j2_env.globals['structToken'] = structToken
 j2_env.globals.update(calc_payload = calc_payload)
 j2_env.globals.update(get_c_size = get_c_size)
-j2_env.globals.update(is_payload_var = is_payload_var)
+j2_env.globals.update(is_vector = is_vector)
 
 # Create output file
 output_path = os.path.join(PATH, "python/")
