@@ -185,10 +185,8 @@ if __name__ == "__main__":
     print("  > > pass: %s < <" % p.set_ping_rate(36))
     print("\ntesting set_gain_index")
     print("  > > pass: %s < <" % p.set_gain_index(3))
-
-    # Not implemented
-    # print("testing set_ping_enable")
-    # print("  > > pass: %s < <" % p.set_ping_enable(0))
+    print("\ntesting set_ping_enable")
+    print("  > > pass: %s < <" % p.set_ping_enable(False))
 
     print(p)
 
