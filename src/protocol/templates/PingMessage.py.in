@@ -31,10 +31,26 @@ PING1D_{{message|upper}} = {{all_msgs[message].id}}
 payloadDict = {
 {% for message in all_msgs %}
     PING1D_{{message|upper}}: {"name": "{{message}}",
-                       "format": "{% for field in all_msgs[message].payload %}{{structToken[field.type]}}{% endfor %}",
+                       "format": "
+{%- for field in all_msgs[message].payload %}
+{% if is_vector(field) %}
+{% if field.vector.sizetype %}
+{{structToken[field.vector.sizetype]}}
+{%- endif %}
+{% else %}
+{{structToken[field.type]}}
+{%- endif %}
+{% endfor %}",
                        "field_names": (
-{% for payload_field in all_msgs[message].payload %}
-                         "{{payload_field.name}}",
+{% for field in all_msgs[message].payload %}
+{% if is_vector(field) %}
+{% if field.vector.sizetype %}
+                         "{{field.name}}_length",
+                         "{{field.name}}",
+{% endif %}
+{% else %}
+                         "{{field.name}}",
+{% endif %}
 {% endfor %}
                        ),
                        "payload_length": {{calc_payload(all_msgs[message].payload)}}},
