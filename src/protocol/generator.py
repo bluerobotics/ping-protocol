@@ -23,7 +23,7 @@ def calc_payload(payloads):
         else:
             total_size = total_size + get_c_size(payload["type"])
 
-    return total_size
+    return int(total_size)
 
 def convert_short_type(t):
     # u/i
