@@ -14,7 +14,6 @@ jsondata = json.load(open(os.path.join(JINJA_PATH, 'ping_protocol.json'), 'r'), 
 
 j2_env = Environment(loader=FileSystemLoader(JINJA_PATH), trim_blocks=True)
 
-f = open('ping-doc.md', "w")
+f = open('README.md', "w")
 f.write(j2_env.get_template("ping_doc.in").render(jsondata))
 f.close()
-
