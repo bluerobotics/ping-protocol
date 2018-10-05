@@ -142,12 +142,12 @@ def main():
         # Generate random text or array of bytes
         if message_id in [Message.PING1D_ASCII_TEXT, Message.PING1D_NACK]:
             if message_id == Message.PING1D_ASCII_TEXT:
-                key = 'msg'
+                key = 'ascii_message'
             elif message_id == Message.PING1D_NACK:
-                key = 'nack_msg'
+                key = 'nack_message'
             var_payload[key] = b' !"#$%&\'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\0'
         elif message_id == Message.PING1D_PROFILE:
-            var_payload['data'] = [x for x in range(200)]
+            var_payload['profile_data'] = [x for x in range(200)]
 
         # Create data with all bytes of the message
         payload = generate_fake_data(ping_message['format'])
