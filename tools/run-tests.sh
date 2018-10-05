@@ -31,8 +31,9 @@ filename="$protocol_template_path/ping_protocol.json"
 echob "Checking documentation from file: $(basename ${filename})"
 $protocol_scripts/generate-doc.py
 
-if ! cmp ping-doc.md $project_path/README.md; then
+if ! git diff --quiet --ignore-submodules HEAD 2>/dev/null; then
     echob "Json file and documentation does not match."
+    git diff | cat
     exit 1
 fi
 
