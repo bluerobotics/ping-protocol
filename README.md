@@ -15,24 +15,25 @@
     * [set_range](#1001-set_range)
     * [set_speed_of_sound](#1002-set_speed_of_sound)
     * [set_mode_auto](#1003-set_mode_auto)
-    * [set_ping_rate](#1004-set_ping_rate)
+    * [set_ping_interval](#1004-set_ping_interval)
     * [set_gain_index](#1005-set_gain_index)
     * [set_ping_enable](#1006-set_ping_enable)
   * [get](#get)
-    * [fw_version](#1200-fw_version)
+    * [firmware_version](#1200-firmware_version)
     * [device_id](#1201-device_id)
     * [voltage_5](#1202-voltage_5)
     * [speed_of_sound](#1203-speed_of_sound)
     * [range](#1204-range)
     * [mode_auto](#1205-mode_auto)
-    * [ping_rate](#1206-ping_rate)
+    * [ping_interval](#1206-ping_interval)
     * [gain_index](#1207-gain_index)
-    * [pulse_usec](#1208-pulse_usec)
+    * [pulse_duration](#1208-pulse_duration)
     * [general_info](#1210-general_info)
     * [distance_simple](#1211-distance_simple)
     * [distance](#1212-distance)
     * [processor_temperature](#1213-processor_temperature)
     * [pcb_temperature](#1214-pcb_temperature)
+    * [ping_enable](#1215-ping_enable)
     * [profile](#1300-profile)
     * [protocol_version](#5-protocol_version)
   * [control](#control)
@@ -74,14 +75,14 @@ Not acknowledged.
 | Type | Name             | Description                                                      | Units |
 |------|------------------|------------------------------------------------------------------|-------|
 | u16 | nacked_id | The message ID that is Not ACKnowledged. |  |
-| char[var] | nack_msg | ASCII text message indicating NACK condition. |  |
+| char[] | nack_message | ASCII text message indicating NACK condition. Length is derived from payload_length in the header. |  |
 
 #### 3 ascii_text
 A message for transmitting text data.
 
 | Type | Name             | Description                                                      | Units |
 |------|------------------|------------------------------------------------------------------|-------|
-| char[var] | msg |  NULL terminated ASCII text message. |  |
+| char[] | ascii_message | NULL terminated ASCII text message. Length is derived from payload_length in the header. |  |
 
 
 ### set
@@ -115,12 +116,12 @@ Set automatic or manual mode. Manual mode allows for manual selection of the gai
 |------|------------------|------------------------------------------------------------------|-------|
 | u8 | mode_auto | 0: manual mode. 1: auto mode. |  |
 
-#### 1004 set_ping_rate
+#### 1004 set_ping_interval
 The interval between acoustic measurements.
 
 | Type | Name             | Description                                                      | Units |
 |------|------------------|------------------------------------------------------------------|-------|
-| u16 | ping_rate | The interval between acoustic measurements. | ms |
+| u16 | ping_interval | The interval between acoustic measurements. | ms |
 
 #### 1005 set_gain_index
 Set the current gain selection.
@@ -134,20 +135,20 @@ Enable or disable acoustic measurements.
 
 | Type | Name             | Description                                                      | Units |
 |------|------------------|------------------------------------------------------------------|-------|
-| u8 | enable | 0: Disable, 1: Enable. |  |
+| u8 | ping_enabled | 0: Disable, 1: Enable. |  |
 
 
 ### get
 
-#### 1200 fw_version
+#### 1200 firmware_version
 Device information
 
 | Type | Name             | Description                                                      | Units |
 |------|------------------|------------------------------------------------------------------|-------|
 | u8 | device_type | Device type. 0: 1D Echosounder |  |
 | u8 | device_model | Device model. 0: Ping1D |  |
-| u16 | fw_version_major | Firmware version major number. |  |
-| u16 | fw_version_minor | Firmware version minor number. |  |
+| u16 | firmware_version_major | Firmware version major number. |  |
+| u16 | firmware_version_minor | Firmware version minor number. |  |
 
 #### 1201 device_id
 The device ID.
@@ -161,7 +162,7 @@ The 5V rail voltage.
 
 | Type | Name             | Description                                                      | Units |
 |------|------------------|------------------------------------------------------------------|-------|
-| u16 | mvolts | The 5V rail voltage. | mV |
+| u16 | voltage_5 | The 5V rail voltage. | mV |
 
 #### 1203 speed_of_sound
 The speed of sound used for distance calculations.
@@ -185,12 +186,12 @@ The current operating mode of the device. Manual mode allows for manual selectio
 |------|------------------|------------------------------------------------------------------|-------|
 | u8 | mode_auto | 0: manual mode, 1: auto mode |  |
 
-#### 1206 ping_rate
+#### 1206 ping_interval
 The interval between acoustic measurements.
 
 | Type | Name             | Description                                                      | Units |
 |------|------------------|------------------------------------------------------------------|-------|
-| u16 | ping_rate | The interval between acoustic measurements. | ms |
+| u16 | ping_interval | The interval between acoustic measurements. | ms |
 
 #### 1207 gain_index
 The current gain setting.
@@ -199,22 +200,22 @@ The current gain setting.
 |------|------------------|------------------------------------------------------------------|-------|
 | u32 | gain_index | 0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB |  |
 
-#### 1208 pulse_usec
+#### 1208 pulse_duration
 The duration of the acoustic activation/transmission.
 
 | Type | Name             | Description                                                      | Units |
 |------|------------------|------------------------------------------------------------------|-------|
-| u16 | pulse_usec | Acoustic pulse duration. | microseconds |
+| u16 | pulse_duration | Acoustic pulse duration. | microseconds |
 
 #### 1210 general_info
 General information.
 
 | Type | Name             | Description                                                      | Units |
 |------|------------------|------------------------------------------------------------------|-------|
-| u16 | fw_version_major | Firmware major version. |  |
-| u16 | fw_version_minor | Firmware minor version. |  |
-| u16 | mvolts | Device supply voltage. | mV |
-| u16 | ping_rate | The interval between acoustic measurements. | ms |
+| u16 | firmware_version_major | Firmware major version. |  |
+| u16 | firmware_version_minor | Firmware minor version. |  |
+| u16 | voltage_5 | Device supply voltage. | mV |
+| u16 | ping_interval | The interval between acoustic measurements. | ms |
 | u8 | gain_index | The current gain setting. 0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB |  |
 | u8 | mode_auto | The current operating mode of the device. 0: manual mode, 1: auto mode |  |
 
@@ -227,12 +228,13 @@ The distance to target with confidence estimate.
 | u8 | confidence | Confidence in the distance measurement. | % |
 
 #### 1212 distance
+The distance to target with confidence estimate. Relevant device parameters during the measurement are also provided.
 
 | Type | Name             | Description                                                      | Units |
 |------|------------------|------------------------------------------------------------------|-------|
 | u32 | distance | The current return distance determined for the most recent acoustic measurement. | mm |
 | u16 | confidence | Confidence in the most recent range measurement. | % |
-| u16 | pulse_usec | The acoustic pulse length during acoustic transmission/activation. | us |
+| u16 | pulse_duration | The acoustic pulse length during acoustic transmission/activation. | us |
 | u32 | ping_number | The pulse/measurement count since boot. |  |
 | u32 | scan_start | The beginning of the scan region in mm from the transducer. | mm |
 | u32 | scan_length | The length of the scan region. | mm |
@@ -243,14 +245,21 @@ Temperature of the device cpu.
 
 | Type | Name             | Description                                                      | Units |
 |------|------------------|------------------------------------------------------------------|-------|
-| u16 | temp | The temperature in centi-degrees Centigrade (100 * degrees C). | cC |
+| u16 | processor_temperature | The temperature in centi-degrees Centigrade (100 * degrees C). | cC |
 
 #### 1214 pcb_temperature
 Temperature of the on-board thermistor.
 
 | Type | Name             | Description                                                      | Units |
 |------|------------------|------------------------------------------------------------------|-------|
-| u16 | temp | The temperature in centi-degrees Centigrade (100 * degrees C). | cC |
+| u16 | pcb_temperature | The temperature in centi-degrees Centigrade (100 * degrees C). | cC |
+
+#### 1215 ping_enable
+Acoustic output enabled state.
+
+| Type | Name             | Description                                                      | Units |
+|------|------------------|------------------------------------------------------------------|-------|
+| u8 | ping_enabled | The state of the acoustic output. 0: disabled, 1:enabled |  |
 
 #### 1300 profile
 A profile produced from a single acoustic measurement. The data returned is an array of response strength at even intervals across the scan region. The scan region is defined as the region between <scan_start> and <scan_start + scan_length> millimeters away from the transducer. A distance measurement to the target is also provided.
@@ -259,20 +268,20 @@ A profile produced from a single acoustic measurement. The data returned is an a
 |------|------------------|------------------------------------------------------------------|-------|
 | u32 | distance | The current return distance determined for the most recent acoustic measurement. | mm |
 | u16 | confidence | Confidence in the most recent range measurement. | % |
-| u16 | pulse_usec | The acoustic pulse length during acoustic transmission/activation. | us |
+| u16 | pulse_duration | The acoustic pulse length during acoustic transmission/activation. | us |
 | u32 | ping_number | The pulse/measurement count since boot. |  |
 | u32 | scan_start | The beginning of the scan region in mm from the transducer. | mm |
 | u32 | scan_length | The length of the scan region. | mm |
 | u32 | gain_index | The current gain setting. 0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB |  |
-| u16 | num_points | The number of data points for the profile. (The length of the proceeding array) |  |
-| u8[200] | data | An array of return strength measurements taken at regular intervals across the scan region. |  |
+| u16 | profile_data_length | The length of the proceeding vector field | |
+| u8[] | profile_data | An array of return strength measurements taken at regular intervals across the scan region. |  |
 
 #### 5 protocol_version
 The protocol version
 
 | Type | Name             | Description                                                      | Units |
 |------|------------------|------------------------------------------------------------------|-------|
-| u32 | protocol_version |  |  |
+| u32 | protocol_version | The protocol version |  |
 
 
 ### control
