@@ -177,8 +177,7 @@ class Ping1D(object):
         # Read back the data and check that changes have been applied
         if (verify
 {% if messages["ping1D"]["set"][msg].payload %}
-              and {% for field in messages["ping1D"]["set"][msg].payload %}self.{{field.name}} != {{field.name}}
-              or {% endfor %}False):
+              and ({% for field in messages["ping1D"]["set"][msg].payload %}self.{{field.name}} != {{field.name}}{{ " or " if not loop.last }}{% endfor %})):
 {% endif %}
             return False
         return True # success
