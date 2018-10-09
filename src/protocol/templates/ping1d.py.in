@@ -8,7 +8,7 @@
 # DO NOT EDIT
 #~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!
 
-from Ping import PingMessage
+from brping import pingmessage
 import serial
 import time
 
@@ -31,7 +31,7 @@ class Ping1D(object):
             exit(1)
 
         ## A helper class to take care of decoding the input stream
-        self.parser = PingMessage.PingParser()
+        self.parser = pingmessage.PingParser()
 
         ## device id of this Ping1D object, used for dst_device_id in outgoing messages
         self.my_id = 255
@@ -45,7 +45,7 @@ class Ping1D(object):
         while(self.iodev.in_waiting):
             b = self.iodev.read()
 
-            if self.parser.parseByte(ord(b)) == PingMessage.PingParser.NEW_MESSAGE:
+            if self.parser.parseByte(ord(b)) == pingmessage.PingParser.NEW_MESSAGE:
                 self.handleMessage(self.parser.rxMsg)
                 return self.parser.rxMsg
         return None
@@ -64,7 +64,7 @@ class Ping1D(object):
     #
     # @return True if the device replies with expected data, False otherwise
     def initialize(self):
-        if self.request(PingMessage.PING1D_VOLTAGE_5) is None:
+        if self.request(pingmessage.PING1D_VOLTAGE_5) is None:
             return False
         return True
 
@@ -107,8 +107,8 @@ class Ping1D(object):
     #
     # @param msg: the PingMessage to handle.
     def handleMessage(self, msg):
-        if msg.message_id in PingMessage.payloadDict:
-            for attr in PingMessage.payloadDict[msg.message_id]["field_names"]:
+        if msg.message_id in pingmessage.payloadDict:
+            for attr in pingmessage.payloadDict[msg.message_id]["field_names"]:
                 setattr(self, attr, getattr(msg, attr))
         else:
             print("Unrecognized message: %d", msg)
@@ -142,7 +142,7 @@ class Ping1D(object):
     # {{field.name}}: {% if field.units %}Units: {{field.units}}; {% endif %}{{field.description}}\n
 {% endfor%}
     def get_{{msg}}(self):
-        if self.request(PingMessage.PING1D_{{msg|upper}}) is None:
+        if self.request(pingmessage.PING1D_{{msg|upper}}) is None:
             return None
         data = ({
 {% for field in messages["ping1D"]["get"][msg].payload %}
@@ -166,13 +166,13 @@ class Ping1D(object):
     #
     # @return If verify is False, True on successful communication with the device. If verify is False, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
     def {{msg}}(self{% for field in messages["ping1D"]["set"][msg].payload %}, {{field.name}}{% endfor %}, verify=True):
-        m = PingMessage.PingMessage(PingMessage.PING1D_{{msg|upper}})
+        m = pingmessage.PingMessage(pingmessage.PING1D_{{msg|upper}})
 {% for field in messages["ping1D"]["set"][msg].payload %}
         m.{{field.name}} = {{field.name}}
 {% endfor %}
         m.packMsgData()
         self.write(m.msgData)
-        if self.request(PingMessage.PING1D_{{msg|replace("set_", "")|upper}}) is None:
+        if self.request(pingmessage.PING1D_{{msg|replace("set_", "")|upper}}) is None:
             return False
         # Read back the data and check that changes have been applied
         if (verify
