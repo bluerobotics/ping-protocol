@@ -6,17 +6,13 @@
 # - Protocol parser
 
 # Variables
-bold=$(tput bold)
-normal=$(tput sgr0)
 script_path="$( cd "$(dirname "$0")" ; pwd -P )"
 project_path="${script_path}/.."
 protocol_template_path="${project_path}/src/protocol/templates"
 protocol_scripts="${project_path}/src/protocol"
 
 # Functions
-echob() {
-    echo "${bold}${1}${normal}"
-}
+source $script_path/functions.sh
 
 echob "Check protocol file description file."
 
@@ -41,6 +37,8 @@ if ! cmp ping-doc.md $project_path/README.md; then
 fi
 
 echob "Run protocol test."
+
+runstep "$project_path/src/protocol/generate-python.py" "Generate python library" "Failed to generate python library"
 
 build_test="/tmp/protocol-test-build"
 rm -rf $build_test

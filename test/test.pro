@@ -1,7 +1,8 @@
 TEMPLATE = app
 
 message(Configuring test build...)
-$$system(python $$PWD/generate-tests.py)
+$$system($$PWD/generate-json.py)
+$$system($$PWD/generate-tests.py)
 
 CONFIG += \
     c++14 \
