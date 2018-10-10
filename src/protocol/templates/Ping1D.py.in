@@ -13,7 +13,7 @@ import serial
 import time
 
 class Ping1D(object):
-    def __init__(self, deviceName, baudrate=115200):
+    def __init__(self, deviceName, baudrate = 115200):
         if deviceName is None:
             print("Device name is required")
             return
@@ -78,7 +78,7 @@ class Ping1D(object):
     # @return PingMessage: the device reply if it is received within timeout period, None otherwise
     #
     # @todo handle nack to exit without blocking
-    def request(self, m_id, timeout=0.5):
+    def request(self, m_id, timeout = 0.5):
         msg = PingMessage.PingMessage()
         msg.request_id = m_id
         msg.packMsgData()
@@ -92,7 +92,7 @@ class Ping1D(object):
     # @param timeout: The timeout period in seconds to wait
     #
     # @return PingMessage: the message from the device if it is received within timeout period, None otherwise
-    def waitMessage(self, message_id, timeout=0.5):
+    def waitMessage(self, message_id, timeout = 0.5):
         tstart = time.time()
         while(time.time() < tstart + timeout):
             msg = self.read()
