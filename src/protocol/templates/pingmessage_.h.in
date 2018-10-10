@@ -27,12 +27,12 @@ public:
 {%- endif %}
 {% endif %}
 {% endfor %})
-        : {{class_info.name}} { {{8 + total_payload + 2}}
+        : {{class_info.name}} { static_cast<uint16_t>({{8 + total_payload + 2}}
 {%- for payload in messages[message_type]['all_msgs'][message].payload %}
 {% if is_vector(payload.type) %}
  + {{payload.name}}_length
 {%- endif %}
-{% endfor %} }
+{% endfor %}) }
     {
         msgData[0] = 'B';
         msgData[1] = 'R';
