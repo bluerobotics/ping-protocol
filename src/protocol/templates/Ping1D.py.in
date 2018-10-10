@@ -37,8 +37,8 @@ class Ping1D(object):
         self.my_id = 255
 
     ## Consume rx buffer data until a new message is successfully decoded
-    # @return A new PingMessage: as soon as a message is parsed (there may be data remaining in the buffer to be parsed, thus requiring subsequent calls to read())
-    # @return None: if the buffer is empty and no message has been parsed
+    #  @return A new PingMessage: as soon as a message is parsed (there may be data remaining in the buffer to be parsed, thus requiring subsequent calls to read())
+    #  @return None: if the buffer is empty and no message has been parsed
     def read(self):
         while(self.iodev.in_waiting):
             b = self.iodev.read()
@@ -49,31 +49,30 @@ class Ping1D(object):
         return None
 
     ## Write data to device
+    #  @return Number of bytes written
     def write(self, data):
         return self.iodev.write(data)
 
-    ## Make sure there is a device on the line and read some initial data
-    # Return True if the device replies with expected data
-    # Return False otherwise
+    ## Make sure there is a device on and read some initial data
+    #  @return True if the device replies with expected data, False otherwise
     def initialize(self):
         if self.request(PingMessage.PING1D_VOLTAGE_5) is None:
             return False
         return True
 
     ## Request the given message ID
-    # Return response if it is rxed within timeout period, None otherwise
-    # TODO handle nack to exit without blocking
-    def request(self, m_id, timeout=0.35):
+    #  @return PingMessage: the device reply if it is received within timeout period, None otherwise
+    #  @todo handle nack to exit without blocking
+    def request(self, m_id, timeout=0.5):
         msg = PingMessage.PingMessage()
         msg.request_id = m_id
         msg.packMsgData()
         self.write(msg.msgData)
-        return self.waitReply(m_id, timeout)
+        return self.waitMessage(m_id, timeout)
 
-    ## Wait for the device to send a message with the desired message_id for timeout s
-    # Return True if a valid message is received from the device with the desired message_id before the timeout period expires
-    # Return False otherwise
-    def waitReply(self, message_id, timeout=0.5):
+    ## Wait until we receive a message from the device with the desired message_id for timeout seconds
+    #  @return PingMessage: the message from the device if it is received within timeout period, None otherwise
+    def waitMessage(self, message_id, timeout=0.5):
         tstart = time.time()
         while(time.time() < tstart + timeout):
             msg = self.read()
@@ -83,7 +82,7 @@ class Ping1D(object):
         return None
 
     ## Handle an incoming messge from the device
-    # Extract message fields into self attributes
+    #  Extract message fields into self attributes
     def handleMessage(self, msg):
         if msg.message_id in PingMessage.payloadDict:
             for attr in PingMessage.payloadDict[msg.message_id]["field_names"]:
@@ -106,16 +105,13 @@ class Ping1D(object):
                 representation += "\n  - " + attr + ": " + str(getattr(self, attr))
         return representation
 
-    # Access Methods
-    ################
-    # Request a message from the device
-    # If there is no reply return None, otherwise return a dictionary of the updated values
-
 {% for msg in messages["ping1D"]["get"] %}
-    ## {{messages["ping1D"]["get"][msg].description}}
-    #  Returns a dictionary of the reply payload
+    ## Get a {{msg|replace("get_", "")}} message from the device\n
+    #  Message description:\n
+    #  {{messages["ping1D"]["get"][msg].description}}
+    #  @return None if there is no reply from the device, otherwise a dictionary with the following keys:\n
 {% for field in messages["ping1D"]["get"][msg].payload %}
-    #  @return {{field.name}}: {% if field.units %}Units: {{field.units}}; {% endif %}{{field.description}}
+    #  {{field.name}}: {% if field.units %}Units: {{field.units}}; {% endif %}{{field.description}}\n
 {% endfor%}
     def get_{{msg}}(self):
         if self.request(PingMessage.PING1D_{{msg|upper}}) is None:
@@ -128,18 +124,16 @@ class Ping1D(object):
         return data
 
 {% endfor %}
-    # Control Methods
-    ###################
-    # Write a new control, and read the values back from the device
-    # If verify is true, fail if the values read back from the device do not match the controls that were written
-    # Return True on success
-    # Return False on failure to read values back or on verification failure
 
 {% for msg in messages["ping1D"]["set"] %}
+    ## Send a {{msg}} message to the device\n
+    #  Message description:\n
+    #  {{messages["ping1D"]["set"][msg].description}}\n
+    #  Send the message to write the device parameters, then read the values back from the device\n
 {% for field in messages["ping1D"]["set"][msg].payload %}
-    ## {{messages["ping1D"]["set"][msg].description}}
     #  @param {{field.name}} - {% if field.units %}Units: {{field.units}}; {% endif %}{{field.description}}
 {% endfor %}
+    #  @return If verify is False, True on successful communication with the device. If verify is False, True if the new device parameters are verified to have been written correctly. False otherwise (failure to read values back or on verification failure)
     def {{msg}}(self{% for field in messages["ping1D"]["set"][msg].payload %}, {{field.name}}{% endfor %}, verify=True):
         m = PingMessage.PingMessage(PingMessage.PING1D_{{msg|upper}})
 {% for field in messages["ping1D"]["set"][msg].payload %}
@@ -181,20 +175,18 @@ if __name__ == "__main__":
 {% endfor %}
     print("\ntesting set_device_id")
     print("  > > pass: %s < <" % p.set_device_id(43))
+    print("\ntesting set_mode_auto")
+    print("  > > pass: %s < <" % p.set_mode_auto(False))
     print("\ntesting set_range")
     print("  > > pass: %s < <" % p.set_range(1000, 2000))
     print("\ntesting set_speed_of_sound")
     print("  > > pass: %s < <" % p.set_speed_of_sound(1444000))
-    print("\ntesting set_mode_auto")
-    print("  > > pass: %s < <" % p.set_mode_auto(False))
-    print("\ntesting set_ping_rate")
-    print("  > > pass: %s < <" % p.set_ping_rate(36))
+    print("\ntesting set_ping_interval")
+    print("  > > pass: %s < <" % p.set_ping_interval(36))
     print("\ntesting set_gain_index")
     print("  > > pass: %s < <" % p.set_gain_index(3))
-
-    # Not implemented
-    # print("testing set_ping_enable")
-    # print("  > > pass: %s < <" % p.set_ping_enable(0))
+    print("\ntesting set_ping_enable")
+    print("  > > pass: %s < <" % p.set_ping_enable(False))
 
     print(p)
 
