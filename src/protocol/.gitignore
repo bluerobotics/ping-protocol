@@ -2,5 +2,7 @@
 generator.pri
 
 # generated code folders
+arduino
 pingmessage
 python
+
