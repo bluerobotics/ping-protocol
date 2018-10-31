@@ -13,7 +13,11 @@ import serial
 import time
 
 class Ping1D(object):
-    def __init__(self, deviceName, baudrate = 115200):
+{% for field in all_fields %}
+    _{{field}} = None
+{% endfor%}
+
+    def __init__(self, deviceName, baudrate=115200):
         if deviceName is None:
             print("Device name is required")
             return
@@ -146,7 +150,7 @@ class Ping1D(object):
             return None
         data = ({
 {% for field in messages["ping1D"]["get"][msg].payload %}
-            "{{field.name}}": self.{{field.name}}, # {% if field.units %}Units: {{field.units}}; {% endif %}{{field.description}}
+            "{{field.name}}": self._{{field.name}}, # {% if field.units %}Units: {{field.units}}; {% endif %}{{field.description}}
 {% endfor %}
         })
         return data
