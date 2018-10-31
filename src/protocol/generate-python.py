@@ -65,6 +65,11 @@ allMessages.update(messageDict['general'])
 
 json_data['all_msgs'] = allMessages
 
+# Create a list with the payload of all messages.
+# The list comprehension assembles all payloads of all messages into a single list
+# The "list(set())" makes sure there are no duplicates
+json_data['all_fields'] = list(set([msg['name'] for key, message in allMessages.items() for msg in message['payload']]))
+
 j2_env.globals['structToken'] = struct_token
 j2_env.globals.update(calc_payload = calc_payload)
 j2_env.globals.update(get_c_size = get_c_size)
