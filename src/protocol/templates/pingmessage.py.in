@@ -193,8 +193,9 @@ class {{class_info.name}}(object):
                 print("error unpacking payload: %s" % e)
                 print("msg_data: %s, header: %s" % (msg_data, header))
                 print("format: %s, buf: %s" % (PingMessage.endianess + self.get_payload_format(), self.msg_data[PingMessage.headerLength:PingMessage.headerLength + self.payload_length]))
-            for i, attr in enumerate(payload_dict[self.message_id]["field_names"]):
-                setattr(self, attr, payload[i])
+            else:  # only use payload if didn't raise exception
+                for i, attr in enumerate(payload_dict[self.message_id]["field_names"]):
+                    setattr(self, attr, payload[i])
 
         # Extract checksum
         self.checksum = struct.unpack({{class_info.name}}.endianess + {{class_info.name}}.checksum_format, self.msg_data[{{class_info.name}}.headerLength + self.payload_length: {{class_info.name}}.headerLength + self.payload_length + {{class_info.name}}.checksumLength])[0]
