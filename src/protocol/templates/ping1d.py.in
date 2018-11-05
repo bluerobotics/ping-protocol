@@ -113,7 +113,7 @@ class Ping1D(object):
     def handleMessage(self, msg):
         if msg.message_id in pingmessage.payloadDict:
             for attr in pingmessage.payloadDict[msg.message_id]["field_names"]:
-                setattr(self, attr, getattr(msg, attr))
+                setattr(self, "_" + attr, getattr(msg, attr))
         else:
             print("Unrecognized message: %d", msg)
 
