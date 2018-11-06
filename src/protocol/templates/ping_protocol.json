@@ -119,6 +119,17 @@
                             "description": "NULL terminated ASCII text message."
                         }
                     ]
+                },
+                "general_request": {
+                    "id": "6",
+                    "description": "Request messages with a specified id.",
+                    "payload": [
+                        {
+                            "name": "requested_id",
+                            "type": "u16",
+                            "description": "Message ID to be requested."
+                        }
+                    ]
                 }
             },
             "set": {
