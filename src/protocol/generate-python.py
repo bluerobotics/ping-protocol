@@ -76,10 +76,10 @@ output_path = os.path.join(PATH, "python/")
 if not os.path.exists(output_path):
     os.makedirs(output_path)
 
-f = open(os.path.join(output_path, "PingMessage.py"), "w")
-f.write(j2_env.get_template("PingMessage.py.in").render(jsondata))
+f = open(os.path.join(output_path, "pingmessage.py"), "w")
+f.write(j2_env.get_template("pingmessage.py.in").render(jsondata))
 f.close()
 
-f = open(os.path.join(output_path, "Ping1D.py"), "w")
-f.write(j2_env.get_template("Ping1D.py.in").render(jsondata))
+f = open(os.path.join(output_path, "ping1d.py"), "w")
+f.write(j2_env.get_template("ping1d.py.in").render(jsondata))
 f.close()
