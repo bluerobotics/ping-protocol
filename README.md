@@ -10,6 +10,7 @@
     * [ack](#1-ack)
     * [nack](#2-nack)
     * [ascii_text](#3-ascii_text)
+    * [general_request](#6-general_request)
   * [set](#set)
     * [set_device_id](#1000-set_device_id)
     * [set_range](#1001-set_range)
@@ -83,6 +84,13 @@ A message for transmitting text data.
 | Type | Name             | Description                                                      | Units |
 |------|------------------|------------------------------------------------------------------|-------|
 | char[] | ascii_message | NULL terminated ASCII text message. Length is derived from payload_length in the header. |  |
+
+#### 6 general_request
+Request messages with a specified id.
+
+| Type | Name             | Description                                                      | Units |
+|------|------------------|------------------------------------------------------------------|-------|
+| u16 | requested_id | Message ID to be requested. |  |
 
 
 ### set
