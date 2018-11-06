@@ -64,7 +64,7 @@ echo "- Check files"
 ls ${project_path}/src/protocol/python/
 
 echob "Update python repository."
-mv ${project_path}/src/protocol/python/* /tmp/update-repos/ping-python/Ping/
+mv ${project_path}/src/protocol/python/* /tmp/update-repos/ping-python/brping/
 
 # ping-arduino
 echob "Build arduino protocol."
