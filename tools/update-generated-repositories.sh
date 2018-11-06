@@ -62,7 +62,7 @@ for repo in "${repositories[@]}"; do
 done
 
 echob "Update python repository."
-mv ${project_path}/src/protocol/python/* /tmp/update-repos/ping-python/Ping/
+mv ${project_path}/src/protocol/python/* /tmp/update-repos/ping-python/brping/
 
 echob "Commit and update changes in remote."
 for repo in "${repositories[@]}"; do
