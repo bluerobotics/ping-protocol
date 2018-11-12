@@ -16,7 +16,7 @@ Ping1D::Ping1D(Stream& ser) : _stream ( ser ) {}
 
 Ping1D::~Ping1D()
 {
-{% for msg in messages["ping1D"]["get"] %}
+{% for msg in messages["ping1D"]["get"]|sort %}
 {% for field in messages["ping1D"]["get"][msg].payload %}
 {% if is_vector(field.type) %}
     if (_{{field.name}}) {
@@ -101,7 +101,7 @@ PingMessage* Ping1D::waitMessage(enum Ping1DNamespace::msg_ping1D_id id, uint16_
 void Ping1D::handleMessage(PingMessage* pmsg)
 {
     switch (pmsg->message_id()) {
-{% for msg in messages["ping1D"]["get"] %}
+{% for msg in messages["ping1D"]["get"]|sort %}
         case Ping1DNamespace::{{msg|title}}:
         {
             ping_msg_ping1D_{{msg}} m(*pmsg);
@@ -156,7 +156,7 @@ T* Ping1D::request()
 }
 
 
-{% for msg in messages["ping1D"]["get"] %}
+{% for msg in messages["ping1D"]["get"]|sort %}
 bool Ping1D::get_{{msg}}(
 {%- for field in messages["ping1D"]["get"][msg].payload %}
 {% if is_vector(field.type) %}
@@ -187,7 +187,7 @@ bool Ping1D::get_{{msg}}(
 
 {% endfor %}
 
-{% for msg in messages["ping1D"]["set"] %}
+{% for msg in messages["ping1D"]["set"]|sort %}
 bool Ping1D::{{msg}}({% for field in messages["ping1D"]["set"][msg].payload %}{{get_type_string(field.type)}} {{field.name}}, {% endfor %}bool verify)
 {
     ping_msg_ping1D_{{msg}} m;
