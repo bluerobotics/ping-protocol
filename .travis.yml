@@ -73,7 +73,7 @@ matrix:
 
 install:
 - pip install --user --upgrade pip;
-- pip install --user jinja2;
+- pip install --user "jinja2>=2.10";
 - if [ "${TRAVIS_OS_NAME}" = "osx" ]; then
     brew update > /dev/null;
     brew install qt5;
