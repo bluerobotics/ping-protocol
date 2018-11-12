@@ -14,7 +14,7 @@ import time
 
 
 class Ping1D(object):
-{% for field in all_fields %}
+{% for field in all_fields|sort %}
     _{{field}} = None
 {% endfor%}
 
