@@ -137,7 +137,7 @@ class Ping1D(object):
                 representation += "\n  - " + attr + ": " + str(getattr(self, attr))
         return representation
 
-{% for msg in messages["ping1D"]["get"] %}
+{% for msg in messages["ping1D"]["get"]|sort %}
     ##
     # @brief Get a {{msg|replace("get_", "")}} message from the device\n
     # Message description:\n
@@ -158,7 +158,7 @@ class Ping1D(object):
         return data
 
 {% endfor %}
-{% for msg in messages["ping1D"]["set"] %}
+{% for msg in messages["ping1D"]["set"]|sort %}
     ##
     # @brief Send a {{msg}} message to the device\n
     # Message description:\n
@@ -201,7 +201,7 @@ if __name__ == "__main__":
 
     print("Initialized: %s" % p.initialize())
 
-{% for msg in messages["ping1D"]["get"] %}
+{% for msg in messages["ping1D"]["get"]|sort %}
     print("\ntesting get_{{msg}}")
     result = p.get_{{msg}}()
     print("  " + str(result))
