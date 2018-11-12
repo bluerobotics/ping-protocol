@@ -17,13 +17,13 @@
 #include <QObject>
 
 #endif
-{% for message_type in messages %}
+{% for message_type in messages|sort %}
 namespace {{capitalize(message_type)}}Namespace {
 #ifdef QT_CORE_LIB
     Q_NAMESPACE
 #endif
     enum msg_{{message_type}}_id {
-{% for message in messages[message_type]['all_msgs'] %}
+{% for message in messages[message_type]['all_msgs']|sort %}
         {{capitalize(message)}} = {{messages[message_type]['all_msgs'][message].id}},
 {% endfor %}
     };
@@ -109,7 +109,7 @@ public:
     }
 };
 
-{% for message_type in messages %}
+{% for message_type in messages|sort %}
 class {{subclass_info.name}}{{message_type}}_empty : public {{class_info.name}}
 {
 public:
