@@ -10,7 +10,7 @@
 #include "pingmessage.h"
 
 {% set message_type = _actual_message_type %}
-{% for message in messages[message_type]['all_msgs'] %}
+{% for message in messages[message_type]['all_msgs']|sort %}
 {% set total_payload = calc_payload(messages[message_type]['all_msgs'][message].payload) %}
 class {{subclass_info.name}}{{message_type}}_{{message}} : public {{class_info.name}}
 {
