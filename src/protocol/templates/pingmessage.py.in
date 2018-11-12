@@ -21,7 +21,7 @@ I = u32
 char[] = s
 '''
 
-{% for message in all_msgs %}
+{% for message in all_msgs|sort %}
 PING1D_{{message|upper}} = {{all_msgs[message].id}}
 {% endfor %}
 
@@ -29,7 +29,7 @@ PING1D_{{message|upper}} = {{all_msgs[message].id}}
 # the format string for these messages is adjusted at runtime, and 's' inserted appropriately at runtime
 # see {{class_info.name}}.get_payload_format()
 payload_dict = {
-{% for message in all_msgs %}
+{% for message in all_msgs|sort %}
     PING1D_{{message|upper}}: {
         "name": "{{message}}",
         "format": "
