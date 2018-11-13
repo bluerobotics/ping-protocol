@@ -92,7 +92,7 @@ script:
     tools/run-tests.sh || travis_terminate 1;
     curl https://bootstrap.pypa.io/get-pip.py | sudo python3.7;
     python3.7 -m pip install --user --upgrade pip;
-    python3.7 -m pip install --user jinja2;
+    python3.7 -m pip install --user "jinja2>=2.10";
     tools/update-generated-repositories.sh;
   fi
 - if [ -z $PINGTEST ]; then
