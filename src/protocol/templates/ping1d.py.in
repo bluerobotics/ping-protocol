@@ -9,8 +9,20 @@
 # ~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!~!
 
 from brping import pingmessage
-import serial
 import time
+
+try:
+    import serial
+    assert hasattr(serial.Serial(), 'inWaiting')
+except Exception as e:
+    print("Exception:", e)
+    print("Unable to import 'pyserial' module, please make sure that it is installed")
+    print("and that 'serial' was not installed by mistake.")
+    print("\nIf you installed 'serial' by mistake, run:\n")
+    print("\tpip uninstall serial")
+    print("\tpip install pyserial")
+    print("\nAnd then try running this software again.\n")
+    exit(1)
 
 
 class Ping1D(object):
