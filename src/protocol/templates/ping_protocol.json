@@ -544,7 +544,7 @@
             "control": {
                 "goto_bootloader": {
                     "id": "1100",
-                    "description": "Send the device into the booloader. This is useful for firmware updates.",
+                    "description": "Send the device into the bootloader. This is useful for firmware updates.",
                     "payload": []
                 },
                 "continuous_start": {
