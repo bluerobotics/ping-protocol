@@ -188,12 +188,12 @@
                 },
                 "set_gain_index": {
                     "id": "1005",
-                    "description": "Set the current gain selection.",
+                    "description": "Set the current gain setting.",
                     "payload": [
                         {
                             "name": "gain_index",
                             "type": "u8",
-                            "description": "0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB"
+                            "description": "The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144"
                         }
                     ]
                 },
@@ -320,7 +320,7 @@
                         {
                             "name": "gain_index",
                             "type": "u32",
-                            "description": "0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB"
+                            "description": "The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144"
                         }
                     ]
                 },
@@ -365,7 +365,7 @@
                         {
                             "name": "gain_index",
                             "type": "u8",
-                            "description": "The current gain setting. 0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB"
+                            "description": "The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144"
                         },
                         {
                             "name": "mode_auto",
@@ -434,7 +434,7 @@
                         {
                             "name": "gain_index",
                             "type": "u32",
-                            "description": "The current gain setting. 0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB"
+                            "description": "The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144"
                         }
                     ]
                 },
@@ -515,7 +515,7 @@
                         {
                             "name": "gain_index",
                             "type": "u32",
-                            "description": "The current gain setting. 0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB"
+                            "description": "The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144"
                         },
                         {
                             "name": "profile_data",
