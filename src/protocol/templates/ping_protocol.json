@@ -308,7 +308,7 @@
                         {
                             "name": "ping_interval",
                             "type": "u16",
-                            "description": "The interval between acoustic measurements.",
+                            "description": "The minimum interval between acoustic measurements. The actual interval may be longer.",
                             "units": "ms"
                         }
                     ]
