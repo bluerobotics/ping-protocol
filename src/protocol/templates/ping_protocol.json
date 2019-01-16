@@ -217,12 +217,12 @@
                         {
                             "name": "device_type",
                             "type": "u8",
-                            "description": "Device type. 0: 1D Echosounder"
+                            "description": "Device type. 0: Unknown; 1: Echosounder"
                         },
                         {
                             "name": "device_model",
                             "type": "u8",
-                            "description": "Device model. 0: Ping1D"
+                            "description": "Device model. 0: Unknown; 1: Ping1D"
                         },
                         {
                             "name": "firmware_version_major",
