@@ -554,7 +554,7 @@
                         {
                             "name": "id",
                             "type": "u16",
-                            "description": "The message id to stream. 0: profile, 1: full_profile, 2: raw_data"
+                            "description": "The message id to stream. 1300: profile"
                         }
                     ]
                 },
@@ -565,7 +565,7 @@
                         {
                             "name": "id",
                             "type": "u16",
-                            "description": "The message id to stream. 0: profile, 1: full_profile, 2: raw_data"
+                            "description": "The message id to stop streaming. 1300: profile"
                         }
                     ]
                 }
