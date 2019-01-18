@@ -124,11 +124,11 @@ The interval between acoustic measurements.
 | u16 | ping_interval | The interval between acoustic measurements. | ms |
 
 #### 1005 set_gain_index
-Set the current gain selection.
+Set the current gain setting.
 
 | Type | Name             | Description                                                      | Units |
 |------|------------------|------------------------------------------------------------------|-------|
-| u8 | gain_index | 0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB |  |
+| u8 | gain_index | The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144 |  |
 
 #### 1006 set_ping_enable
 Enable or disable acoustic measurements.
@@ -145,8 +145,8 @@ Device information
 
 | Type | Name             | Description                                                      | Units |
 |------|------------------|------------------------------------------------------------------|-------|
-| u8 | device_type | Device type. 0: 1D Echosounder |  |
-| u8 | device_model | Device model. 0: Ping1D |  |
+| u8 | device_type | Device type. 0: Unknown; 1: Echosounder |  |
+| u8 | device_model | Device model. 0: Unknown; 1: Ping1D |  |
 | u16 | firmware_version_major | Firmware version major number. |  |
 | u16 | firmware_version_minor | Firmware version minor number. |  |
 
@@ -191,14 +191,14 @@ The interval between acoustic measurements.
 
 | Type | Name             | Description                                                      | Units |
 |------|------------------|------------------------------------------------------------------|-------|
-| u16 | ping_interval | The interval between acoustic measurements. | ms |
+| u16 | ping_interval | The minimum interval between acoustic measurements. The actual interval may be longer. | ms |
 
 #### 1207 gain_index
 The current gain setting.
 
 | Type | Name             | Description                                                      | Units |
 |------|------------------|------------------------------------------------------------------|-------|
-| u32 | gain_index | 0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB |  |
+| u32 | gain_index | The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144 |  |
 
 #### 1208 pulse_duration
 The duration of the acoustic activation/transmission.
@@ -216,7 +216,7 @@ General information.
 | u16 | firmware_version_minor | Firmware minor version. |  |
 | u16 | voltage_5 | Device supply voltage. | mV |
 | u16 | ping_interval | The interval between acoustic measurements. | ms |
-| u8 | gain_index | The current gain setting. 0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB |  |
+| u8 | gain_index | The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144 |  |
 | u8 | mode_auto | The current operating mode of the device. 0: manual mode, 1: auto mode |  |
 
 #### 1211 distance_simple
@@ -238,7 +238,7 @@ The distance to target with confidence estimate. Relevant device parameters duri
 | u32 | ping_number | The pulse/measurement count since boot. |  |
 | u32 | scan_start | The beginning of the scan region in mm from the transducer. | mm |
 | u32 | scan_length | The length of the scan region. | mm |
-| u32 | gain_index | The current gain setting. 0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB |  |
+| u32 | gain_index | The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144 |  |
 
 #### 1213 processor_temperature
 Temperature of the device cpu.
@@ -272,7 +272,7 @@ A profile produced from a single acoustic measurement. The data returned is an a
 | u32 | ping_number | The pulse/measurement count since boot. |  |
 | u32 | scan_start | The beginning of the scan region in mm from the transducer. | mm |
 | u32 | scan_length | The length of the scan region. | mm |
-| u32 | gain_index | The current gain setting. 0: 0.6dB, 1: 1.8dB, 2: 5.5dB, 3: 12.9dB, 4: 30.2dB, 5: 66.1dB, 6: 144dB |  |
+| u32 | gain_index | The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144 |  |
 | u16 | profile_data_length | The length of the proceeding vector field | |
 | u8[] | profile_data | An array of return strength measurements taken at regular intervals across the scan region. |  |
 
@@ -287,7 +287,7 @@ The protocol version
 ### control
 
 #### 1100 goto_bootloader
-Send the device into the booloader. This is useful for firmware updates.
+Send the device into the bootloader. This is useful for firmware updates.
 
 No payload.
 
@@ -296,12 +296,12 @@ Command to initiate continuous data stream of profile messages.
 
 | Type | Name             | Description                                                      | Units |
 |------|------------------|------------------------------------------------------------------|-------|
-| u16 | id | The message id to stream. 0: profile, 1: full_profile, 2: raw_data |  |
+| u16 | id | The message id to stream. 1300: profile |  |
 
 #### 1401 continuous_stop
 Command to stop the continuous data stream of profile messages.
 
 | Type | Name             | Description                                                      | Units |
 |------|------------------|------------------------------------------------------------------|-------|
-| u16 | id | The message id to stream. 0: profile, 1: full_profile, 2: raw_data |  |
+| u16 | id | The message id to stop streaming. 1300: profile |  |
 
