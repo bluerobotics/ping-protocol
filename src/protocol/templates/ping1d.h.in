@@ -124,28 +124,6 @@ public:
         return request(Ping1DNamespace::Distance_simple);
     }
 
-{% for msg in messages["ping1D"]["get"] %}
-    /**
-     * @brief {{messages["ping1D"]["get"][msg].description}}
-     *
-{% for field in messages["ping1D"]["get"][msg].payload %}
-     * @param {{field.name}}: {% if field.units %}Units: {{field.units}}; {% endif %}{{field.description}}
-{% endfor%}
-     *
-     * @return true if a valid reply is received from the device
-     */
-    bool get_{{msg}}(
-{%- for field in messages["ping1D"]["get"][msg].payload %}
-{% if is_vector(field.type) %}
-{{ "                     " if not loop.first }}{{get_type_string(field.vector.sizetype)}}* {{field.name}}_length = nullptr, {{get_type_string(field.vector.datatype)}}** {{field.name}} = nullptr{{ ",\n" if not loop.last }}
-{%- else %}
-{{ "                     " if not loop.first }}{{get_type_string(field.type)}}* {{field.name}} = nullptr{{ ",\n" if not loop.last }}
-{%- endif %}
-{% endfor -%}
-         );
-
-{% endfor %}
-
 {% for msg in messages["ping1D"]["set"] %}
     /**
      * @brief {{messages["ping1D"]["set"][msg].description}}
