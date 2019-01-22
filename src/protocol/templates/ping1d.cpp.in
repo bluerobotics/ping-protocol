@@ -31,7 +31,6 @@ PingMessage* Ping1D::read()
 {
     while(_stream.available()) {
         if (_parser.parseByte(_stream.read()) == PingParser::NEW_MESSAGE) {
-          handleMessage(&_parser.rxMsg);
           return &_parser.rxMsg;
         }
     }
