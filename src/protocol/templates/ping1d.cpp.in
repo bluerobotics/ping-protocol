@@ -155,38 +155,6 @@ T* Ping1D::request()
     return (T*)waitMessage(resp.message_id());
 }
 
-
-{% for msg in messages["ping1D"]["get"]|sort %}
-bool Ping1D::get_{{msg}}(
-{%- for field in messages["ping1D"]["get"][msg].payload %}
-{% if is_vector(field.type) %}
-{{ "                     " if not loop.first }}{{get_type_string(field.vector.sizetype)}}* {{field.name}}_length, {{get_type_string(field.vector.datatype)}}** {{field.name}}{{ ",\n" if not loop.last }}
-{%- else %}
-{{ "                     " if not loop.first }}{{get_type_string(field.type)}}* {{field.name}}{{ ",\n" if not loop.last }}
-{%- endif %}
-{% endfor -%}
-         )
-{
-
-    if (!request(Ping1DNamespace::{{msg|title}})) {
-        return false; // no reply from device
-    }
-
-    // Copy selected fields
-{% for field in messages["ping1D"]["get"][msg].payload %}
-{% if is_vector(field.type) %}
-    if ({{field.name}}_length) *{{field.name}}_length = _{{field.name}}_length;
-    if ({{field.name}}) *{{field.name}} = _{{field.name}};
-{% else %}
-    if ({{field.name}}) *{{field.name}} = _{{field.name}};
-{% endif %}
-{% endfor %}
-
-    return true; // success
-}
-
-{% endfor %}
-
 {% for msg in messages["ping1D"]["set"]|sort %}
 bool Ping1D::{{msg}}({% for field in messages["ping1D"]["set"][msg].payload %}{{get_type_string(field.type)}} {{field.name}}, {% endfor %}bool verify)
 {
