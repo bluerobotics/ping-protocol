@@ -91,8 +91,8 @@ public:
      * @param {{field.name}} - {% if field.units %}Units: {{field.units}}; {% endif %}{{field.description}}
 {% endfor %}
      *
-     * @return true when verify = false if a valid reply is received from the device.
-     * @return true when verify = true if a valid reply is received from the
+     * @return when verify = false: true if a valid reply is received from the device.
+     * @return when verify = true: true if a valid reply is received from the
      * device, and the values in the reply match the values that we applied
      */
     bool {{msg}}({% for field in messages["ping1D"]["set"][msg].payload %}{{get_type_string(field.type)}} {{field.name}}, {% endfor %}bool verify = true);
