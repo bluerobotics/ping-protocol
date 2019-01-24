@@ -100,10 +100,15 @@ public:
 {% endfor %}
 
 {% for field in proplist %}
-    // Return the latest value received
+    /**
+     * Return the latest value received
+     */
 {% if is_vector(proplist[field].type) %}
 {% if proplist[field].vector.sizetype %}
     {{get_type_string(proplist[field].vector.sizetype)}} {{proplist[field].name}}_length() { return _{{proplist[field].name}}_length; }
+    /**
+     * Return the latest value received
+     */
     {{get_type_string(proplist[field].vector.datatype)}}* {{proplist[field].name}}() { return _{{proplist[field].name}}; }
 {% endif %}
 {% else %}
