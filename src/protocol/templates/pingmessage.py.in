@@ -47,11 +47,9 @@ payload_dict = {
 {% if is_vector(field) %}
 {% if field.vector.sizetype %}
              "{{field.name}}_length",
-             "{{field.name}}",
 {% endif %}
-{% else %}
-             "{{field.name}}",
 {% endif %}
+             "{{field.name}}",
 {% endfor %}
             ),
         "payload_length": {{calc_payload(all_msgs[message].payload)}}
