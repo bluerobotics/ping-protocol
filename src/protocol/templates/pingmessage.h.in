@@ -65,6 +65,17 @@ public:
         return *this;
     }
 
+    static const char* get_name_from_id(uint16_t id) {
+        switch(id) {
+{% for message in messages['ping1D']['all_msgs']|sort %}
+            case {{messages['ping1D']['all_msgs'][message].id}}:
+                return "{{message}}";
+{% endfor %}
+            default:
+                return {};
+        }
+    }
+
     ~{{class_info.name}}() { if(msgData) free(msgData); }
 
 protected:
