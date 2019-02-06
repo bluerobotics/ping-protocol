@@ -314,6 +314,7 @@ class PingParser(object):
             msg_byte = ord(msg_byte)
         # print("byte: %d, state: %d, rem: %d, id: %d" % (msg_byte, self.state, self.payload_length, self.message_id))
         if self.state == PingParser.WAIT_START:
+            self.buf = bytearray()
             if msg_byte == ord('B'):
                 self.buf.append(msg_byte)
                 self.state += 1
@@ -361,7 +362,6 @@ class PingParser(object):
 
             # print(self.rx_msg)
 
-            self.buf = bytearray()
             self.state = PingParser.WAIT_START
             self.payload_length = 0
             self.message_id = 0
