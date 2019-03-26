@@ -34,7 +34,7 @@ payload_dict = {
         "name": "{{message}}",
         "format": "
 {%- for field in all_msgs[message].payload %}
-{% if is_vector(field) %}
+{% if generator.is_vector(field) %}
 {% if field.vector.sizetype %}
 {{structToken[field.vector.sizetype]}}
 {%- endif %}
@@ -44,7 +44,7 @@ payload_dict = {
 {% endfor %}",
         "field_names": (
 {% for field in all_msgs[message].payload %}
-{% if is_vector(field) %}
+{% if generator.is_vector(field) %}
 {% if field.vector.sizetype %}
              "{{field.name}}_length",
 {% endif %}
@@ -52,7 +52,7 @@ payload_dict = {
              "{{field.name}}",
 {% endfor %}
             ),
-        "payload_length": {{calc_payload(all_msgs[message].payload)}}
+        "payload_length": {{generator.calc_payload(all_msgs[message].payload)}}
     },
 
 {% endfor %}
@@ -454,4 +454,3 @@ if __name__ == "__main__":
             if p.parse_byte(s.read()) == PingParser.NEW_MESSAGE:
                 print(p.rx_msg)
         print("parsed: %d errors: %d" % (p.parsed, p.errors))
-
