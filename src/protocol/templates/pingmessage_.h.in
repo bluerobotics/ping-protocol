@@ -11,7 +11,7 @@
 
 {% set message_type = _actual_message_type %}
 {% for message in messages[message_type]['all_msgs']|sort %}
-{% set total_payload = calc_payload(messages[message_type]['all_msgs'][message].payload) %}
+{% set total_payload = generator.calc_payload(messages[message_type]['all_msgs'][message].payload) %}
 class {{subclass_info.name}}{{message_type}}_{{message}} : public {{class_info.name}}
 {
 public:
@@ -19,9 +19,9 @@ public:
     {{subclass_info.name}}{{message_type}}_{{message}}(const uint8_t* buf, const uint16_t length) : {{class_info.name}} { buf, length } {}
     {{subclass_info.name}}{{message_type}}_{{message}}(
 {%- for payload in messages[message_type]['all_msgs'][message].payload %}
-{% if is_vector(payload.type) %}
+{% if generator.is_vector(payload.type) %}
 {% if payload.vector.sizetype -%}
-            {{get_type_string(payload.vector.sizetype)}} {{payload.name}}_length
+            {{generator.get_type_string(payload.vector.sizetype)}} {{payload.name}}_length
 {% else -%}
             uint16_t {{payload.name}}_length
 {%- endif %}
@@ -29,7 +29,7 @@ public:
 {% endfor %})
         : {{class_info.name}} { static_cast<uint16_t>({{8 + total_payload + 2}}
 {%- for payload in messages[message_type]['all_msgs'][message].payload %}
-{% if is_vector(payload.type) %}
+{% if generator.is_vector(payload.type) %}
  + {{payload.name}}_length
 {%- endif %}
 {% endfor %}) }
@@ -38,7 +38,7 @@ public:
         msgData[1] = 'R';
         (uint16_t&)msgData[2] = {{total_payload}}
 {%- for payload in messages[message_type]['all_msgs'][message].payload %}
-{% if is_vector(payload.type) %}
+{% if generator.is_vector(payload.type) %}
  + {{payload.name}}_length
 {%- endif %}
 {% endfor %}; // payload size
@@ -50,19 +50,19 @@ public:
 {% set byte = namespace(offset=0, func='') %}
 {% if messages[message_type]['all_msgs'][message].payload %}
 {% for payload in messages[message_type]['all_msgs'][message].payload %}
-{% if is_vector(payload.type) %}
+{% if generator.is_vector(payload.type) %}
 {% if payload.vector.sizetype %}
-    {{get_type_string(payload.vector.sizetype)}} {{payload.name}}_length() const { {{get_type_string(payload.vector.sizetype, name='d')}}; memcpy(&d, (payload_data({{byte.offset}})), {{get_c_size(payload.vector.sizetype)}}); return d; };
+    {{generator.get_type_string(payload.vector.sizetype)}} {{payload.name}}_length() const { {{generator.get_type_string(payload.vector.sizetype, name='d')}}; memcpy(&d, (payload_data({{byte.offset}})), {{generator.get_c_size(payload.vector.sizetype)}}); return d; };
     //TODO do this in constructor (const)
-    void set_{{payload.name}}_length(const {{get_type_string(payload.vector.sizetype)}} {{payload.name}}_length) { memcpy((payload_data({{byte.offset}})), &{{payload.name}}_length, {{get_c_size(payload.vector.sizetype)}});};
-{% set byte.offset = byte.offset + get_c_size(payload.vector.sizetype) %}
+    void set_{{payload.name}}_length(const {{generator.get_type_string(payload.vector.sizetype)}} {{payload.name}}_length) { memcpy((payload_data({{byte.offset}})), &{{payload.name}}_length, {{generator.get_c_size(payload.vector.sizetype)}});};
+{% set byte.offset = byte.offset + generator.get_c_size(payload.vector.sizetype) %}
 {% endif %}
-    {{get_type_string(payload.vector.datatype)}}* {{payload.name}}() const { return ({{get_type_string(payload.vector.datatype)}}*)(payload_data({{byte.offset}})); }
-    void set_{{payload.name}}_at(const uint16_t i, const {{get_type_string(payload.vector.datatype)}} data) { memcpy((payload_data({{byte.offset}} + i)), &data, 1); }
+    {{generator.get_type_string(payload.vector.datatype)}}* {{payload.name}}() const { return ({{generator.get_type_string(payload.vector.datatype)}}*)(payload_data({{byte.offset}})); }
+    void set_{{payload.name}}_at(const uint16_t i, const {{generator.get_type_string(payload.vector.datatype)}} data) { memcpy((payload_data({{byte.offset}} + i)), &data, 1); }
 {% else %}
-    {{get_type_string(payload.type)}} {{payload.name}}() const { {{get_type_string(payload.type, name='d')}}; memcpy(&d, (payload_data({{byte.offset}})), {{get_c_size(payload.type)}}); return d; };
-    void set_{{payload.name}}(const {{get_type_string(payload.type)}} {{payload.name}}) { memcpy((payload_data({{byte.offset}})), &{{payload.name}}, {{get_c_size(payload.type)}});};
-{% set byte.offset = byte.offset + get_c_size(payload.type) %}
+    {{generator.get_type_string(payload.type)}} {{payload.name}}() const { {{generator.get_type_string(payload.type, name='d')}}; memcpy(&d, (payload_data({{byte.offset}})), {{generator.get_c_size(payload.type)}}); return d; };
+    void set_{{payload.name}}(const {{generator.get_type_string(payload.type)}} {{payload.name}}) { memcpy((payload_data({{byte.offset}})), &{{payload.name}}, {{generator.get_c_size(payload.type)}});};
+{% set byte.offset = byte.offset + generator.get_c_size(payload.type) %}
 {% endif %}
 {% endfor %}
 {% endif %}
