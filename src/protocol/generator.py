@@ -6,9 +6,6 @@ import re
 
 from jinja2 import Environment, FileSystemLoader
 
-PATH = os.path.dirname(os.path.abspath(__file__))
-JINJA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates/')
-
 class Generator:
     def calc_payload(self, payloads):
         total_size = 0
@@ -103,6 +100,9 @@ class Generator:
         return s[0].capitalize() + s[1:]
 
 if __name__ == "__main__":
+    PATH = os.path.dirname(os.path.abspath(__file__))
+    JINJA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates/')
+
     # Get list of all class names
     class_names = []
     # Get all jsons
