@@ -95,7 +95,7 @@ public:
      * @return when verify = true: true if a valid reply is received from the
      * device, and the values in the reply match the values that we applied
      */
-    bool {{msg}}({% for field in messages["ping1D"]["set"][msg].payload %}{{get_type_string(field.type)}} {{field.name}}, {% endfor %}bool verify = true);
+    bool {{msg}}({% for field in messages["ping1D"]["set"][msg].payload %}{{generator.get_type_string(field.type)}} {{field.name}}, {% endfor %}bool verify = true);
 
 {% endfor %}
 
@@ -103,16 +103,16 @@ public:
     /**
      * Return the latest value received
      */
-{% if is_vector(proplist[field].type) %}
+{% if generator.is_vector(proplist[field].type) %}
 {% if proplist[field].vector.sizetype %}
-    {{get_type_string(proplist[field].vector.sizetype)}} {{proplist[field].name}}_length() { return _{{proplist[field].name}}_length; }
+    {{generator.get_type_string(proplist[field].vector.sizetype)}} {{proplist[field].name}}_length() { return _{{proplist[field].name}}_length; }
     /**
      * Return the latest value received
      */
-    {{get_type_string(proplist[field].vector.datatype)}}* {{proplist[field].name}}() { return _{{proplist[field].name}}; }
+    {{generator.get_type_string(proplist[field].vector.datatype)}}* {{proplist[field].name}}() { return _{{proplist[field].name}}; }
 {% endif %}
 {% else %}
-    {{get_type_string(proplist[field].type)}} {{proplist[field].name}}() { return _{{proplist[field].name}}; }
+    {{generator.get_type_string(proplist[field].type)}} {{proplist[field].name}}() { return _{{proplist[field].name}}; }
 {% endif %}
 
 {% endfor %}
@@ -126,13 +126,13 @@ private:
 
 {% for field in proplist %}
     // {{proplist[field].description}}
-{% if is_vector(proplist[field].type) %}
+{% if generator.is_vector(proplist[field].type) %}
 {% if proplist[field].vector.sizetype %}
-    {{get_type_string(proplist[field].vector.sizetype)}} _{{proplist[field].name}}_length = 0;
+    {{generator.get_type_string(proplist[field].vector.sizetype)}} _{{proplist[field].name}}_length = 0;
 {% endif %}
-    {{get_type_string(proplist[field].vector.datatype)}}* _{{proplist[field].name}} = 0;
+    {{generator.get_type_string(proplist[field].vector.datatype)}}* _{{proplist[field].name}} = 0;
 {% else %}
-    {{get_type_string(proplist[field].type)}} _{{proplist[field].name}} = 0;
+    {{generator.get_type_string(proplist[field].type)}} _{{proplist[field].name}} = 0;
 {% endif %}
 
 {% endfor %}

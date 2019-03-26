@@ -18,7 +18,7 @@ Ping1D::~Ping1D()
 {
 {% for msg in messages["ping1D"]["get"]|sort %}
 {% for field in messages["ping1D"]["get"][msg].payload %}
-{% if is_vector(field.type) %}
+{% if generator.is_vector(field.type) %}
     if (_{{field.name}}) {
        free(_{{field.name}});
     }
@@ -105,12 +105,12 @@ void Ping1D::handleMessage(PingMessage* pmsg)
         {
             ping_msg_ping1D_{{msg}} m(*pmsg);
 {% for field in messages["ping1D"]["get"][msg].payload %}
-{% if is_vector(field.type) %}
+{% if generator.is_vector(field.type) %}
             if (m.{{field.name}}_length() > _{{field.name}}_length) {
                 if (_{{field.name}}) {
                     free(_{{field.name}});
                 }
-                _{{field.name}} = ({{get_type_string(field.vector.datatype)}}*)malloc(_{{field.name}}_length * sizeof({{get_type_string(field.vector.datatype)}}));
+                _{{field.name}} = ({{generator.get_type_string(field.vector.datatype)}}*)malloc(_{{field.name}}_length * sizeof({{generator.get_type_string(field.vector.datatype)}}));
             }
 
             _{{field.name}}_length = m.{{field.name}}_length();
@@ -155,7 +155,7 @@ T* Ping1D::request()
 }
 
 {% for msg in messages["ping1D"]["set"]|sort %}
-bool Ping1D::{{msg}}({% for field in messages["ping1D"]["set"][msg].payload %}{{get_type_string(field.type)}} {{field.name}}, {% endfor %}bool verify)
+bool Ping1D::{{msg}}({% for field in messages["ping1D"]["set"][msg].payload %}{{generator.get_type_string(field.type)}} {{field.name}}, {% endfor %}bool verify)
 {
     ping_msg_ping1D_{{msg}} m;
 {% for field in messages["ping1D"]["set"][msg].payload %}
