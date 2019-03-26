@@ -97,7 +97,7 @@ class Generator:
         return s
 
     def is_vector(self, t):
-        return t.find('vector') != -1
+        return ('vector' in t)
 
     def capitalize(self, s):
         return s[0].capitalize() + s[1:]
