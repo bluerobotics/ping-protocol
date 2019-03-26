@@ -9,97 +9,98 @@ from jinja2 import Environment, FileSystemLoader
 PATH = os.path.dirname(os.path.abspath(__file__))
 JINJA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates/')
 
-def calc_payload(payloads):
-    total_size = 0
-    for payload in payloads:
-        if is_vector(payload["type"]):
+class Generator:
+    def calc_payload(self, payloads):
+        total_size = 0
+        for payload in payloads:
+            if self.is_vector(payload["type"]):
 
-            if payload["vector"]["size"] == "dynamic":
-                if "sizetype" in payload["vector"]:
-                    total_size = total_size + get_c_size(payload["vector"]["sizetype"])
+                if payload["vector"]["size"] == "dynamic":
+                    if "sizetype" in payload["vector"]:
+                        total_size = total_size + self.get_c_size(payload["vector"]["sizetype"])
+                else:
+                    total_size = total_size + int(payload["vector"]["size"]) * self.get_c_size(payload["vector"]["datatype"])
+
             else:
-                total_size = total_size + int(payload["vector"]["size"]) * get_c_size(payload["vector"]["datatype"])
+                total_size = total_size + self.get_c_size(payload["type"])
 
+        return int(total_size)
+
+    def convert_short_type(self, t):
+        # u/i
+        ui = t[0]
+        # number of bits
+        nbits = t[1:]
+
+        if ui == 'i':
+            return 'int{0}_t'.format(nbits)
+
+        if ui == 'u':
+            return 'uint{0}_t'.format(nbits)
+
+    def convert_c_name(self, name):
+        # Create signals for Qt class
+        names = name.split('_')
+        new_name = names[0]
+        for sub_names in names[1:]:
+            new_name = new_name + sub_names.title()
+        return new_name + 'Update'
+
+    def get_c_size(self, t):
+        # this regex will get the X in u/intX_t (uint8_t, int16_t)
+        match = re.search('[0-9]{1,2}', t)
+        if match:
+            return int(match.group(0)) / 8
+        if t.find('bool') != -1:
+            return 1
+        if t.find('int') != -1:
+            return 4
+        if t.find('float') != -1:
+            return 4
+        if t.find('double') != -1:
+            return 8
+
+    def get_type_base_size(self, types):
+        # Get total number of bytes in vector, float, int, double
+        total_bytes = 0
+        for t in types:
+            total_bytes = total_bytes + self.get_c_size(t)
+        print(types, total_bytes)
+        return total_bytes
+
+    def get_type_string(self, t, pointer=False, name=''):
+        # Move from u/i short types
+
+        # Remove vector info
+        vector_size = 0
+        if t.find('[') != -1:
+            vector_size = t.split('[')[1].split(']')[0]
+            t = t.split('[')[0]
+
+        # Check for short type
+        # This script will get X in u/iX (u8, i16)
+        match = re.search('[u,i][0-9]{1,2}$', t)
+        s = ''
+        if match:
+            s = self.convert_short_type(t)
         else:
-            total_size = total_size + get_c_size(payload["type"])
+            s = t
 
-    return int(total_size)
+        # Append vector
+        if vector_size and pointer:
+            s = s + '*'
+        elif vector_size and name:
+            s = s + ' {0}[{1}]'.format(name, vector_size)
+        elif name:
+            s = s + ' {0}'.format(name)
 
-def convert_short_type(t):
-    # u/i
-    ui = t[0]
-    # number of bits
-    nbits = t[1:]
+        return s
 
-    if ui == 'i':
-        return 'int{0}_t'.format(nbits)
+    def is_vector(self, t):
+        return t.find('vector') != -1
 
-    if ui == 'u':
-        return 'uint{0}_t'.format(nbits)
-
-def convert_c_name(name):
-    # Create signals for Qt class
-    names = name.split('_')
-    new_name = names[0]
-    for sub_names in names[1:]:
-        new_name = new_name + sub_names.title()
-    return new_name + 'Update'
-
-def get_c_size(t):
-    # this regex will get the X in u/intX_t (uint8_t, int16_t)
-    match = re.search('[0-9]{1,2}', t)
-    if match:
-        return int(match.group(0)) / 8
-    if t.find('bool') != -1:
-        return 1
-    if t.find('int') != -1:
-        return 4
-    if t.find('float') != -1:
-        return 4
-    if t.find('double') != -1:
-        return 8
-
-def get_type_base_size(types):
-    # Get total number of bytes in vector, float, int, double
-    total_bytes = 0
-    for t in types:
-        total_bytes = total_bytes + get_c_size(t)
-    print(types, total_bytes)
-    return total_bytes
-
-def get_type_string(t, pointer=False, name=''):
-    # Move from u/i short types
-
-    # Remove vector info
-    vector_size = 0
-    if t.find('[') != -1:
-        vector_size = t.split('[')[1].split(']')[0]
-        t = t.split('[')[0]
-
-    # Check for short type
-    # This script will get X in u/iX (u8, i16)
-    match = re.search('[u,i][0-9]{1,2}$', t)
-    s = ''
-    if match:
-        s = convert_short_type(t)
-    else:
-        s = t
-
-    # Append vector
-    if vector_size and pointer:
-        s = s + '*'
-    elif vector_size and name:
-        s = s + ' {0}[{1}]'.format(name, vector_size)
-    elif name:
-        s = s + ' {0}'.format(name)
-
-    return s
-
-def is_vector(t):
-    return t.find('vector') != -1
-
-def capitalize(s):
-    return s[0].capitalize() + s[1:]
+    def capitalize(self, s):
+        return s[0].capitalize() + s[1:]
 
 if __name__ == "__main__":
     # Get list of all class names
@@ -109,7 +110,7 @@ if __name__ == "__main__":
     for json_file in jsons:
         # Get json data
         protocol_data = json.load(open(os.path.join(JINJA_PATH, json_file), 'r'))
-
+        print('Processing file: %s' % protocol_data['class_info']['file'])
         # Create prefix name
         file_prefix_name = protocol_data['class_info']['name'].lower()
         class_names.append(file_prefix_name)
@@ -131,13 +132,7 @@ if __name__ == "__main__":
 
         # Create our lovely jinja env
         j2_env = Environment(loader=FileSystemLoader(JINJA_PATH), trim_blocks=True)
-        j2_env.globals.update(calc_payload=calc_payload)
-        j2_env.globals.update(capitalize=capitalize)
-        j2_env.globals.update(convert_short_type=convert_short_type)
-        j2_env.globals.update(get_c_size=get_c_size)
-        j2_env.globals.update(get_type_base_size=get_type_base_size)
-        j2_env.globals.update(get_type_string=get_type_string)
-        j2_env.globals.update(is_vector=is_vector)
+        j2_env.globals.update(generator=Generator())
         j2_env.globals.update(_actual_message_type='')
 
         # Create main class
