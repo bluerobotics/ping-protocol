@@ -18,13 +18,13 @@
 
 #endif
 {% for message_type in messages|sort %}
-namespace {{capitalize(message_type)}}Namespace {
+namespace {{generator.capitalize(message_type)}}Namespace {
 #ifdef QT_CORE_LIB
     Q_NAMESPACE
 #endif
     enum msg_{{message_type}}_id {
 {% for message in messages[message_type]['all_msgs']|sort %}
-        {{capitalize(message)}} = {{messages[message_type]['all_msgs'][message].id}},
+        {{generator.capitalize(message)}} = {{messages[message_type]['all_msgs'][message].id}},
 {% endfor %}
     };
 #ifdef QT_CORE_LIB
