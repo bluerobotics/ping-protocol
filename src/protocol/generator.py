@@ -10,7 +10,7 @@ class Generator:
     ROOT = os.path.abspath(__file__)
     PATH = os.path.dirname(ROOT)
     JINJA_PATH = os.path.join(PATH, 'templates/')
-    RECIPE_PATH = os.path.join(PATH, 'templates/')
+    RECIPE_PATH = os.path.join(PATH, 'recipes/')
 
     def calc_payload(self, payloads):
         total_size = 0
