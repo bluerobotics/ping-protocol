@@ -7,6 +7,11 @@ import re
 from jinja2 import Environment, FileSystemLoader
 
 class Generator:
+    ROOT = os.path.abspath(__file__)
+    PATH = os.path.dirname(ROOT)
+    JINJA_PATH = os.path.join(PATH, 'templates/')
+    RECIPE_PATH = os.path.join(PATH, 'templates/')
+
     def calc_payload(self, payloads):
         total_size = 0
         for payload in payloads:
@@ -100,23 +105,20 @@ class Generator:
         return s[0].capitalize() + s[1:]
 
 if __name__ == "__main__":
-    PATH = os.path.dirname(os.path.abspath(__file__))
-    JINJA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates/')
-
     # Get list of all class names
     class_names = []
     # Get all jsons
-    jsons = [file for file in os.listdir(JINJA_PATH) if file.endswith('.json')]
+    jsons = [file for file in os.listdir(Generator.RECIPE_PATH) if file.endswith('.json')]
     for json_file in jsons:
         # Get json data
-        protocol_data = json.load(open(os.path.join(JINJA_PATH, json_file), 'r'))
+        protocol_data = json.load(open(os.path.join(Generator.RECIPE_PATH, json_file), 'r'))
         print('Processing file: %s' % protocol_data['class_info']['file'])
         # Create prefix name
         file_prefix_name = protocol_data['class_info']['name'].lower()
         class_names.append(file_prefix_name)
 
         # Create output file
-        output_path = os.path.join(PATH, '{0}/'.format(file_prefix_name))
+        output_path = os.path.join(Generator.PATH, '{0}/'.format(file_prefix_name))
         if not os.path.exists(output_path):
             os.makedirs(output_path)
 
@@ -131,7 +133,7 @@ if __name__ == "__main__":
         protocol_data['messages']['ping1D']['all_msgs'] = allMessages
 
         # Create our lovely jinja env
-        j2_env = Environment(loader=FileSystemLoader(JINJA_PATH), trim_blocks=True)
+        j2_env = Environment(loader=FileSystemLoader(Generator.JINJA_PATH), trim_blocks=True)
         j2_env.globals.update(generator=Generator())
         j2_env.globals.update(_actual_message_type='')
 
