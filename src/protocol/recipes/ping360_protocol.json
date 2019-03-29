@@ -1,0 +1,226 @@
+{
+    "class_info": {
+        "_comment": "Handle the main class protocol, the class name will be the file prefix in lower",
+        "file": "pingmessage.h.in",
+        "name": "ping_ping360"
+    },
+    "subclass_info": {
+        "_comment": "Create a class for each message type",
+        "file": "pingmessage_.h.in",
+        "name": "ping_msg_"
+    },
+    "sensor_info": {
+        "file": "ping.h.in",
+        "name": "Ping"
+    },
+    "requirements": {
+        "discovery": "discovery of connected devices, types, and firmwares",
+        "packed fields": "memory alignment"
+    },
+    "messages": {
+        "set": {
+            "parameters": {
+                "id": "2000",
+                "description": "This is the main parameter block.",
+                "payload": [
+                    {
+                        "name": "mode",
+                        "type": "u8",
+                        "description": "Operating mode (1 for SS1)"
+                    },
+                    {
+                        "name": "gain_index",
+                        "type": "u8",
+                        "description": "Analog gain index (0 = low, 1 = normal, 2 = high)"
+                    },
+                    {
+                        "name": "angle",
+                        "type": "u16",
+                        "description": "Head angle in gradians (3 ASCII/Hex digits 0 to 399 decimal = 0 to 360 degrees)"
+                    },
+                    {
+                        "name": "pulse_usec",
+                        "type": "u16",
+                        "description": "Tx pulse length in microseconds. (1 to 1000)"
+                    },
+                    {
+                        "name": "interval",
+                        "type": "u16",
+                        "description": "Sample interval in 25nsec clock ticks (40 to 40000 decimal == 1 microsecond to 1000 microseconds)"
+                    }
+                ]
+            },
+            "device_id": {
+                "id": "2001",
+                "description": "Sets the device ID that will be reported by requesting a 'device_id' message from the sonar. Command timeout should be set to 50 msec. ",
+                "payload": [
+                    {
+                        "name": "id",
+                        "type": "u8",
+                        "description": "1-254 are valid values (default value is 2 for Ping360)"
+                    }
+                ]
+            }
+        },
+        "get": {
+            "device_id": {
+                "id": "2300",
+                "description": "The device ID.",
+                "payload": [
+                    {
+                        "name": "device_id",
+                        "type": "u8",
+                        "description": "The device ID (0-254). 255 is reserved for broadcast messages."
+                    }
+                ],
+                "deprecated": "true"
+            },
+            "firmware_version": {
+                "id": "2301",
+                "description": "Device information",
+                "payload": [
+                    {
+                        "name": "device_type",
+                        "type": "u8",
+                        "description": "Device model. 0: Unknown; 1: Ping Echosounder; 2: Ping360"
+                    },
+                    {
+                        "name": "device_model",
+                        "type": "u8",
+                        "description": "Device model. 0: Unknown; 1: Ping Echosounder; 2: Ping360"
+                    },
+                    {
+                        "name": "firmware_version_major",
+                        "type": "u16",
+                        "description": "Firmware version major number."
+                    },
+                    {
+                        "name": "firmware_version_minor",
+                        "type": "u16",
+                        "description": "Firmware version minor number."
+                    }
+                ]
+            },
+            "parameters": {
+                "id": "2302",
+                "description": "The Parameters message is sent from the sonar to the host in response to a request from the host.",
+                "payload": [
+                    {
+                        "name": "mode",
+                        "type": "u8",
+                        "description": "Operating mode (1 for SS1)"
+                    },
+                    {
+                        "name": "gain_index",
+                        "type": "u8",
+                        "description": "Analog gain index (0 = low, 1 = normal, 2 = high)"
+                    },
+                    {
+                        "name": "angle",
+                        "type": "u16",
+                        "description": "Head angle in gradians (3 ASCII/Hex digits 0 to 399 decimal = 0 to 360 degrees)"
+                    },
+                    {
+                        "name": "pulse_usec",
+                        "type": "u16",
+                        "description": "Tx pulse length in microseconds. (1 to 1000)"
+                    },
+                    {
+                        "name": "interval",
+                        "type": "u16",
+                        "description": "Sample interval in 25nsec clock ticks (40 to 40000 == 1 microsecond to 1000 microseconds)"
+                    }
+                ]
+            },
+            "upload_data": {
+                "id": "2303",
+                "description": "The Upload Data message is sent by the sonar to the host upon request. The sonar returns the parameter block sent as part of the command to verify how the raw data was captured. The time taken before the response to the command is sent depends on the difference between the last angle scanned and the new angle in the parameters as well as the number of samples and sample interval (range). To allow for the worst case reponse time the command timeout should be set to 4000 msec.",
+                "payload": [
+                    {
+                        "name": "mode",
+                        "type": "u8",
+                        "description": "Operating mode (1 for SS1)"
+                    },
+                    {
+                        "name": "gain_index",
+                        "type": "u8",
+                        "description": "Analog gain index (0 = low, 1 = normal, 2 = high)"
+                    },
+                    {
+                        "name": "angle",
+                        "type": "u16",
+                        "description": "Head angle in gradians (3 ASCII/Hex digits 0 to 399 decimal = 0 to 360 degrees)"
+                    },
+                    {
+                        "name": "pulse_usec",
+                        "type": "u16",
+                        "description": "Tx pulse length in microseconds. (1 to 1000)"
+                    },
+                    {
+                        "name": "interval",
+                        "type": "u16",
+                        "description": "Sample interval in 25nsec clock ticks (40 to 40000 == 1 microsecond to 1000 microseconds)"
+                    },
+                    {
+                        "name": "num_points",
+                        "type": "u16",
+                        "description": "Number of data points in proceeding array"
+                    },
+                    {
+                        "name": "data",
+                        "type": "vector",
+                        "vector": {
+                            "sizetype": "u16",
+                            "datatype": "u8",
+                            "size": "dynamic"
+                        },
+                        "description": "8 bit binary data array representing sonar echo strength"
+                    }
+                ]
+            },
+            "motor_position": {
+                "id": "2304",
+                "description": "The Motor Position message is sent from the sonar to the host. The sonar returns the current transducer head position in units of gradians, i.e., 400 steps in 360\u00b0.",
+                "payload": [
+                    {
+                        "name": "angle",
+                        "type": "u16",
+                        "description": "Head angle in gradians (0 to 399 = 0 to 360 degrees)"
+                    }
+                ]
+            }
+        },
+        "control": {
+            "goto_bootloader": {
+                "id": "2600",
+                "description": "The Goto Bootloader command is sent from the host to the sonar and puts the SS1 sonar in Bootloader mode (external LED flashes at 5Hz), effectively a `cold boot`. If the user does not connect the bootloader program within 3 seconds then the SS1 will attempt to resume executing it's current code. If there is no user code loaded in the sonar then the bootloader will wait indefinitely for a connection to the bootloader program. Note:- There is no response message from the sonar to this command ",
+                "payload": []
+            },
+            "reset": {
+                "id": "2601",
+                "description": "The Reset command is sent from the host to the sonar and restarts the SS1 sonar without going through the bootloader sequence, effectively a `warm boot`. Note:- This command will be acknowledged with an error code of 0 before the sonar is reset. The command timeout should be set to 50 milliseconds.",
+                "payload": []
+            },
+            "step_forward": {
+                "id": "2602",
+                "description": "The Step Forward command message is sent by the host to the sonar. The sonar moves the transducer head one gradian in a +ve direction (400 gradians in 360\u00b0). The internal sonar position count will increase by 1, if the current position is 399 the count will wrap around to 0. The sonar will send a `Motor Position` message in response. The command timeout should be set to 50 msec.",
+                "payload": []
+            },
+            "step_reverse": {
+                "id": "2603",
+                "description": "The Step Reverse command message is sent by the host to the sonar. The sonar moves the transducer head one gradian in a -ve direction. The internal sonar position count will decrease by 1, if the current position is 0 the count will wrap around to 399. The sonar will send a `Motor Position` message in response. The command timeout should be set to 50 msec.",
+                "payload": []
+            },
+            "reset_position": {
+                "id": "2604",
+                "description": "The Reset Position command message is sent by the host to the sonar. The sonar first locates the position reference sensor and then moves the transducer head to the zero position. The internal sonar position count will be reset to 0. The sonar will send a `Motor Position` message in response. The command timeout should be set to 4000 msec.",
+                "payload": []
+            },
+            "motor_off": {
+                "id": "2605",
+                "description": "The Motor Off command message is sent by the host to the sonar. The sonar switches the current through the stepper motor windings off to save power. When it is required to move the transducer again a Reset Position command should be sent to ensure that the motor position is accurate. Typically when the sonar is paused the motor current would be switched off. When the user sends any command that involves moving the transducer then the motor current is automatically re-enabled. The sonar will send an <Error Code> message of 0 in response. The command timeout should be set to 50 msec.",
+                "payload": []
+            }
+        }
+    }
+}
