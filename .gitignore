@@ -1,2 +1,3 @@
 build
 example/build
+**/__pycache__
