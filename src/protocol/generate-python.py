@@ -3,7 +3,7 @@
 import os
 import collections
 import json
-import re
+
 from jinja2 import Environment, FileSystemLoader
 
 from generator import Generator
