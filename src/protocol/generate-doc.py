@@ -3,7 +3,6 @@
 import os
 import collections
 import json
-import re
 
 PATH = os.path.dirname(os.path.abspath(__file__))
 JINJA_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates/')
