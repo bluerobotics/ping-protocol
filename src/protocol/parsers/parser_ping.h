@@ -2,7 +2,7 @@
 
 #include <QDebug>
 #include "parser.h"
-#include "pingmessage/pingmessage.h"
+#include "pingmessage/ping_ping1d.h"
 
 class PingParser : public Parser
 {
@@ -102,7 +102,7 @@ public:
             break;
         case WAIT_CHECKSUM_H:
             parseBuf.append(byte);
-            PingMessage msg((uint8_t*)parseBuf.data(), parseBuf.length());
+            ping_message msg((uint8_t*)parseBuf.data(), parseBuf.length());
             bool ok = false;
             if (!msg.verifyChecksum()) {
                 errors++;
@@ -128,6 +128,6 @@ public:
     }
 
 signals:
-    void newMessage(PingMessage msg);
+    void newMessage(ping_message msg);
     void parseError();
 };
