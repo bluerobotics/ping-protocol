@@ -101,8 +101,9 @@ class Generator:
     def is_vector(self, t):
         return ('vector' in t)
 
-    def capitalize(self, s):
-        return s[0].capitalize() + s[1:]
+    def capitalize(self, input_string):
+        capitalized_words = [ x[0].capitalize() + x[1:] for x in input_string.split('_')]
+        return ''.join(capitalized_words)
 
 if __name__ == "__main__":
     # Get list of all class names
