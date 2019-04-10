@@ -1,0 +1,135 @@
+{
+    "class_info": {
+        "_comment": "Define common protocol messages",
+        "file": "commonmessage.h.in",
+        "name": "ping_message"
+    },
+    "requirements": {
+        "discovery": "Discovery of connected devices, types, and firmwares",
+        "packed_fields": "memory alignment"
+    },
+    "format": [
+        {
+            "name": "start1",
+            "type": "u8",
+            "index": "0",
+            "description": "'B'"
+        },
+        {
+            "name": "start2",
+            "type": "u8",
+            "index": "1",
+            "description": "'R'"
+        },
+        {
+            "name": "payload_length",
+            "type": "u16",
+            "index": "2-3",
+            "description": "Number of bytes in payload."
+        },
+        {
+            "name": "message_id",
+            "type": "u16",
+            "index": "4-5",
+            "description": "The message id."
+        },
+        {
+            "name": "src_device_id",
+            "type": "u8",
+            "index": "6",
+            "description": "The device ID of the device sending the message."
+        },
+        {
+            "name": "dst_device_id",
+            "type": "u8",
+            "index": "7",
+            "description": "The device ID of the intended recipient of the message."
+        },
+        {
+            "name": "payload",
+            "type": "u8[]",
+            "index": "8-n",
+            "description": "The message payload."
+        },
+        {
+            "name": "checksum",
+            "type": "u16",
+            "index": "(n+1)-(n+2)",
+            "description": "The message checksum. The checksum is calculated as the sum of all the non-checksum bytes in the message."
+        }
+    ],
+    "messages": {
+        "general": {
+            "ack": {
+                "id": "1",
+                "description": "Acknowledged.",
+                "payload": [
+                    {
+                        "name": "acked_id",
+                        "type": "u16",
+                        "description": "The message ID that is ACKnowledged."
+                    }
+                ]
+            },
+            "nack": {
+                "id": "2",
+                "description": "Not acknowledged.",
+                "payload": [
+                    {
+                        "name": "nacked_id",
+                        "type": "u16",
+                        "description": "The message ID that is Not ACKnowledged."
+                    },
+                    {
+                        "name": "nack_message",
+                        "type": "vector",
+                        "vector": {
+                            "datatype": "char",
+                            "size": "dynamic"
+                        },
+                        "description": "ASCII text message indicating NACK condition. (not necessarily NULL terminated)"
+                    }
+                ]
+            },
+            "ascii_text": {
+                "id": "3",
+                "description": "A message for transmitting text data.",
+                "payload": [
+                    {
+                        "name": "ascii_message",
+                        "type": "vector",
+                        "vector": {
+                            "datatype": "char",
+                            "size": "dynamic"
+                        },
+                        "description": "ASCII text message. (not necessarily NULL terminated)"
+                    }
+                ]
+            },
+            "general_request": {
+                "id": "6",
+                "description": "Requests a specific message to be sent from the sonar to the host. Command timeout should be set to 50 msec.",
+                "payload": [
+                    {
+                        "name": "requested_id",
+                        "type": "u16",
+                        "description": "Message ID to be requested."
+                    }
+                ]
+            }
+        },
+        "get": {
+            "protocol_version": {
+                "id": "5",
+                "description": "The protocol version",
+                "payload": [
+                    {
+                        "name": "protocol_version",
+                        "type": "u32",
+                        "description": "The protocol version"
+                    }
+                ]
+            }
+        }
+    }
+}
