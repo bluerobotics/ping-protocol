@@ -9,16 +9,20 @@ from jinja2 import Environment, FileSystemLoader
 from generator import Generator
 
 if __name__ == "__main__":
-    jsondata = json.load(open(os.path.join(Generator.RECIPE_PATH, 'ping_protocol.json'), 'r'), object_pairs_hook=collections.OrderedDict)
+    recipes = ['common.json', 'ping_protocol.json']
+
+    jsondata = {}
+    for recipe in recipes:
+        jsondata.update(json.load(open(os.path.join(Generator.RECIPE_PATH, recipe), 'r'), object_pairs_hook=collections.OrderedDict))
+
     j2_env = Environment(loader=FileSystemLoader(Generator.JINJA_PATH), trim_blocks=True)
 
     # Create a new dictionary with all message keys for convenience in the template
-    messageDict = jsondata['messages']['ping1D']
+    messageDict = jsondata['messages']
+    allMessages = {}
 
-    allMessages = dict(messageDict['get'])
-    allMessages.update(messageDict['set'])
-    allMessages.update(messageDict['control'])
-    allMessages.update(messageDict['general'])
+    for message_type in messageDict.keys():
+        allMessages.update(messageDict[message_type])
 
     # compile a list of all payload fields in 'get' category messages
     # these field names will be members of the ping1d device interface
