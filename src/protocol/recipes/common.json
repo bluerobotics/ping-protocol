@@ -8,6 +8,9 @@
         "discovery": "Discovery of connected devices, types, and firmwares",
         "packed_fields": "memory alignment"
     },
+    "sensor_info": {
+        "name": "Common"
+    },
     "format": [
         {
             "name": "start1",
