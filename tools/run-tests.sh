@@ -10,13 +10,14 @@ script_path="$( cd "$(dirname "$0")" ; pwd -P )"
 project_path="${script_path}/.."
 protocol_template_path="${project_path}/src/protocol/templates"
 protocol_scripts="${project_path}/src/protocol"
+protocol_recipes_path="${project_path}/src/protocol/recipes"
 
 # Functions
 source $script_path/functions.sh
 
 echob "Check protocol file description file."
 
-for filename in $protocol_template_path/*.json; do
+for filename in $protocol_recipes_path/*.json; do
     echob "Checking file: $(basename ${filename})"
     python3 -m json.tool ${filename} > /tmp/temporary_test_file.json;
     if ! comm -2 -3 ${filename} /tmp/temporary_test_file.json; then
@@ -27,15 +28,16 @@ done
 
 echob "Check documentation."
 
-filename="$protocol_template_path/ping_protocol.json"
-echob "Checking documentation from file: $(basename ${filename})"
-$protocol_scripts/generate-doc.py
+for filename in $protocol_recipes_path/*.json; do
+    echob "Checking documentation from file: $(basename ${filename})"
+    $protocol_scripts/generate-doc.py
 
-if ! git diff --quiet --ignore-submodules HEAD 2>/dev/null; then
-    echob "Json file and documentation does not match."
-    git diff | cat
-    exit 1
-fi
+    if ! git diff --quiet --ignore-submodules HEAD 2>/dev/null; then
+        echob "Json file and documentation does not match."
+        git diff | cat
+        exit 1
+    fi
+done
 
 echob "Run protocol test."
 
