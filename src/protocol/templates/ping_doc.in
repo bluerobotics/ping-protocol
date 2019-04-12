@@ -4,13 +4,14 @@
 
 ## Table of Contents
 * [Format](#format)
-{% for sensor_msgs in messages %}
-* [{{sensor_msgs}} Messages](#{{sensor_msgs}}-messages)
-{% for msg_type in messages[sensor_msgs] %}
-  * [{{msg_type}}](#{{msg_type}})
-{% for msg in messages[sensor_msgs][msg_type] %}
+{% for sensor in sensors %}
+{% set messages = sensors[sensor]['messages'] %}
+* [{{sensor}} Messages](#{{sensor}}-messages)
+{% for msg_type in messages %}
+  * [{{msg_type}}](##{{sensor}}-{{msg_type}})
+{% for msg in messages[msg_type] %}
 {% if msg != 'description' %}
-    * [{{msg}}](#{{messages[sensor_msgs][msg_type][msg].id}}-{{msg}})
+    * [{{msg}}](#{{messages[msg_type][msg].id}}-{{msg}})
 {% endif %}
 {% endfor %}
 {% endfor %}
@@ -20,30 +21,33 @@
 
 | Byte | Type | Name             | Description                                                      |
 |------|------|------------------|------------------------------------------------------------------|
-{% for field in format %}
+{% for sensor in sensors %}
+{% set messages = sensors[sensor]['messages'] %}
+{% if sensor == 'Common' %}
+{% for field in sensors[sensor]['format'] %}
 | {{field.index}} | {{field.type}} | {{field.name}} | {{field.description}} |
 {% endfor %}
+{% endif %}
 {% for sensor_msgs in messages %}
 
-## {{sensor_msgs}} Messages
-{% for msg_type in messages[sensor_msgs] %}
+{% for msg_type in messages %}
 
 ### {{msg_type}}
-{% if messages[sensor_msgs][msg_type].description %}
-{{messages[sensor_msgs][msg_type].description}}
+{% if messages[msg_type].description %}
+{{messages[msg_type].description}}
 {% endif %}
 
-{% for msg in messages[sensor_msgs][msg_type] %}
+{% for msg in messages[msg_type] %}
 {% if msg != 'description' %}
-#### {{messages[sensor_msgs][msg_type][msg].id}} {{msg}}
-{% if messages[sensor_msgs][msg_type][msg].description %}
-{{messages[sensor_msgs][msg_type][msg].description}}
+#### {{messages[msg_type][msg].id}} {{msg}}
+{% if messages[msg_type][msg].description %}
+{{messages[msg_type][msg].description}}
 {% endif %}
 
-{% if messages[sensor_msgs][msg_type][msg].payload %}
+{% if messages[msg_type][msg].payload %}
 | Type | Name             | Description                                                      | Units |
 |------|------------------|------------------------------------------------------------------|-------|
-{% for field in messages[sensor_msgs][msg_type][msg].payload %}
+{% for field in messages[msg_type][msg].payload %}
 {% if field.type == "vector" %}
 {% if field.vector.size == "dynamic" %}
 {% if field.vector.sizetype %}
@@ -66,4 +70,4 @@ No payload.
 {% endfor %}
 {% endfor %}
 {% endfor %}
-
+{% endfor %}
