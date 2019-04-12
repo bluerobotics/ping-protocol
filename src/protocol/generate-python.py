@@ -21,12 +21,11 @@ if __name__ == "__main__":
                     "char": "s"}
 
     # Create a new dictionary with all message keys for convenience in the template
-    messageDict = json_data['messages']['ping1D']
+    messageDict = json_data['messages']
+    allMessages = {}
 
-    allMessages = dict(messageDict['get'])
-    allMessages.update(messageDict['set'])
-    allMessages.update(messageDict['control'])
-    allMessages.update(messageDict['general'])
+    for message_type in messageDict.keys():
+        allMessages.update(messageDict[message_type])
 
     json_data['all_msgs'] = allMessages
 
