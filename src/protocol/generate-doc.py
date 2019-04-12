@@ -8,10 +8,16 @@ from jinja2 import Environment, FileSystemLoader
 
 from generator import Generator
 
-jsondata = json.load(open(os.path.join(Generator.RECIPE_PATH, 'ping_protocol.json'), 'r'), object_pairs_hook=collections.OrderedDict)
+if __name__ == "__main__":
+    recipes = ['common.json', 'ping_protocol.json']
 
-j2_env = Environment(loader=FileSystemLoader(Generator.JINJA_PATH), trim_blocks=True)
+    jsondata = { "sensors": {} }
+    for recipe in recipes:
+        data = json.load(open(os.path.join(Generator.RECIPE_PATH, recipe), 'r'), object_pairs_hook=collections.OrderedDict)
+        jsondata['sensors'][data['sensor_info']['name']] = data
 
-f = open('README.md', "w")
-f.write(j2_env.get_template("ping_doc.in").render(jsondata))
-f.close()
+    j2_env = Environment(loader=FileSystemLoader(Generator.JINJA_PATH), trim_blocks=True)
+
+    f = open('README.md', "w")
+    f.write(j2_env.get_template("ping_doc.in").render(jsondata))
+    f.close()
