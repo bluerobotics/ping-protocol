@@ -16,8 +16,8 @@ Ping1D::Ping1D(Stream& ser) : _stream ( ser ) {}
 
 Ping1D::~Ping1D()
 {
-{% for msg in messages["ping1D"]["get"]|sort %}
-{% for field in messages["ping1D"]["get"][msg].payload %}
+{% for msg in messages["get"]|sort %}
+{% for field in messages["get"][msg].payload %}
 {% if generator.is_vector(field.type) %}
     if (_{{field.name}}) {
        free(_{{field.name}});
@@ -100,11 +100,11 @@ PingMessage* Ping1D::waitMessage(enum Ping1DNamespace::msg_ping1D_id id, uint16_
 void Ping1D::handleMessage(PingMessage* pmsg)
 {
     switch (pmsg->message_id()) {
-{% for msg in messages["ping1D"]["get"]|sort %}
+{% for msg in messages["get"]|sort %}
         case Ping1DNamespace::{{msg|title}}:
         {
             ping_msg_ping1D_{{msg}} m(*pmsg);
-{% for field in messages["ping1D"]["get"][msg].payload %}
+{% for field in messages["get"][msg].payload %}
 {% if generator.is_vector(field.type) %}
             if (m.{{field.name}}_length() > _{{field.name}}_length) {
                 if (_{{field.name}}) {
@@ -154,11 +154,11 @@ T* Ping1D::request()
     return (T*)waitMessage(resp.message_id());
 }
 
-{% for msg in messages["ping1D"]["set"]|sort %}
-bool Ping1D::{{msg}}({% for field in messages["ping1D"]["set"][msg].payload %}{{generator.get_type_string(field.type)}} {{field.name}}, {% endfor %}bool verify)
+{% for msg in messages["set"]|sort %}
+bool Ping1D::{{msg}}({% for field in messages["set"][msg].payload %}{{generator.get_type_string(field.type)}} {{field.name}}, {% endfor %}bool verify)
 {
     ping_msg_ping1D_{{msg}} m;
-{% for field in messages["ping1D"]["set"][msg].payload %}
+{% for field in messages["set"][msg].payload %}
     m.set_{{field.name}}({{field.name}});
 {% endfor %}
     m.updateChecksum();
@@ -168,8 +168,8 @@ bool Ping1D::{{msg}}({% for field in messages["ping1D"]["set"][msg].payload %}{{
     }
     // Read back the data and check that changes have been applied
     if (verify
-{% if messages["ping1D"]["set"][msg].payload %}
-        && ({% for field in messages["ping1D"]["set"][msg].payload %}_{{field.name}} != {{field.name}}{{ "\n        || " if not loop.last }}{% endfor %})) {
+{% if messages["set"][msg].payload %}
+        && ({% for field in messages["set"][msg].payload %}_{{field.name}} != {{field.name}}{{ "\n        || " if not loop.last }}{% endfor %})) {
 {% endif %}
         return false; // device reply does not match
     }
