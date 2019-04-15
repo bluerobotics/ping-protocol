@@ -2,7 +2,8 @@
 #include <QDebug>
 #include <QRegExp>
 #include "test.h"
-#include "pingmessage/pingmessage_all.h"
+#include "pingmessage/ping_message.h"
+#include "pingmessage/ping_ping1d.h"
 
 void Test::messages() {
     qDebug() << "Running: {{device}} with protocol version {{protocol_version}}";
@@ -15,7 +16,12 @@ void Test::messages() {
         {{byte}},
 {% endfor %}
     };
-    ping_msg_ping1D_{{message.name}} {{message.name}}_msg(reinterpret_cast<uint8_t*>({{message.name}}_buf.data()), {{message.name}}_buf.size());
+{# TODO: update this check after python template integration with new structure #}
+{% if message.name not in ['ack', 'ascii_text', 'general_request', 'nack', 'protocol_version'] %}
+    ping_ping1D_{{message.name}} {{message.name}}_msg(reinterpret_cast<uint8_t*>({{message.name}}_buf.data()), {{message.name}}_buf.size());
+{% else %}
+    ping_message_{{message.name}} {{message.name}}_msg(reinterpret_cast<uint8_t*>({{message.name}}_buf.data()), {{message.name}}_buf.size());
+{% endif %}
     QCOMPARE({{message.name}}_msg.verifyChecksum(), true);
 {% for i in message.data %}
 {% if type(message.data[i]).__name__ == 'list' %}
