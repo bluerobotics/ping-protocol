@@ -15,7 +15,7 @@ if __name__ == "__main__":
     jsondata = {}
     recipes_dict = {}
     for recipe in recipes:
-        recipes_dict[recipe.split('.'[0])] = json.load(open(os.path.join(Generator.RECIPE_PATH, recipe), 'r'))
+        recipes_dict[recipe.split('.')[0]] = json.load(open(os.path.join(Generator.RECIPE_PATH, recipe), 'r'))
 
     jsondata = recipes_dict['common'].copy()
     jsondata.update(recipes_dict['ping_protocol'])
