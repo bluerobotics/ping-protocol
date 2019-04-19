@@ -4,7 +4,7 @@
 
 ## Table of Contents
 * [Format](#format)
-{% for sensor in sensors %}
+{% for sensor in sensors | sort %}
 {% set messages = sensors[sensor]['messages'] %}
 * [{{sensor}} Messages](#{{sensor}}-messages)
 {% for msg_type in messages %}
@@ -21,7 +21,7 @@
 
 | Byte | Type | Name             | Description                                                      |
 |------|------|------------------|------------------------------------------------------------------|
-{% for sensor in sensors %}
+{% for sensor in sensors | sort %}
 {% set messages = sensors[sensor]['messages'] %}
 {% if sensor == 'Common' %}
 {% for field in sensors[sensor]['format'] %}
