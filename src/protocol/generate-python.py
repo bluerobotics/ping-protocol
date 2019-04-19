@@ -9,18 +9,18 @@ from jinja2 import Environment, FileSystemLoader
 from generator import Generator
 
 if __name__ == "__main__":
-    recipes = ['common.json', 'ping.json']
+    definitions = ['common.json', 'ping.json']
 
     #TODO: It's necessary to update arduino generation to deal with ping360
     json_data = {}
-    recipes_dict = {}
-    for recipe in recipes:
-        recipes_dict[recipe.split('.')[0]] = json.load(open(os.path.join(Generator.RECIPE_PATH, recipe), 'r'))
+    definitions_dict = {}
+    for definition in definitions:
+        definitions_dict[definition.split('.')[0]] = json.load(open(os.path.join(Generator.DEFINITION_PATH, definition), 'r'))
 
-    json_data = recipes_dict['common'].copy()
-    json_data.update(recipes_dict['ping'])
-    json_data['messages']['get'].update(recipes_dict['common']['messages']['get'])
-    json_data['messages']['general'] = recipes_dict['common']['messages']['general']
+    json_data = definitions_dict['common'].copy()
+    json_data.update(definitions_dict['ping'])
+    json_data['messages']['get'].update(definitions_dict['common']['messages']['get'])
+    json_data['messages']['general'] = definitions_dict['common']['messages']['general']
     json_data['class_info']['name'] = 'PingMessage'
 
     j2_env = Environment(loader=FileSystemLoader(Generator.JINJA_PATH), trim_blocks=True)
