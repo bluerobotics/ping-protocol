@@ -42,6 +42,7 @@ done
 echob "Run protocol test."
 
 runstep "$project_path/src/protocol/generate-python.py" "Generate python library" "Failed to generate python library"
+runstep "$project_path/src/protocol/generate-arduino.py" "Generate arduino library" "Failed to generate arduino library"
 
 build_test="/tmp/protocol-test-build"
 rm -rf $build_test
