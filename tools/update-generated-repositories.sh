@@ -35,11 +35,11 @@ fi
 
 # ping-arduino
 echob "Build arduino protocol."
-if ! python3 ${project_path}/src/protocol/generator.py; then
+if ! ${project_path}/src/protocol/generator.py; then
     echo "- Protocol generation failed."
     exit 1
 fi
-if ! python3 ${project_path}/src/protocol/generate-arduino.py; then
+if ! ${project_path}/src/protocol/generate-arduino.py; then
     echo "- Protocol generation failed."
     exit 1
 fi
@@ -49,7 +49,7 @@ ls ${project_path}/src/protocol/pingmessage/
 
 # ping-python
 echob "Build python protocol."
-if ! python3 ${project_path}/src/protocol/generate-python.py; then
+if ! ${project_path}/src/protocol/generate-python.py; then
     echo "- Protocol generation failed."
     exit 1
 fi
