@@ -9,7 +9,7 @@ from jinja2 import Environment, FileSystemLoader
 from generator import Generator
 
 if __name__ == "__main__":
-    recipes = ['common.json', 'ping_protocol.json']
+    recipes = [file for file in os.listdir(Generator.RECIPE_PATH) if file.endswith('.json')]
     recipes.sort()
     jsondata = collections.OrderedDict({ "sensors": {} })
     for recipe in recipes:
