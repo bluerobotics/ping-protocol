@@ -23,20 +23,6 @@ echob() {
     echo "${bold}${1}${normal}"
 }
 
-echob "Check build type."
-# Do not build pull requests
-if [[ ${TRAVIS_PULL_REQUEST} != "false" ]]; then
-    echo "- Do not deploy PRs."
-    exit 0
-fi
-
-echob "Check branch."
-# Do only build master branch
-if [[ ${TRAVIS_BRANCH} != "master" ]]; then
-    echo "- Only master branch will be deployed."
-    exit 0
-fi
-
 echob "Check git configuration."
 if [ "${TRAVIS}" = "true" ] || ! git config --list | grep -q "user.name"; then
     # Config for auto-building
@@ -46,25 +32,6 @@ if [ "${TRAVIS}" = "true" ] || ! git config --list | grep -q "user.name"; then
 else
     echo "- Git configuration already exist."
 fi
-
-echob "Clone repositories."
-for repo in "${repositories[@]}"; do
-    echo "- Clone ${repo}"
-    rm -rf ${clone_folder}/${repo}
-    git clone https://${GITHUB_TOKEN}@github.com/bluerobotics/${repo} ${clone_folder}/${repo} --single-branch
-done
-
-# ping-python
-echob "Build python protocol."
-if ! python3 ${project_path}/src/protocol/generate-python.py; then
-    echo "- Protocol generation failed."
-    exit 1
-fi
-echo "- Check files"
-ls ${project_path}/src/protocol/python/
-
-echob "Update python repository."
-mv ${project_path}/src/protocol/python/* /tmp/update-repos/ping-python/brping/
 
 # ping-arduino
 echob "Build arduino protocol."
@@ -80,9 +47,42 @@ echo "- Check files"
 ls ${project_path}/src/protocol/arduino/
 ls ${project_path}/src/protocol/pingmessage/
 
+# ping-python
+echob "Build python protocol."
+if ! python3 ${project_path}/src/protocol/generate-python.py; then
+    echo "- Protocol generation failed."
+    exit 1
+fi
+echo "- Check files"
+ls ${project_path}/src/protocol/python/
+
+echob "Check build type."
+# Do not build pull requests
+if [[ ${TRAVIS_PULL_REQUEST} != "false" ]]; then
+    echo "- Do not deploy PRs."
+    exit 0
+fi
+
+echob "Check branch."
+# Do only build master branch
+if [[ ${TRAVIS_BRANCH} != "master" ]]; then
+    echo "- Only master branch will be deployed."
+    exit 0
+fi
+
+echob "Clone repositories."
+for repo in "${repositories[@]}"; do
+    echo "- Clone ${repo}"
+    rm -rf ${clone_folder}/${repo}
+    git clone https://${GITHUB_TOKEN}@github.com/bluerobotics/${repo} ${clone_folder}/${repo} --single-branch
+done
+
 echob "Update arduino repository."
 mv ${project_path}/src/protocol/arduino/* /tmp/update-repos/ping-arduino/src/
 mv ${project_path}/src/protocol/pingmessage/* /tmp/update-repos/ping-arduino/src/
+
+echob "Update python repository."
+mv ${project_path}/src/protocol/python/* /tmp/update-repos/ping-python/brping/
 
 echob "Commit and update changes in remote."
 for repo in "${repositories[@]}"; do
