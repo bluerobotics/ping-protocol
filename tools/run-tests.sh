@@ -10,14 +10,14 @@ script_path="$( cd "$(dirname "$0")" ; pwd -P )"
 project_path="${script_path}/.."
 protocol_template_path="${project_path}/src/protocol/templates"
 protocol_scripts="${project_path}/src/protocol"
-protocol_recipes_path="${project_path}/src/protocol/recipes"
+protocol_definitions_path="${project_path}/src/protocol/definitions"
 
 # Functions
 source $script_path/functions.sh
 
 echob "Check protocol file description file."
 
-for filename in $protocol_recipes_path/*.json; do
+for filename in $protocol_definitions_path/*.json; do
     echob "Checking file: $(basename ${filename})"
     python3 -m json.tool ${filename} > /tmp/temporary_test_file.json;
     if ! comm -2 -3 ${filename} /tmp/temporary_test_file.json; then
@@ -28,7 +28,7 @@ done
 
 echob "Check documentation."
 
-for filename in $protocol_recipes_path/*.json; do
+for filename in $protocol_definitions_path/*.json; do
     echob "Checking documentation from file: $(basename ${filename})"
     $protocol_scripts/generate-doc.py
 
