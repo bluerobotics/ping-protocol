@@ -10,7 +10,7 @@ class Generator:
     ROOT = os.path.abspath(__file__)
     PATH = os.path.dirname(ROOT)
     JINJA_PATH = os.path.join(PATH, 'templates/')
-    RECIPE_PATH = os.path.join(PATH, 'recipes/')
+    DEFINITION_PATH = os.path.join(PATH, 'definitions/')
 
     def calc_payload(self, payloads):
         total_size = 0
@@ -109,10 +109,10 @@ if __name__ == "__main__":
     # Get list of all class names
     class_names = []
     # Get all jsons
-    jsons = [file for file in os.listdir(Generator.RECIPE_PATH) if file.endswith('.json')]
+    jsons = [file for file in os.listdir(Generator.DEFINITION_PATH) if file.endswith('.json')]
     for json_file in jsons:
         # Get json data
-        protocol_data = json.load(open(os.path.join(Generator.RECIPE_PATH, json_file), 'r'))
+        protocol_data = json.load(open(os.path.join(Generator.DEFINITION_PATH, json_file), 'r'))
         print('Processing file: %s' % protocol_data['class_info']['name'])
 
         # Create prefix name
