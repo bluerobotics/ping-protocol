@@ -9,7 +9,7 @@ from jinja2 import Environment, FileSystemLoader
 from generator import Generator
 
 if __name__ == "__main__":
-    recipes = ['common.json', 'ping_protocol.json']
+    recipes = ['common.json', 'ping.json']
 
     #TODO: It's necessary to update arduino generation to deal with ping360
     jsondata = {}
@@ -18,7 +18,7 @@ if __name__ == "__main__":
         recipes_dict[recipe.split('.')[0]] = json.load(open(os.path.join(Generator.RECIPE_PATH, recipe), 'r'))
 
     jsondata = recipes_dict['common'].copy()
-    jsondata.update(recipes_dict['ping_protocol'])
+    jsondata.update(recipes_dict['ping'])
     jsondata['messages']['get'].update(recipes_dict['common']['messages']['get'])
 
     j2_env = Environment(loader=FileSystemLoader(Generator.JINJA_PATH), trim_blocks=True)
