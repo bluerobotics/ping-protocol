@@ -38,6 +38,11 @@ matrix:
         - DESC="dmg deploy"
         - MATRIX_EVAL="COMPILER=clang++"
 
+before_install:
+- if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
+    pyenv global 3.7;
+  fi
+
 install:
 - pip install --user --upgrade pip;
 - pip install --user "jinja2>=2.10";
