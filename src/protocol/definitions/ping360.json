@@ -25,7 +25,7 @@
                     {
                         "name": "mode",
                         "type": "u8",
-                        "description": "Operating mode (1 for SS1)"
+                        "description": "Operating mode (1 for Ping360)"
                     },
                     {
                         "name": "gain_index",
@@ -117,7 +117,7 @@
                     {
                         "name": "mode",
                         "type": "u8",
-                        "description": "Operating mode (1 for SS1)"
+                        "description": "Operating mode (1 for Ping360)"
                     },
                     {
                         "name": "gain_index",
@@ -148,7 +148,7 @@
                     {
                         "name": "mode",
                         "type": "u8",
-                        "description": "Operating mode (1 for SS1)"
+                        "description": "Operating mode (1 for Ping360)"
                     },
                     {
                         "name": "gain_index",
@@ -205,7 +205,7 @@
                     {
                         "name": "mode",
                         "type": "u8",
-                        "description": "Operating mode (1 for SS1)"
+                        "description": "Operating mode (1 for Ping360)"
                     },
                     {
                         "name": "gain_index",
@@ -246,7 +246,7 @@
                     {
                         "name": "mode",
                         "type": "u8",
-                        "description": "Operating mode (1 for SS1)"
+                        "description": "Operating mode (1 for Ping360)"
                     },
                     {
                         "name": "gain_index",
@@ -284,12 +284,12 @@
         "control": {
             "goto_bootloader": {
                 "id": "2600",
-                "description": "The Goto Bootloader command is sent from the host to the sonar and puts the SS1 sonar in Bootloader mode (external LED flashes at 5Hz), effectively a `cold boot`. If the user does not connect the bootloader program within 3 seconds then the SS1 will attempt to resume executing it's current code. If there is no user code loaded in the sonar then the bootloader will wait indefinitely for a connection to the bootloader program. Note:- There is no response message from the sonar to this command ",
+                "description": "The Goto Bootloader command is sent from the host to the sonar and puts the Ping360 sonar in Bootloader mode (external LED flashes at 5Hz), effectively a `cold boot`. If the user does not connect the bootloader program within 3 seconds then the Ping360 will attempt to resume executing it's current code. If there is no user code loaded in the sonar then the bootloader will wait indefinitely for a connection to the bootloader program. Note:- There is no response message from the sonar to this command ",
                 "payload": []
             },
             "reset": {
                 "id": "2601",
-                "description": "The Reset command is sent from the host to the sonar and restarts the SS1 sonar without going through the bootloader sequence, effectively a `warm boot`. Note:- This command will be acknowledged with an error code of 0 before the sonar is reset. The command timeout should be set to 50 milliseconds.",
+                "description": "The Reset command is sent from the host to the sonar and restarts the Ping360 sonar without going through the bootloader sequence, effectively a `warm boot`. Note:- This command will be acknowledged with an error code of 0 before the sonar is reset. The command timeout should be set to 50 milliseconds.",
                 "payload": []
             },
             "step_forward": {
