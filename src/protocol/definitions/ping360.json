@@ -141,7 +141,7 @@
                     }
                 ]
             },
-            "upload_data": {
+            "stationary_upload_data": {
                 "id": "2303",
                 "description": "The Upload Data message is sent by the sonar to the host upon request. The sonar returns the parameter block sent as part of the command to verify how the raw data was captured. The time taken before the response to the command is sent depends on the difference between the last angle scanned and the new angle in the parameters as well as the number of samples and sample interval (range). To allow for the worst case reponse time the command timeout should be set to 4000 msec.",
                 "payload": [
@@ -195,6 +195,88 @@
                         "name": "angle",
                         "type": "u16",
                         "description": "Head angle in gradians (0 to 399 = 0 to 360 degrees)"
+                    }
+                ]
+            },
+            "forwards_upload_data": {
+                "id": "2305",
+                "description": "Follow `stationary_upload_data (2303)` but with forward steps.",
+                "payload": [
+                    {
+                        "name": "mode",
+                        "type": "u8",
+                        "description": "Operating mode (1 for SS1)"
+                    },
+                    {
+                        "name": "gain_index",
+                        "type": "u8",
+                        "description": "Analog gain index (0 = low, 1 = normal, 2 = high)"
+                    },
+                    {
+                        "name": "angle",
+                        "type": "u16",
+                        "description": "Head angle in gradians (3 ASCII/Hex digits 0 to 399 decimal = 0 to 360 degrees)"
+                    },
+                    {
+                        "name": "pulse_usec",
+                        "type": "u16",
+                        "description": "Tx pulse length in microseconds. (1 to 1000)"
+                    },
+                    {
+                        "name": "interval",
+                        "type": "u16",
+                        "description": "Sample interval in 25nsec clock ticks (40 to 40000 == 1 microsecond to 1000 microseconds)"
+                    },
+                    {
+                        "name": "data",
+                        "type": "vector",
+                        "vector": {
+                            "sizetype": "u16",
+                            "datatype": "u8",
+                            "size": "dynamic"
+                        },
+                        "description": "8 bit binary data array representing sonar echo strength"
+                    }
+                ]
+            },
+            "reverse_upload_data": {
+                "id": "2306",
+                "description": "Follow `stationary_upload_data (2303)` but with reverse steps.",
+                "payload": [
+                    {
+                        "name": "mode",
+                        "type": "u8",
+                        "description": "Operating mode (1 for SS1)"
+                    },
+                    {
+                        "name": "gain_index",
+                        "type": "u8",
+                        "description": "Analog gain index (0 = low, 1 = normal, 2 = high)"
+                    },
+                    {
+                        "name": "angle",
+                        "type": "u16",
+                        "description": "Head angle in gradians (3 ASCII/Hex digits 0 to 399 decimal = 0 to 360 degrees)"
+                    },
+                    {
+                        "name": "pulse_usec",
+                        "type": "u16",
+                        "description": "Tx pulse length in microseconds. (1 to 1000)"
+                    },
+                    {
+                        "name": "interval",
+                        "type": "u16",
+                        "description": "Sample interval in 25nsec clock ticks (40 to 40000 == 1 microsecond to 1000 microseconds)"
+                    },
+                    {
+                        "name": "data",
+                        "type": "vector",
+                        "vector": {
+                            "sizetype": "u16",
+                            "datatype": "u8",
+                            "size": "dynamic"
+                        },
+                        "description": "8 bit binary data array representing sonar echo strength"
                     }
                 ]
             }
