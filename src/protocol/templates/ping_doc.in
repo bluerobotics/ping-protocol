@@ -28,8 +28,6 @@
 | {{field.index}} | {{field.type}} | {{field.name}} | {{field.description}} |
 {% endfor %}
 {% endif %}
-{% for sensor_msgs in messages %}
-
 {% for msg_type in messages %}
 
 ### {{msg_type}}
@@ -67,7 +65,6 @@ No payload.
 
 {% endif %}
 {% endif %}
-{% endfor %}
 {% endfor %}
 {% endfor %}
 {% endfor %}
