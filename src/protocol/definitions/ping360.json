@@ -171,11 +171,6 @@
                         "description": "Sample interval in 25nsec clock ticks (40 to 40000 == 1 microsecond to 1000 microseconds)"
                     },
                     {
-                        "name": "num_points",
-                        "type": "u16",
-                        "description": "Number of data points in proceeding array"
-                    },
-                    {
                         "name": "data",
                         "type": "vector",
                         "vector": {
