@@ -74,6 +74,7 @@
 | 7 | u8 | dst_device_id | The device ID of the intended recipient of the message. |
 | 8-n | u8[] | payload | The message payload. |
 | (n+1)-(n+2) | u16 | checksum | The message checksum. The checksum is calculated as the sum of all the non-checksum bytes in the message. |
+## Common Messages
 
 ### general
 
@@ -116,6 +117,7 @@ The protocol version
 |------|------------------|------------------------------------------------------------------|-------|
 | u32 | protocol_version | The protocol version |  |
 
+## Ping1D Messages
 
 ### set
 
@@ -330,6 +332,7 @@ Command to stop the continuous data stream of profile messages.
 |------|------------------|------------------------------------------------------------------|-------|
 | u16 | id | The message id to stop streaming. 1300: profile |  |
 
+## Ping360 Messages
 
 ### set
 
