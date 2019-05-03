@@ -28,6 +28,7 @@
 | {{field.index}} | {{field.type}} | {{field.name}} | {{field.description}} |
 {% endfor %}
 {% endif %}
+## {{sensor}} Messages
 {% for msg_type in messages %}
 
 ### {{msg_type}}
