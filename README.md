@@ -74,6 +74,59 @@
 | 7 | u8 | dst_device_id | The device ID of the intended recipient of the message. |
 | 8-n | u8[] | payload | The message payload. |
 | (n+1)-(n+2) | u16 | checksum | The message checksum. The checksum is calculated as the sum of all the non-checksum bytes in the message. |
+
+## Pack and unpack example
+
+To request a message from the sensor, it's necessary to use [`general_request` message](#6-general_request) to request a specific message ID, and to build the message, the only thing necessary is to follow the [format description](https://github.com/bluerobotics/ping-protocol#format).
+In this example, will be demonstrated how to request a message, pack the bytes, unpack and extract the necessary information.
+
+##### Pack
+
+1. First it's necessary to define the message that we want, in this case `distance_simple`.
+2. The message ID of `general_request` is 6, so this value should be used in `message_id` field.
+3. Usually the master [parent],  will use the ID 0 and the slave [worker], in that case Ping, will boot with ID 1. This values should be used in `src_device_id` and `dst_device_id` respectively. It's also possible to use `dst_device_id` as 0 to do a broadcast.
+4. Since the payload of `general_request` is **two bytes**, this value should be used in `payload_length`, for the payload itself, the value is 0x04BB (1211 in hexadecimal) for `distance_simple` (ID 1211).
+5. The `checksum` field is calculated doing the sum of each byte:
+    - 0x42 + 0x52 + 0x00 + 0x02 + 0x00 + 0x06 + 0x00 + 0x00 + 0x04 + 0xBB = 0x015B
+
+
+| Byte | Value | Type | Name             | Description                                                      |
+|------|-------|------|------------------|------------------------------------------------------------------|
+| 0 | 'B' | u8 | start1 | 'B' |
+| 1 | 'R' | u8 | start2 | 'R' |
+| 2-3 | 0x0002 (2) | u16 | payload_length | Number of bytes in payload. |
+| 4-5 | 0x0006 (6) | u16 | message_id | The message id. |
+| 6 | 0x00 | u8 | src_device_id | The device ID of the device sending the message. |
+| 7 | 0x00 | u8 | dst_device_id | The device ID of the intended recipient of the message. |
+| 8-9 | 0x04BB  | u8[2] | payload | The message payload. |
+| 10-11 | 0x015B | u16 | checksum | The message checksum. The checksum is calculated as the sum of all the non-checksum bytes in the message. |
+
+With the created package, you should send the bytes in little-endian format:
+`0x42, 0x52, 0x02, 0x00, 0x06, 0x00, 0x00, 0x00, 0xBB, 0x04, 0x5B, 0x01`
+
+##### Unpack
+
+The return from the sensor, using our last example, will be:
+`0x42, 0x52, 0x05, 0x00, 0xBB, 0x04, 0x00, 0x00, 0x5B, 0x1D, 0x00, 0x00, 0x64, 0x34, 0x02`
+And you can unpack the information using the same logic behind the pack method.
+
+- The message `distance_simple` returns a message with a payload of 5 bytes, where the first 4 is the *distance* and the last one the *confidence*, you can [check that in the documentation here](#1211-distance_simple).
+
+| Byte | Value | Type | Name             | Description                                                      |
+|------|-------|------|------------------|------------------------------------------------------------------|
+| 0 | 'B' | u8 | start1 | 'B' |
+| 1 | 'R' | u8 | start2 | 'R' |
+| 2-3 | 0x0005 (5)| u16 | payload_length | Number of bytes in payload. |
+| 4-5 | 0x04BB (1211)| u16 | message_id | The message id. |
+| 6 | 0x00 | u8 | src_device_id | The device ID of the device sending the message. |
+| 7 | 0x00 | u8 | dst_device_id | The device ID of the intended recipient of the message. |
+| 8-11 | 0x00001D5B (7515) | u32 | distance | Distance to the target. |
+|12 | 0x64 (100)| u8 | confidence | Confidence in the distance measurement.
+| 13-14 | 0x0234 | u16 | checksum | The message checksum. The checksum is calculated as the sum of all the non-checksum bytes in the message. |
+
+The conversion of distance and confidence from hexadecimal to decimal is 7515mm (7.515M) and 100% respectively.
+You can also check the checksum to be sure that the message is not corrupted, and the `message_id` to check if the message is the one that you are waiting for.
+
 ## Common Messages
 
 ### general
