@@ -35,11 +35,6 @@ public:
 
     uint8_t parseByte(const char byte) override
     {
-        static QByteArray parseBuf;
-        static uint16_t payload_length = 0;
-        static uint16_t msg_id = 0; // debug purposes only
-        static uint8_t state = WAIT_START;
-
         switch(state) {
         case WAIT_START:
             if (byte == 'B') {
@@ -130,4 +125,10 @@ public:
 signals:
     void newMessage(ping_message msg);
     void parseError();
+
+private:
+    uint16_t msg_id = 0; // debug purposes only
+    QByteArray parseBuf;
+    uint16_t payload_length = 0;
+    uint8_t state = WAIT_START;
 };
