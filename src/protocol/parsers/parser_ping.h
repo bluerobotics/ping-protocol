@@ -35,69 +35,69 @@ public:
 
     uint8_t parseByte(const char byte) override
     {
-        switch(state) {
+        switch(_state) {
         case WAIT_START:
             if (byte == 'B') {
-                parseBuf.append(byte);
-                state++;
+                _parseBuf.append(byte);
+                _state++;
             }
             break;
         case WAIT_HEADER:
             if (byte == 'R') {
-                parseBuf.append(byte);
-                state++;
+                _parseBuf.append(byte);
+                _state++;
             } else {
-                parseBuf.clear();
-                state = WAIT_START;
+                _parseBuf.clear();
+                _state = WAIT_START;
             }
             break;
         case WAIT_LENGTH_L:
-            parseBuf.append(byte);
-            payload_length = (uint8_t)byte;
-            state++;
+            _parseBuf.append(byte);
+            _payloadLength = (uint8_t)byte;
+            _state++;
             break;
         case WAIT_LENGTH_H:
-            parseBuf.append(byte);
-            payload_length = (byte << 8) | payload_length;
-            state++;
+            _parseBuf.append(byte);
+            _payloadLength = (byte << 8) | _payloadLength;
+            _state++;
             break;
         case WAIT_MSG_ID_L:
-            parseBuf.append(byte);
-            msg_id = (uint8_t)byte;
-            state++;
+            _parseBuf.append(byte);
+            _msgId = (uint8_t)byte;
+            _state++;
             break;
         case WAIT_MSG_ID_H:
-            parseBuf.append(byte);
-            msg_id = (byte << 8) | msg_id;
-            state++;
+            _parseBuf.append(byte);
+            _msgId = (byte << 8) | _msgId;
+            _state++;
             break;
         case WAIT_SRC_ID:
-            parseBuf.append(byte);
-            state++;
+            _parseBuf.append(byte);
+            _state++;
             break;
         case WAIT_DST_ID:
-            parseBuf.append(byte);
-            state++;
-            if (payload_length == 0) { // no payload bytes
-                state++;
+            _parseBuf.append(byte);
+            _state++;
+            if (_payloadLength == 0) { // no payload bytes
+                _state++;
             }
             break;
         case WAIT_PAYLOAD:
-            if (payload_length) {
-                parseBuf.append(byte);
-                payload_length--;
+            if (_payloadLength) {
+                _parseBuf.append(byte);
+                _payloadLength--;
             }
-            if (payload_length == 0) {
-                state++;
+            if (_payloadLength == 0) {
+                _state++;
             }
             break;
         case WAIT_CHECKSUM_L:
-            parseBuf.append(byte);
-            state++;
+            _parseBuf.append(byte);
+            _state++;
             break;
         case WAIT_CHECKSUM_H:
-            parseBuf.append(byte);
-            ping_message msg((uint8_t*)parseBuf.data(), parseBuf.length());
+            _parseBuf.append(byte);
+            ping_message msg((uint8_t*)_parseBuf.data(), _parseBuf.length());
             bool ok = false;
             if (!msg.verifyChecksum()) {
                 errors++;
@@ -108,18 +108,18 @@ public:
                 parsed++;
             }
 
-            parseBuf.clear();
-            payload_length = 0;
-            msg_id = 0;
-            state = WAIT_START;
+            _parseBuf.clear();
+            _payloadLength = 0;
+            _msgId = 0;
+            _state = WAIT_START;
 
             // TODO print state of message here after clearing buf
             if (ok) {
                 return NEW_MESSAGE;
             }
-            return state;
+            return _state;
         }
-        return state;
+        return _state;
     }
 
 signals:
@@ -127,8 +127,8 @@ signals:
     void parseError();
 
 private:
-    uint16_t msg_id = 0; // debug purposes only
-    QByteArray parseBuf;
-    uint16_t payload_length = 0;
-    uint8_t state = WAIT_START;
+    uint16_t _msgId = 0; // debug purposes only
+    QByteArray _parseBuf;
+    uint16_t _payloadLength = 0;
+    uint8_t _state = WAIT_START;
 };
