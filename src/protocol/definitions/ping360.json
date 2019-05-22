@@ -47,7 +47,7 @@
                     {
                         "name": "interval",
                         "type": "u16",
-                        "description": "Sample interval in 25nsec clock ticks (40 to 40000 decimal == 1 microsecond to 1000 microseconds)"
+                        "description": "Time interval between individual signal intensity samples in 25nsec increments (40 to 40000 == 1 microsecond to 1000 microseconds)"
                     },
                     {
                         "name": "transmit_frequency",
@@ -141,7 +141,7 @@
                     {
                         "name": "interval",
                         "type": "u16",
-                        "description": "Sample interval in 25nsec clock ticks (40 to 40000 == 1 microsecond to 1000 microseconds)"
+                        "description": "Time interval between individual signal intensity samples in 25nsec increments (40 to 40000 == 1 microsecond to 1000 microseconds)"
                     },
                     {
                         "name": "transmit_frequency",
@@ -184,7 +184,7 @@
                     {
                         "name": "interval",
                         "type": "u16",
-                        "description": "Sample interval in 25nsec clock ticks (40 to 40000 == 1 microsecond to 1000 microseconds)"
+                        "description": "Time interval between individual signal intensity samples in 25nsec increments (40 to 40000 == 1 microsecond to 1000 microseconds)"
                     },
                     {
                         "name": "transmit_frequency",
@@ -244,7 +244,7 @@
                     {
                         "name": "interval",
                         "type": "u16",
-                        "description": "Sample interval in 25nsec clock ticks (40 to 40000 == 1 microsecond to 1000 microseconds)"
+                        "description": "Time interval between individual signal intensity samples in 25nsec increments (40 to 40000 == 1 microsecond to 1000 microseconds)"
                     },
                     {
                         "name": "transmit_frequency",
@@ -292,7 +292,7 @@
                     {
                         "name": "interval",
                         "type": "u16",
-                        "description": "Sample interval in 25nsec clock ticks (40 to 40000 == 1 microsecond to 1000 microseconds)"
+                        "description": "Time interval between individual signal intensity samples in 25nsec increments (40 to 40000 == 1 microsecond to 1000 microseconds)"
                     },
                     {
                         "name": "transmit_frequency",
