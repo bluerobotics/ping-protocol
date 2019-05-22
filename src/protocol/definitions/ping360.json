@@ -39,9 +39,10 @@
                         "units": "gradian"
                     },
                     {
-                        "name": "pulse_usec",
+                        "name": "transmit_duration",
                         "type": "u16",
-                        "description": "Tx pulse length in microseconds. (1 to 1000)"
+                        "description": "Acoustic transmission duration (1~1000 microseconds)",
+                        "units": "microsecond"
                     },
                     {
                         "name": "interval",
@@ -132,9 +133,10 @@
                         "units": "gradian"
                     },
                     {
-                        "name": "pulse_usec",
+                        "name": "transmit_duration",
                         "type": "u16",
-                        "description": "Tx pulse length in microseconds. (1 to 1000)"
+                        "description": "Acoustic transmission duration (1~1000 microseconds)",
+                        "units": "microsecond"
                     },
                     {
                         "name": "interval",
@@ -174,9 +176,10 @@
                         "units": "gradian"
                     },
                     {
-                        "name": "pulse_usec",
+                        "name": "transmit_duration",
                         "type": "u16",
-                        "description": "Tx pulse length in microseconds. (1 to 1000)"
+                        "description": "Acoustic transmission duration (1~1000 microseconds)",
+                        "units": "microsecond"
                     },
                     {
                         "name": "interval",
@@ -233,9 +236,10 @@
                         "units": "gradian"
                     },
                     {
-                        "name": "pulse_usec",
+                        "name": "transmit_duration",
                         "type": "u16",
-                        "description": "Tx pulse length in microseconds. (1 to 1000)"
+                        "description": "Acoustic transmission duration (1~1000 microseconds)",
+                        "units": "microsecond"
                     },
                     {
                         "name": "interval",
@@ -280,9 +284,10 @@
                         "units": "gradian"
                     },
                     {
-                        "name": "pulse_usec",
+                        "name": "transmit_duration",
                         "type": "u16",
-                        "description": "Tx pulse length in microseconds. (1 to 1000)"
+                        "description": "Acoustic transmission duration (1~1000 microseconds)",
+                        "units": "microsecond"
                     },
                     {
                         "name": "interval",
