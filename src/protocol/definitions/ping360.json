@@ -35,7 +35,8 @@
                     {
                         "name": "angle",
                         "type": "u16",
-                        "description": "Head angle in gradians (3 ASCII/Hex digits 0 to 399 decimal = 0 to 360 degrees)"
+                        "description": "Head angle",
+                        "units": "gradian"
                     },
                     {
                         "name": "pulse_usec",
@@ -127,7 +128,8 @@
                     {
                         "name": "angle",
                         "type": "u16",
-                        "description": "Head angle in gradians (3 ASCII/Hex digits 0 to 399 decimal = 0 to 360 degrees)"
+                        "description": "Head angle",
+                        "units": "gradian"
                     },
                     {
                         "name": "pulse_usec",
@@ -168,7 +170,8 @@
                     {
                         "name": "angle",
                         "type": "u16",
-                        "description": "Head angle in gradians (3 ASCII/Hex digits 0 to 399 decimal = 0 to 360 degrees)"
+                        "description": "Head angle",
+                        "units": "gradian"
                     },
                     {
                         "name": "pulse_usec",
@@ -204,7 +207,8 @@
                     {
                         "name": "angle",
                         "type": "u16",
-                        "description": "Head angle in gradians (0 to 399 = 0 to 360 degrees)"
+                        "description": "Head angle",
+                        "units": "gradian"
                     }
                 ]
             },
@@ -225,7 +229,8 @@
                     {
                         "name": "angle",
                         "type": "u16",
-                        "description": "Head angle in gradians (3 ASCII/Hex digits 0 to 399 decimal = 0 to 360 degrees)"
+                        "description": "Head angle",
+                        "units": "gradian"
                     },
                     {
                         "name": "pulse_usec",
@@ -271,7 +276,8 @@
                     {
                         "name": "angle",
                         "type": "u16",
-                        "description": "Head angle in gradians (3 ASCII/Hex digits 0 to 399 decimal = 0 to 360 degrees)"
+                        "description": "Head angle",
+                        "units": "gradian"
                     },
                     {
                         "name": "pulse_usec",
