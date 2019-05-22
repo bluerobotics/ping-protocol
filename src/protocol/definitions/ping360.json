@@ -48,14 +48,14 @@
                         "description": "Sample interval in 25nsec clock ticks (40 to 40000 decimal == 1 microsecond to 1000 microseconds)"
                     },
                     {
+                        "name": "transmit_frequency",
+                        "type": "u16",
+                        "description": "Acoustic operating frequency"
+                    },
+                    {
                         "name": "number_of_samples",
                         "type": "u16",
                         "description": "Number of samples per reflected signal"
-                    },
-                    {
-                        "name": "transmition_frequency",
-                        "type": "u16",
-                        "description": "Frequency used by the sensor to operate"
                     }
                 ]
             },
@@ -138,6 +138,16 @@
                         "name": "interval",
                         "type": "u16",
                         "description": "Sample interval in 25nsec clock ticks (40 to 40000 == 1 microsecond to 1000 microseconds)"
+                    },
+                    {
+                        "name": "transmit_frequency",
+                        "type": "u16",
+                        "description": "Acoustic operating frequency"
+                    },
+                    {
+                        "name": "number_of_samples",
+                        "type": "u16",
+                        "description": "Number of samples per reflected signal"
                     }
                 ]
             },
@@ -169,6 +179,11 @@
                         "name": "interval",
                         "type": "u16",
                         "description": "Sample interval in 25nsec clock ticks (40 to 40000 == 1 microsecond to 1000 microseconds)"
+                    },
+                    {
+                        "name": "transmit_frequency",
+                        "type": "u16",
+                        "description": "Acoustic operating frequency"
                     },
                     {
                         "name": "data",
@@ -223,6 +238,11 @@
                         "description": "Sample interval in 25nsec clock ticks (40 to 40000 == 1 microsecond to 1000 microseconds)"
                     },
                     {
+                        "name": "transmit_frequency",
+                        "type": "u16",
+                        "description": "Acoustic operating frequency"
+                    },
+                    {
                         "name": "data",
                         "type": "vector",
                         "vector": {
@@ -262,6 +282,11 @@
                         "name": "interval",
                         "type": "u16",
                         "description": "Sample interval in 25nsec clock ticks (40 to 40000 == 1 microsecond to 1000 microseconds)"
+                    },
+                    {
+                        "name": "transmit_frequency",
+                        "type": "u16",
+                        "description": "Acoustic operating frequency"
                     },
                     {
                         "name": "data",
