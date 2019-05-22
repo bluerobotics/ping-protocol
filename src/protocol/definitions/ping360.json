@@ -28,9 +28,9 @@
                         "description": "Operating mode (1 for Ping360)"
                     },
                     {
-                        "name": "gain_index",
+                        "name": "gain_setting",
                         "type": "u8",
-                        "description": "Analog gain index (0 = low, 1 = normal, 2 = high)"
+                        "description": "Analog gain setting (0 = low, 1 = normal, 2 = high)"
                     },
                     {
                         "name": "angle",
@@ -122,9 +122,9 @@
                         "description": "Operating mode (1 for Ping360)"
                     },
                     {
-                        "name": "gain_index",
+                        "name": "gain_setting",
                         "type": "u8",
-                        "description": "Analog gain index (0 = low, 1 = normal, 2 = high)"
+                        "description": "Analog gain setting (0 = low, 1 = normal, 2 = high)"
                     },
                     {
                         "name": "angle",
@@ -165,9 +165,9 @@
                         "description": "Operating mode (1 for Ping360)"
                     },
                     {
-                        "name": "gain_index",
+                        "name": "gain_setting",
                         "type": "u8",
-                        "description": "Analog gain index (0 = low, 1 = normal, 2 = high)"
+                        "description": "Analog gain setting (0 = low, 1 = normal, 2 = high)"
                     },
                     {
                         "name": "angle",
@@ -225,9 +225,9 @@
                         "description": "Operating mode (1 for Ping360)"
                     },
                     {
-                        "name": "gain_index",
+                        "name": "gain_setting",
                         "type": "u8",
-                        "description": "Analog gain index (0 = low, 1 = normal, 2 = high)"
+                        "description": "Analog gain setting (0 = low, 1 = normal, 2 = high)"
                     },
                     {
                         "name": "angle",
@@ -273,9 +273,9 @@
                         "description": "Operating mode (1 for Ping360)"
                     },
                     {
-                        "name": "gain_index",
+                        "name": "gain_setting",
                         "type": "u8",
-                        "description": "Analog gain index (0 = low, 1 = normal, 2 = high)"
+                        "description": "Analog gain setting (0 = low, 1 = normal, 2 = high)"
                     },
                     {
                         "name": "angle",
