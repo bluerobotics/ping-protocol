@@ -19,7 +19,7 @@
     * [set_speed_of_sound](#1002-set_speed_of_sound)
     * [set_mode_auto](#1003-set_mode_auto)
     * [set_ping_interval](#1004-set_ping_interval)
-    * [set_gain_index](#1005-set_gain_index)
+    * [set_gain_setting](#1005-set_gain_setting)
     * [set_ping_enable](#1006-set_ping_enable)
   * [get](##Ping1D-get)
     * [firmware_version](#1200-firmware_version)
@@ -29,8 +29,8 @@
     * [range](#1204-range)
     * [mode_auto](#1205-mode_auto)
     * [ping_interval](#1206-ping_interval)
-    * [gain_index](#1207-gain_index)
-    * [pulse_duration](#1208-pulse_duration)
+    * [gain_setting](#1207-gain_setting)
+    * [transmit_duration](#1208-transmit_duration)
     * [general_info](#1210-general_info)
     * [distance_simple](#1211-distance_simple)
     * [distance](#1212-distance)
@@ -210,12 +210,12 @@ The interval between acoustic measurements.
 |------|------------------|------------------------------------------------------------------|-------|
 | u16 | ping_interval | The interval between acoustic measurements. | ms |
 
-#### 1005 set_gain_index
+#### 1005 set_gain_setting
 Set the current gain setting.
 
 | Type | Name             | Description                                                      | Units |
 |------|------------------|------------------------------------------------------------------|-------|
-| u8 | gain_index | The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144 |  |
+| u8 | gain_setting | The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144 |  |
 
 #### 1006 set_ping_enable
 Enable or disable acoustic measurements.
@@ -280,19 +280,19 @@ The interval between acoustic measurements.
 |------|------------------|------------------------------------------------------------------|-------|
 | u16 | ping_interval | The minimum interval between acoustic measurements. The actual interval may be longer. | ms |
 
-#### 1207 gain_index
+#### 1207 gain_setting
 The current gain setting.
 
 | Type | Name             | Description                                                      | Units |
 |------|------------------|------------------------------------------------------------------|-------|
-| u32 | gain_index | The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144 |  |
+| u32 | gain_setting | The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144 |  |
 
-#### 1208 pulse_duration
+#### 1208 transmit_duration
 The duration of the acoustic activation/transmission.
 
 | Type | Name             | Description                                                      | Units |
 |------|------------------|------------------------------------------------------------------|-------|
-| u16 | pulse_duration | Acoustic pulse duration. | microseconds |
+| u16 | transmit_duration | Acoustic pulse duration. | microseconds |
 
 #### 1210 general_info
 General information.
@@ -303,7 +303,7 @@ General information.
 | u16 | firmware_version_minor | Firmware minor version. |  |
 | u16 | voltage_5 | Device supply voltage. | mV |
 | u16 | ping_interval | The interval between acoustic measurements. | ms |
-| u8 | gain_index | The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144 |  |
+| u8 | gain_setting | The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144 |  |
 | u8 | mode_auto | The current operating mode of the device. 0: manual mode, 1: auto mode |  |
 
 #### 1211 distance_simple
@@ -321,11 +321,11 @@ The distance to target with confidence estimate. Relevant device parameters duri
 |------|------------------|------------------------------------------------------------------|-------|
 | u32 | distance | The current return distance determined for the most recent acoustic measurement. | mm |
 | u16 | confidence | Confidence in the most recent range measurement. | % |
-| u16 | pulse_duration | The acoustic pulse length during acoustic transmission/activation. | us |
+| u16 | transmit_duration | The acoustic pulse length during acoustic transmission/activation. | us |
 | u32 | ping_number | The pulse/measurement count since boot. |  |
 | u32 | scan_start | The beginning of the scan region in mm from the transducer. | mm |
 | u32 | scan_length | The length of the scan region. | mm |
-| u32 | gain_index | The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144 |  |
+| u32 | gain_setting | The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144 |  |
 
 #### 1213 processor_temperature
 Temperature of the device cpu.
@@ -355,11 +355,11 @@ A profile produced from a single acoustic measurement. The data returned is an a
 |------|------------------|------------------------------------------------------------------|-------|
 | u32 | distance | The current return distance determined for the most recent acoustic measurement. | mm |
 | u16 | confidence | Confidence in the most recent range measurement. | % |
-| u16 | pulse_duration | The acoustic pulse length during acoustic transmission/activation. | us |
+| u16 | transmit_duration | The acoustic pulse length during acoustic transmission/activation. | us |
 | u32 | ping_number | The pulse/measurement count since boot. |  |
 | u32 | scan_start | The beginning of the scan region in mm from the transducer. | mm |
 | u32 | scan_length | The length of the scan region. | mm |
-| u32 | gain_index | The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144 |  |
+| u32 | gain_setting | The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144 |  |
 | u16 | profile_data_length | The length of the proceeding vector field | |
 | u8[] | profile_data | An array of return strength measurements taken at regular intervals across the scan region. |  |
 
@@ -395,12 +395,12 @@ This is the main parameter block.
 | Type | Name             | Description                                                      | Units |
 |------|------------------|------------------------------------------------------------------|-------|
 | u8 | mode | Operating mode (1 for Ping360) |  |
-| u8 | gain_index | Analog gain index (0 = low, 1 = normal, 2 = high) |  |
-| u16 | angle | Head angle in gradians (3 ASCII/Hex digits 0 to 399 decimal = 0 to 360 degrees) |  |
-| u16 | pulse_usec | Tx pulse length in microseconds. (1 to 1000) |  |
-| u16 | interval | Sample interval in 25nsec clock ticks (40 to 40000 decimal == 1 microsecond to 1000 microseconds) |  |
+| u8 | gain_setting | Analog gain setting (0 = low, 1 = normal, 2 = high) |  |
+| u16 | angle | Head angle | gradian |
+| u16 | transmit_duration | Acoustic transmission duration (1~1000 microseconds) | microsecond |
+| u16 | interval | Time interval between individual signal intensity samples in 25nsec increments (40 to 40000 == 1 microsecond to 1000 microseconds) |  |
+| u16 | transmit_frequency | Acoustic operating frequency |  |
 | u16 | number_of_samples | Number of samples per reflected signal |  |
-| u16 | transmition_frequency | Frequency used by the sensor to operate |  |
 
 #### 2001 device_id
 Sets the device ID that will be reported by requesting a 'device_id' message from the sonar. Command timeout should be set to 50 msec. 
@@ -435,10 +435,12 @@ The Parameters message is sent from the sonar to the host in response to a reque
 | Type | Name             | Description                                                      | Units |
 |------|------------------|------------------------------------------------------------------|-------|
 | u8 | mode | Operating mode (1 for Ping360) |  |
-| u8 | gain_index | Analog gain index (0 = low, 1 = normal, 2 = high) |  |
-| u16 | angle | Head angle in gradians (3 ASCII/Hex digits 0 to 399 decimal = 0 to 360 degrees) |  |
-| u16 | pulse_usec | Tx pulse length in microseconds. (1 to 1000) |  |
-| u16 | interval | Sample interval in 25nsec clock ticks (40 to 40000 == 1 microsecond to 1000 microseconds) |  |
+| u8 | gain_setting | Analog gain setting (0 = low, 1 = normal, 2 = high) |  |
+| u16 | angle | Head angle | gradian |
+| u16 | transmit_duration | Acoustic transmission duration (1~1000 microseconds) | microsecond |
+| u16 | interval | Time interval between individual signal intensity samples in 25nsec increments (40 to 40000 == 1 microsecond to 1000 microseconds) |  |
+| u16 | transmit_frequency | Acoustic operating frequency |  |
+| u16 | number_of_samples | Number of samples per reflected signal |  |
 
 #### 2303 stationary_upload_data
 The Upload Data message is sent by the sonar to the host upon request. The sonar returns the parameter block sent as part of the command to verify how the raw data was captured. The time taken before the response to the command is sent depends on the difference between the last angle scanned and the new angle in the parameters as well as the number of samples and sample interval (range). To allow for the worst case reponse time the command timeout should be set to 4000 msec.
@@ -446,10 +448,11 @@ The Upload Data message is sent by the sonar to the host upon request. The sonar
 | Type | Name             | Description                                                      | Units |
 |------|------------------|------------------------------------------------------------------|-------|
 | u8 | mode | Operating mode (1 for Ping360) |  |
-| u8 | gain_index | Analog gain index (0 = low, 1 = normal, 2 = high) |  |
-| u16 | angle | Head angle in gradians (3 ASCII/Hex digits 0 to 399 decimal = 0 to 360 degrees) |  |
-| u16 | pulse_usec | Tx pulse length in microseconds. (1 to 1000) |  |
-| u16 | interval | Sample interval in 25nsec clock ticks (40 to 40000 == 1 microsecond to 1000 microseconds) |  |
+| u8 | gain_setting | Analog gain setting (0 = low, 1 = normal, 2 = high) |  |
+| u16 | angle | Head angle | gradian |
+| u16 | transmit_duration | Acoustic transmission duration (1~1000 microseconds) | microsecond |
+| u16 | interval | Time interval between individual signal intensity samples in 25nsec increments (40 to 40000 == 1 microsecond to 1000 microseconds) |  |
+| u16 | transmit_frequency | Acoustic operating frequency |  |
 | u16 | data_length | The length of the proceeding vector field | |
 | u8[] | data | 8 bit binary data array representing sonar echo strength |  |
 
@@ -458,7 +461,7 @@ The Motor Position message is sent from the sonar to the host. The sonar returns
 
 | Type | Name             | Description                                                      | Units |
 |------|------------------|------------------------------------------------------------------|-------|
-| u16 | angle | Head angle in gradians (0 to 399 = 0 to 360 degrees) |  |
+| u16 | angle | Head angle | gradian |
 
 #### 2305 forwards_upload_data
 Follow `stationary_upload_data (2303)` but with forward steps.
@@ -466,10 +469,11 @@ Follow `stationary_upload_data (2303)` but with forward steps.
 | Type | Name             | Description                                                      | Units |
 |------|------------------|------------------------------------------------------------------|-------|
 | u8 | mode | Operating mode (1 for Ping360) |  |
-| u8 | gain_index | Analog gain index (0 = low, 1 = normal, 2 = high) |  |
-| u16 | angle | Head angle in gradians (3 ASCII/Hex digits 0 to 399 decimal = 0 to 360 degrees) |  |
-| u16 | pulse_usec | Tx pulse length in microseconds. (1 to 1000) |  |
-| u16 | interval | Sample interval in 25nsec clock ticks (40 to 40000 == 1 microsecond to 1000 microseconds) |  |
+| u8 | gain_setting | Analog gain setting (0 = low, 1 = normal, 2 = high) |  |
+| u16 | angle | Head angle | gradian |
+| u16 | transmit_duration | Acoustic transmission duration (1~1000 microseconds) | microsecond |
+| u16 | interval | Time interval between individual signal intensity samples in 25nsec increments (40 to 40000 == 1 microsecond to 1000 microseconds) |  |
+| u16 | transmit_frequency | Acoustic operating frequency |  |
 | u16 | data_length | The length of the proceeding vector field | |
 | u8[] | data | 8 bit binary data array representing sonar echo strength |  |
 
@@ -479,10 +483,11 @@ Follow `stationary_upload_data (2303)` but with reverse steps.
 | Type | Name             | Description                                                      | Units |
 |------|------------------|------------------------------------------------------------------|-------|
 | u8 | mode | Operating mode (1 for Ping360) |  |
-| u8 | gain_index | Analog gain index (0 = low, 1 = normal, 2 = high) |  |
-| u16 | angle | Head angle in gradians (3 ASCII/Hex digits 0 to 399 decimal = 0 to 360 degrees) |  |
-| u16 | pulse_usec | Tx pulse length in microseconds. (1 to 1000) |  |
-| u16 | interval | Sample interval in 25nsec clock ticks (40 to 40000 == 1 microsecond to 1000 microseconds) |  |
+| u8 | gain_setting | Analog gain setting (0 = low, 1 = normal, 2 = high) |  |
+| u16 | angle | Head angle | gradian |
+| u16 | transmit_duration | Acoustic transmission duration (1~1000 microseconds) | microsecond |
+| u16 | interval | Time interval between individual signal intensity samples in 25nsec increments (40 to 40000 == 1 microsecond to 1000 microseconds) |  |
+| u16 | transmit_frequency | Acoustic operating frequency |  |
 | u16 | data_length | The length of the proceeding vector field | |
 | u8[] | data | 8 bit binary data array representing sonar echo strength |  |
 
