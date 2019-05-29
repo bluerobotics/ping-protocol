@@ -83,12 +83,12 @@
                     }
                 ]
             },
-            "set_gain_index": {
+            "set_gain_setting": {
                 "id": "1005",
                 "description": "Set the current gain setting.",
                 "payload": [
                     {
-                        "name": "gain_index",
+                        "name": "gain_setting",
                         "type": "u8",
                         "description": "The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144"
                     }
@@ -210,12 +210,12 @@
                     }
                 ]
             },
-            "gain_index": {
+            "gain_setting": {
                 "id": "1207",
                 "description": "The current gain setting.",
                 "payload": [
                     {
-                        "name": "gain_index",
+                        "name": "gain_setting",
                         "type": "u32",
                         "description": "The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144"
                     }
@@ -260,7 +260,7 @@
                         "units": "ms"
                     },
                     {
-                        "name": "gain_index",
+                        "name": "gain_setting",
                         "type": "u8",
                         "description": "The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144"
                     },
@@ -329,7 +329,7 @@
                         "units": "mm"
                     },
                     {
-                        "name": "gain_index",
+                        "name": "gain_setting",
                         "type": "u32",
                         "description": "The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144"
                     }
@@ -410,7 +410,7 @@
                         "units": "mm"
                     },
                     {
-                        "name": "gain_index",
+                        "name": "gain_setting",
                         "type": "u32",
                         "description": "The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144"
                     },
