@@ -11,6 +11,7 @@
     * [ascii_text](#3-ascii_text)
     * [general_request](#6-general_request)
   * [get](##Common-get)
+    * [device_information](#4-device_information)
     * [protocol_version](#5-protocol_version)
 * [Ping1D Messages](#Ping1D-messages)
   * [set](##Ping1D-set)
@@ -45,22 +46,11 @@
 * [Ping360 Messages](#Ping360-messages)
   * [set](##Ping360-set)
     * [parameters](#2000-parameters)
-    * [device_id](#2001-device_id)
   * [get](##Ping360-get)
-    * [device_id](#2300-device_id)
-    * [firmware_version](#2301-firmware_version)
-    * [parameters](#2302-parameters)
-    * [stationary_upload_data](#2303-stationary_upload_data)
-    * [motor_position](#2304-motor_position)
-    * [forwards_upload_data](#2305-forwards_upload_data)
-    * [reverse_upload_data](#2306-reverse_upload_data)
+    * [device_data](#2300-device_data)
   * [control](##Ping360-control)
-    * [goto_bootloader](#2600-goto_bootloader)
-    * [reset](#2601-reset)
-    * [step_forward](#2602-step_forward)
-    * [step_reverse](#2603-step_reverse)
-    * [reset_position](#2604-reset_position)
-    * [motor_off](#2605-motor_off)
+    * [reset](#2600-reset)
+    * [transducer](#2601-transducer)
 
 ## Format
 
@@ -162,6 +152,17 @@ Requests a specific message to be sent from the sonar to the host. Command timeo
 
 
 ### get
+
+#### 4 device_information
+Device information
+
+| Type | Name             | Description                                                      | Units |
+|------|------------------|------------------------------------------------------------------|-------|
+| u8 | device_type | Device type. 0: Unknown; 1: Ping Echosounder; 2: Ping360 |  |
+| u8 | device_revision | device-specific hardware revision |  |
+| u8 | firmware_version_major | Firmware version major number. |  |
+| u8 | firmware_version_minor | Firmware version minor number. |  |
+| u8 | firmware_version_patch | Firmware version patch number. |  |
 
 #### 5 protocol_version
 The protocol version
@@ -402,35 +403,11 @@ This is the main parameter block.
 | u16 | transmit_frequency | Acoustic operating frequency |  |
 | u16 | number_of_samples | Number of samples per reflected signal |  |
 
-#### 2001 device_id
-Sets the device ID that will be reported by requesting a 'device_id' message from the sonar. Command timeout should be set to 50 msec. 
-
-| Type | Name             | Description                                                      | Units |
-|------|------------------|------------------------------------------------------------------|-------|
-| u8 | id | 1-254 are valid values (default value is 2 for Ping360) |  |
-
 
 ### get
 
-#### 2300 device_id
-The device ID.
-
-| Type | Name             | Description                                                      | Units |
-|------|------------------|------------------------------------------------------------------|-------|
-| u8 | device_id | The device ID (0-254). 255 is reserved for broadcast messages. |  |
-
-#### 2301 firmware_version
-Device information
-
-| Type | Name             | Description                                                      | Units |
-|------|------------------|------------------------------------------------------------------|-------|
-| u8 | device_type | Device model. 0: Unknown; 1: Ping Echosounder; 2: Ping360 |  |
-| u8 | device_model | Device model. 0: Unknown; 1: Ping Echosounder; 2: Ping360 |  |
-| u16 | firmware_version_major | Firmware version major number. |  |
-| u16 | firmware_version_minor | Firmware version minor number. |  |
-
-#### 2302 parameters
-The Parameters message is sent from the sonar to the host in response to a request from the host.
+#### 2300 device_data
+This message is used to communicate the current sonar state. If the data field is populated, the other fields indicate the sonar state when the data was captured. The time taken before the response to the command is sent depends on the difference between the last angle scanned and the new angle in the parameters as well as the number of samples and sample interval (range). To allow for the worst case reponse time the command timeout should be set to 4000 msec.
 
 | Type | Name             | Description                                                      | Units |
 |------|------------------|------------------------------------------------------------------|-------|
@@ -441,86 +418,24 @@ The Parameters message is sent from the sonar to the host in response to a reque
 | u16 | interval | Time interval between individual signal intensity samples in 25nsec increments (40 to 40000 == 1 microsecond to 1000 microseconds) |  |
 | u16 | transmit_frequency | Acoustic operating frequency |  |
 | u16 | number_of_samples | Number of samples per reflected signal |  |
-
-#### 2303 stationary_upload_data
-The Upload Data message is sent by the sonar to the host upon request. The sonar returns the parameter block sent as part of the command to verify how the raw data was captured. The time taken before the response to the command is sent depends on the difference between the last angle scanned and the new angle in the parameters as well as the number of samples and sample interval (range). To allow for the worst case reponse time the command timeout should be set to 4000 msec.
-
-| Type | Name             | Description                                                      | Units |
-|------|------------------|------------------------------------------------------------------|-------|
-| u8 | mode | Operating mode (1 for Ping360) |  |
-| u8 | gain_setting | Analog gain setting (0 = low, 1 = normal, 2 = high) |  |
-| u16 | angle | Head angle | gradian |
-| u16 | transmit_duration | Acoustic transmission duration (1~1000 microseconds) | microsecond |
-| u16 | interval | Time interval between individual signal intensity samples in 25nsec increments (40 to 40000 == 1 microsecond to 1000 microseconds) |  |
-| u16 | transmit_frequency | Acoustic operating frequency |  |
-| u16 | data_length | The length of the proceeding vector field | |
-| u8[] | data | 8 bit binary data array representing sonar echo strength |  |
-
-#### 2304 motor_position
-The Motor Position message is sent from the sonar to the host. The sonar returns the current transducer head position in units of gradians, i.e., 400 steps in 360°.
-
-| Type | Name             | Description                                                      | Units |
-|------|------------------|------------------------------------------------------------------|-------|
-| u16 | angle | Head angle | gradian |
-
-#### 2305 forwards_upload_data
-Follow `stationary_upload_data (2303)` but with forward steps.
-
-| Type | Name             | Description                                                      | Units |
-|------|------------------|------------------------------------------------------------------|-------|
-| u8 | mode | Operating mode (1 for Ping360) |  |
-| u8 | gain_setting | Analog gain setting (0 = low, 1 = normal, 2 = high) |  |
-| u16 | angle | Head angle | gradian |
-| u16 | transmit_duration | Acoustic transmission duration (1~1000 microseconds) | microsecond |
-| u16 | interval | Time interval between individual signal intensity samples in 25nsec increments (40 to 40000 == 1 microsecond to 1000 microseconds) |  |
-| u16 | transmit_frequency | Acoustic operating frequency |  |
-| u16 | data_length | The length of the proceeding vector field | |
-| u8[] | data | 8 bit binary data array representing sonar echo strength |  |
-
-#### 2306 reverse_upload_data
-Follow `stationary_upload_data (2303)` but with reverse steps.
-
-| Type | Name             | Description                                                      | Units |
-|------|------------------|------------------------------------------------------------------|-------|
-| u8 | mode | Operating mode (1 for Ping360) |  |
-| u8 | gain_setting | Analog gain setting (0 = low, 1 = normal, 2 = high) |  |
-| u16 | angle | Head angle | gradian |
-| u16 | transmit_duration | Acoustic transmission duration (1~1000 microseconds) | microsecond |
-| u16 | interval | Time interval between individual signal intensity samples in 25nsec increments (40 to 40000 == 1 microsecond to 1000 microseconds) |  |
-| u16 | transmit_frequency | Acoustic operating frequency |  |
 | u16 | data_length | The length of the proceeding vector field | |
 | u8[] | data | 8 bit binary data array representing sonar echo strength |  |
 
 
 ### control
 
-#### 2600 goto_bootloader
-The Goto Bootloader command is sent from the host to the sonar and puts the Ping360 sonar in Bootloader mode (external LED flashes at 5Hz), effectively a `cold boot`. If the user does not connect the bootloader program within 3 seconds then the Ping360 will attempt to resume executing it's current code. If there is no user code loaded in the sonar then the bootloader will wait indefinitely for a connection to the bootloader program. Note:- There is no response message from the sonar to this command 
+#### 2600 reset
+Reset the sonar. The bootloader may run depending on the selection according to the `bootloader` payload field. When the bootloader runs, the external LED flashes at 5Hz. If the bootloader is not contacted within 3 seconds, it will run the current program. If there is no program, then the bootloader will wait forever for a connection.
 
-No payload.
+| Type | Name             | Description                                                      | Units |
+|------|------------------|------------------------------------------------------------------|-------|
+| u8 | bootloader | 0 = skip bootloader; 1 = run bootloader |  |
 
-#### 2601 reset
-The Reset command is sent from the host to the sonar and restarts the Ping360 sonar without going through the bootloader sequence, effectively a `warm boot`. Note:- This command will be acknowledged with an error code of 0 before the sonar is reset. The command timeout should be set to 50 milliseconds.
+#### 2601 transducer
+The transducer will move to the selected angle. The sonar will reply with a `ping360_data` message. If the `transmit` field is 0, the sonar will not transmit after locating the transducer, and the `data` field in the `ping360_data` message reply will be empty. If the `transmit` field is 1, the sonar will make an acoustic transmission after locating the transducer, and the resulting data will be uploaded in the `data` field of the `ping360_data` message reply. To allow for the worst case reponse time the command timeout should be set to 4000 msec.
 
-No payload.
-
-#### 2602 step_forward
-The Step Forward command message is sent by the host to the sonar. The sonar moves the transducer head one gradian in a +ve direction (400 gradians in 360°). The internal sonar position count will increase by 1, if the current position is 399 the count will wrap around to 0. The sonar will send a `Motor Position` message in response. The command timeout should be set to 50 msec.
-
-No payload.
-
-#### 2603 step_reverse
-The Step Reverse command message is sent by the host to the sonar. The sonar moves the transducer head one gradian in a -ve direction. The internal sonar position count will decrease by 1, if the current position is 0 the count will wrap around to 399. The sonar will send a `Motor Position` message in response. The command timeout should be set to 50 msec.
-
-No payload.
-
-#### 2604 reset_position
-The Reset Position command message is sent by the host to the sonar. The sonar first locates the position reference sensor and then moves the transducer head to the zero position. The internal sonar position count will be reset to 0. The sonar will send a `Motor Position` message in response. The command timeout should be set to 4000 msec.
-
-No payload.
-
-#### 2605 motor_off
-The Motor Off command message is sent by the host to the sonar. The sonar switches the current through the stepper motor windings off to save power. When it is required to move the transducer again a Reset Position command should be sent to ensure that the motor position is accurate. Typically when the sonar is paused the motor current would be switched off. When the user sends any command that involves moving the transducer then the motor current is automatically re-enabled. The sonar will send an <Error Code> message of 0 in response. The command timeout should be set to 50 msec.
-
-No payload.
+| Type | Name             | Description                                                      | Units |
+|------|------------------|------------------------------------------------------------------|-------|
+| u16 | angle | Head angle in gradians (0 to 399 gradians). |  |
+| u16 | transmit | 0 = do not transmit; 1 = transmit after the transducer has reached the specified angle |  |
 
