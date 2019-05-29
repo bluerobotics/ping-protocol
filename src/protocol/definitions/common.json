@@ -9,7 +9,7 @@
         "packed_fields": "memory alignment"
     },
     "sensor_info": {
-        "name": "Common"
+        "name": "common"
     },
     "format": [
         {

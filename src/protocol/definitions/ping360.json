@@ -10,7 +10,7 @@
         "name": "ping_msg_"
     },
     "sensor_info": {
-        "name": "Ping360"
+        "name": "ping360"
     },
     "requirements": {
         "discovery": "discovery of connected devices, types, and firmwares",

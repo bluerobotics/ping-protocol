@@ -11,7 +11,7 @@
     },
     "sensor_info": {
         "file": "ping.h.in",
-        "name": "Ping1D"
+        "name": "ping1D"
     },
     "requirements": {
         "discovery": "discovery of connected devices, types, and firmwares",
