@@ -6,9 +6,9 @@
 * [Format](#format)
 {% for sensor in sensors | sort %}
 {% set messages = sensors[sensor]['messages'] %}
-* [{{sensor}} Messages](#{{sensor}}-messages)
+* [{{generator.capitalize(sensor)}} Messages](#{{generator.capitalize(sensor)}}-messages)
 {% for msg_type in messages %}
-  * [{{msg_type}}](##{{sensor}}-{{msg_type}})
+  * [{{msg_type}}](##{{generator.capitalize(sensor)}}-{{msg_type}})
 {% for msg in messages[msg_type] %}
 {% if msg != 'description' %}
     * [{{msg}}](#{{messages[msg_type][msg].id}}-{{msg}})
@@ -23,7 +23,7 @@
 |------|------|------------------|------------------------------------------------------------------|
 {% for sensor in sensors | sort %}
 {% set messages = sensors[sensor]['messages'] %}
-{% if sensor == 'Common' %}
+{% if sensor == 'common' %}
 {% for field in sensors[sensor]['format'] %}
 | {{field.index}} | {{field.type}} | {{field.name}} | {{field.description}} |
 {% endfor %}
@@ -81,7 +81,7 @@ The conversion of distance and confidence from hexadecimal to decimal is 7515mm 
 You can also check the checksum to be sure that the message is not corrupted, and the `message_id` to check if the message is the one that you are waiting for.
 
 {% endif %}
-## {{sensor}} Messages
+## {{generator.capitalize(sensor)}} Messages
 {% for msg_type in messages %}
 
 ### {{msg_type}}
