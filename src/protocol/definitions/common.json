@@ -122,6 +122,37 @@
             }
         },
         "get": {
+            "device_information": {
+                "id": "4",
+                "description": "Device information",
+                "payload": [
+                    {
+                        "name": "device_type",
+                        "type": "u8",
+                        "description": "Device type. 0: Unknown; 1: Ping Echosounder; 2: Ping360"
+                    },
+                    {
+                        "name": "device_revision",
+                        "type": "u8",
+                        "description": "device-specific hardware revision"
+                    },
+                    {
+                        "name": "firmware_version_major",
+                        "type": "u8",
+                        "description": "Firmware version major number."
+                    },
+                    {
+                        "name": "firmware_version_minor",
+                        "type": "u8",
+                        "description": "Firmware version minor number."
+                    },
+                    {
+                        "name": "firmware_version_patch",
+                        "type": "u8",
+                        "description": "Firmware version patch number."
+                    }
+                ]
+            },
             "protocol_version": {
                 "id": "5",
                 "description": "The protocol version",
