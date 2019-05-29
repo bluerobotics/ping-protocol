@@ -17,6 +17,7 @@ if __name__ == "__main__":
         jsondata['sensors'][data['sensor_info']['name']] = data
 
     j2_env = Environment(loader=FileSystemLoader(Generator.JINJA_PATH), trim_blocks=True)
+    j2_env.globals.update(generator=Generator())
 
     f = open('README.md', "w")
     f.write(j2_env.get_template("ping_doc.in").render(jsondata))
