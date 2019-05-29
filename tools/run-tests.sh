@@ -21,7 +21,7 @@ for filename in $protocol_definitions_path/*.json; do
     echob "Checking file: $(basename ${filename})"
     python3 -m json.tool ${filename} > /tmp/temporary_test_file.json;
     if ! comm -2 -3 ${filename} /tmp/temporary_test_file.json; then
-        echob "Json file does not follow style."
+        echob "Json file does not follow style. Try python3 -m json.tool."
         exit 1
     fi
 done
