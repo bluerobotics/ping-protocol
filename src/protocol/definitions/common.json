@@ -150,6 +150,11 @@
                         "name": "firmware_version_patch",
                         "type": "u8",
                         "description": "Firmware version patch number."
+                    },
+                    {
+                        "name": "reserved",
+                        "type": "u8",
+                        "description": "reserved"
                     }
                 ]
             },
