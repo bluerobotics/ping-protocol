@@ -163,9 +163,24 @@
                 "description": "The protocol version",
                 "payload": [
                     {
-                        "name": "protocol_version",
-                        "type": "u32",
-                        "description": "The protocol version"
+                        "name": "version_major",
+                        "type": "u8",
+                        "description": "Protocol version major number."
+                    },
+                    {
+                        "name": "version_minor",
+                        "type": "u8",
+                        "description": "Protocol version minor number."
+                    },
+                    {
+                        "name": "version_patch",
+                        "type": "u8",
+                        "description": "Protocol version patch number."
+                    },
+                    {
+                        "name": "reserved",
+                        "type": "u8",
+                        "description": "reserved"
                     }
                 ]
             }
