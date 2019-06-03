@@ -18,46 +18,19 @@
     },
     "messages": {
         "set": {
-            "parameters": {
+            "device_id": {
                 "id": "2000",
-                "description": "This is the main parameter block.",
+                "description": "Change the device id",
                 "payload": [
                     {
-                        "name": "mode",
+                        "name": "id",
                         "type": "u8",
-                        "description": "Operating mode (1 for Ping360)"
+                        "description": "Device ID (1-254). 0 and 255 are reserved."
                     },
                     {
-                        "name": "gain_setting",
+                        "name": "reserved",
                         "type": "u8",
-                        "description": "Analog gain setting (0 = low, 1 = normal, 2 = high)"
-                    },
-                    {
-                        "name": "angle",
-                        "type": "u16",
-                        "description": "Head angle",
-                        "units": "gradian"
-                    },
-                    {
-                        "name": "transmit_duration",
-                        "type": "u16",
-                        "description": "Acoustic transmission duration (1~1000 microseconds)",
-                        "units": "microsecond"
-                    },
-                    {
-                        "name": "interval",
-                        "type": "u16",
-                        "description": "Time interval between individual signal intensity samples in 25nsec increments (40 to 40000 == 1 microsecond to 1000 microseconds)"
-                    },
-                    {
-                        "name": "transmit_frequency",
-                        "type": "u16",
-                        "description": "Acoustic operating frequency"
-                    },
-                    {
-                        "name": "number_of_samples",
-                        "type": "u16",
-                        "description": "Number of samples per reflected signal"
+                        "description": "reserved"
                     }
                 ]
             }
@@ -92,12 +65,13 @@
                     {
                         "name": "interval",
                         "type": "u16",
-                        "description": "Time interval between individual signal intensity samples in 25nsec increments (40 to 40000 == 1 microsecond to 1000 microseconds)"
+                        "description": "Time interval between individual signal intensity samples in 25nsec increments (80 to 40000 == 2 microseconds to 1000 microseconds)"
                     },
                     {
                         "name": "transmit_frequency",
                         "type": "u16",
-                        "description": "Acoustic operating frequency"
+                        "description": "Acoustic operating frequency. Frequency range is 500kHz to 1000kHz, however it is only practical to use say 650kHz to 850kHz due to the narrow bandwidth of the acoustic receiver.",
+                        "units": "kHz"
                     },
                     {
                         "name": "number_of_samples",
@@ -120,28 +94,71 @@
         "control": {
             "reset": {
                 "id": "2600",
-                "description": "Reset the sonar. The bootloader may run depending on the selection according to the `bootloader` payload field. When the bootloader runs, the external LED flashes at 5Hz. If the bootloader is not contacted within 3 seconds, it will run the current program. If there is no program, then the bootloader will wait forever for a connection.",
+                "description": "Reset the sonar. The bootloader may run depending on the selection according to the `bootloader` payload field. When the bootloader runs, the external LED flashes at 5Hz. If the bootloader is not contacted within 5 seconds, it will run the current program. If there is no program, then the bootloader will wait forever for a connection. Note that if you issue a reset then you will have to close all your open comm ports and go back to issuing either a discovery message for UDP or go through the break sequence for serial comms before you can talk to the sonar again.",
                 "payload": [
                     {
                         "name": "bootloader",
                         "type": "u8",
                         "description": "0 = skip bootloader; 1 = run bootloader"
+                    },
+                    {
+                        "name": "reserved",
+                        "type": "u8",
+                        "description": "reserved"
                     }
                 ]
             },
             "transducer": {
                 "id": "2601",
-                "description": "The transducer will move to the selected angle. The sonar will reply with a `ping360_data` message. If the `transmit` field is 0, the sonar will not transmit after locating the transducer, and the `data` field in the `ping360_data` message reply will be empty. If the `transmit` field is 1, the sonar will make an acoustic transmission after locating the transducer, and the resulting data will be uploaded in the `data` field of the `ping360_data` message reply. To allow for the worst case reponse time the command timeout should be set to 4000 msec.",
+                "description": "The transducer will apply the commanded settings. The sonar will reply with a `ping360_data` message. If the `transmit` field is 0, the sonar will not transmit after locating the transducer, and the `data` field in the `ping360_data` message reply will be empty. If the `transmit` field is 1, the sonar will make an acoustic transmission after locating the transducer, and the resulting data will be uploaded in the `data` field of the `ping360_data` message reply. To allow for the worst case reponse time the command timeout should be set to 4000 msec.",
                 "payload": [
+                    {
+                        "name": "mode",
+                        "type": "u8",
+                        "description": "Operating mode (1 for Ping360)"
+                    },
+                    {
+                        "name": "gain_setting",
+                        "type": "u8",
+                        "description": "Analog gain setting (0 = low, 1 = normal, 2 = high)"
+                    },
                     {
                         "name": "angle",
                         "type": "u16",
-                        "description": "Head angle in gradians (0 to 399 gradians)."
+                        "description": "Head angle",
+                        "units": "gradian"
+                    },
+                    {
+                        "name": "transmit_duration",
+                        "type": "u16",
+                        "description": "Acoustic transmission duration (1~1000 microseconds)",
+                        "units": "microsecond"
+                    },
+                    {
+                        "name": "interval",
+                        "type": "u16",
+                        "description": "Time interval between individual signal intensity samples in 25nsec increments (80 to 40000 == 2 microseconds to 1000 microseconds)"
+                    },
+                    {
+                        "name": "transmit_frequency",
+                        "type": "u16",
+                        "description": "Acoustic operating frequency. Frequency range is 500kHz to 1000kHz, however it is only practical to use say 650kHz to 850kHz due to the narrow bandwidth of the acoustic receiver.",
+                        "units": "kHz"
+                    },
+                    {
+                        "name": "number_of_samples",
+                        "type": "u16",
+                        "description": "Number of samples per reflected signal"
                     },
                     {
                         "name": "transmit",
-                        "type": "u16",
+                        "type": "u8",
                         "description": "0 = do not transmit; 1 = transmit after the transducer has reached the specified angle"
+                    },
+                    {
+                        "name": "reserved",
+                        "type": "u8",
+                        "description": "reserved"
                     }
                 ]
             }
