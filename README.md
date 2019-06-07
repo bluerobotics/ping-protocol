@@ -414,7 +414,7 @@ This message is used to communicate the current sonar state. If the data field i
 | u8 | gain_setting | Analog gain setting (0 = low, 1 = normal, 2 = high) |  |
 | u16 | angle | Head angle | gradian |
 | u16 | transmit_duration | Acoustic transmission duration (1~1000 microseconds) | microsecond |
-| u16 | interval | Time interval between individual signal intensity samples in 25nsec increments (80 to 40000 == 2 microseconds to 1000 microseconds) |  |
+| u16 | sample_period | Time interval between individual signal intensity samples in 25nsec increments (80 to 40000 == 2 microseconds to 1000 microseconds) |  |
 | u16 | transmit_frequency | Acoustic operating frequency. Frequency range is 500kHz to 1000kHz, however it is only practical to use say 650kHz to 850kHz due to the narrow bandwidth of the acoustic receiver. | kHz |
 | u16 | number_of_samples | Number of samples per reflected signal |  |
 | u16 | data_length | The length of the proceeding vector field | |
@@ -440,7 +440,7 @@ The transducer will apply the commanded settings. The sonar will reply with a `p
 | u8 | gain_setting | Analog gain setting (0 = low, 1 = normal, 2 = high) |  |
 | u16 | angle | Head angle | gradian |
 | u16 | transmit_duration | Acoustic transmission duration (1~1000 microseconds) | microsecond |
-| u16 | interval | Time interval between individual signal intensity samples in 25nsec increments (80 to 40000 == 2 microseconds to 1000 microseconds) |  |
+| u16 | sample_period | Time interval between individual signal intensity samples in 25nsec increments (80 to 40000 == 2 microseconds to 1000 microseconds) |  |
 | u16 | transmit_frequency | Acoustic operating frequency. Frequency range is 500kHz to 1000kHz, however it is only practical to use say 650kHz to 850kHz due to the narrow bandwidth of the acoustic receiver. | kHz |
 | u16 | number_of_samples | Number of samples per reflected signal |  |
 | u8 | transmit | 0 = do not transmit; 1 = transmit after the transducer has reached the specified angle |  |
