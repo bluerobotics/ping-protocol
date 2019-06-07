@@ -1,0 +1,13 @@
+site_name: Ping Protocol
+theme:
+  name: material
+  palette:
+    primary: 'light blue'
+    accent: 'blue'
+nav:
+    - Quick Start: index.md
+    - Message Definitions:
+        - common: pingmessage-common.md
+        - ping1d: pingmessage-ping1d.md
+        - ping360: pingmessage-ping360.md
+site_dir: ping-protocol
