@@ -1,19 +1,7 @@
-## Table of Contents
-{% set sensor = sensor_info.name %}
-* [{{generator.capitalize(sensor)}} messages](#{{generator.capitalize(sensor)}}-messages)
-{% for msg_type in messages %}
-  * [{{msg_type}}](##{{generator.capitalize(sensor)}}-{{msg_type}})
-{% for msg in messages[msg_type] %}
-{% if msg != 'description' %}
-    * [{{msg}}](#{{messages[msg_type][msg].id}}-{{msg}})
-{% endif %}
-{% endfor %}
-{% endfor %}
-
-## {{generator.capitalize(sensor)}} messages
+# {{definition|capitalize}} messages
 
 {% for msg_type in messages %}
-### {{msg_type}}
+## {{msg_type}}
 {% if messages[msg_type].description %}
 {{messages[msg_type].description}}
 {% endif %}
