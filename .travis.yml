@@ -1,73 +1,11 @@
-sudo: false
-language: cpp
+dist: xenial
 
-matrix:
-  include:
-    - os: linux
-      dist: xenial
-      python: "3.7"
-      sudo: require
-      addons:
-        apt:
-          sources:
-            - sourceline: "ppa:deadsnakes/ppa"
-            - sourceline: "ppa:ubuntu-toolchain-r/test"
-            - sourceline: "ppa:beineri/opt-qt-5.11.1-xenial"
-          packages:
-            - g++-7
-            - build-essential
-            - qt511base
-            - qt511charts-no-lgpl qt511graphicaleffects qt511quickcontrols qt511quickcontrols2 qt511scxml qt511serialport qt511svg
-            - libgl1-mesa-dev
-
-      env:
-        - DESC="Check json and protocol"
-        - PINGTEST="true"
-        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
-        - QTV="qt511"
-        - secure: GALSP9kUuhZ0dXoW86KshRcqJBLxUxZQmhJNM4CWD5zJJlelugPjNj1b1U13XpWxSDlWbHZQJ+l/yurKEd8pHtl4TkowCq9qH12WFtZJwvXhsHinTgPhFCSQ8gDX6uhjWJE95QY62DU7lZrcoaMMtZB8uhUZGF5RTzP6tAnVqd90TkjXLMLNEwVGHvp1SE1fR2sS8H402NRs7H+27tWv3PMPH9iqvyDCIaORo84YVzevm9V7chSkeCU+S71Iq/rSnAMGGEmVm77Nk9ZPj4ECos2bDXwWUldTJsx85tIU9fQxBSpRX1s6/gdQ9WTa+TEJ8kccim4E3GI7Kk6oJu3b+qU4WFVhmG1Wivo3+fnxPUHUIrSNqARQF9ALV+YzAA8ljDXfNmJstqsgu2xbfCEGbXU7YbfCHBcBpkRZ4LXdF5nLRlACLsWiYTqUFd8C/HxrB+S7QfHuqAYvaTkJnbzQsH0qKCwNf6ZwL86K3Cnc+1Uf3BOvqWwC9OV12sVzqXdcsLvI2W7GqMYAiayg4xMWwdxrvllE2lgB02iS2qCSfj/lV3msHDdtAnqzQaaOviu3i4fB3gGJLit7fWn/ChvOwZSBBRFqR2+uQ0/q2IOTOTSDAGqm6A2Jb0YXn0ox9OapiR1wNMx9qgflzYt2F9eLj7xxmnqpoZxvk1XRdmcLeJY=
-
-    - os: osx
-      osx_image: xcode10
-      compiler: clang
-      addons:
-        homebrew:
-          packages: python3
-
-      env:
-        - DESC="dmg deploy"
-        - MATRIX_EVAL="COMPILER=clang++"
-
-before_install:
-- if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
-    pyenv global 3.7;
-  fi
+language: minimal
 
 install:
-- pip install --user --upgrade pip;
 - pip install --user "jinja2>=2.10";
-- if [ "${TRAVIS_OS_NAME}" = "osx" ]; then
-    brew update > /dev/null;
-    brew install qt5;
-    chmod -R 755 /usr/local/opt/qt5/*;
-    export QTDIR="/usr/local/opt/qt5";
-    export PATH="$QTDIR/bin:$PATH";
-  fi
+- pip install --user mkdocs-material
+- gem install html-proofer
 
 script:
-- if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
-    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-7 60;
-    sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-7 60;
-    source /opt/qt*/bin/qt*-env.sh;
-  fi
-- if [ "${PINGTEST}" = "true" ]; then
-    tools/run-tests.sh || travis_terminate 1;
-    tools/update-generated-repositories.sh;
-  fi
-- if [ -z $PINGTEST ]; then
-    cd example;
-    mkdir build;
-    cd build;
-    qmake .. -Wall -Wlogic -Wparser;
-    make;
-  fi
+- tools/travis-ci-script.sh || travis_terminate 1
