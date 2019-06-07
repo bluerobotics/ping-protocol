@@ -1,24 +1,32 @@
 #!/usr/bin/env python3
 
-import os
-import collections
-import json
-
-from jinja2 import Environment, FileSystemLoader
-
+from pathlib import Path
 from generator import Generator
+import argparse
+import os
 
-if __name__ == "__main__":
-    definitions = [file for file in os.listdir(Generator.DEFINITION_PATH) if file.endswith('.json')]
-    definitions.sort()
-    jsondata = collections.OrderedDict({ "sensors": {} })
-    for definition in definitions:
-        data = json.load(open(os.path.join(Generator.DEFINITION_PATH, definition), 'r'), object_pairs_hook=collections.OrderedDict)
-        jsondata['sensors'][data['sensor_info']['name']] = data
+parser = argparse.ArgumentParser(description="generate markdown documentation files for message definitions")
+parser.add_argument('--output-directory', action="store", default="./", type=str, help="directory to save output files")
+args = parser.parse_args()
 
-    j2_env = Environment(loader=FileSystemLoader(Generator.JINJA_PATH), trim_blocks=True)
-    j2_env.globals.update(generator=Generator())
+if not os.path.exists(args.output_directory):
+    os.makedirs(args.output_directory)
 
-    f = open('README.md', "w")
-    f.write(j2_env.get_template("ping_doc.in").render(jsondata))
-    f.close()
+scriptPath = Path(__file__).parent.absolute()
+
+definitionPath = "%s/definitions" % scriptPath
+templatePath = "%s/templates" % scriptPath
+
+templateFile = "%s/pingmessage-.md.in" % templatePath
+
+generator = Generator()
+
+definitions = [ "common",
+                "ping1d",
+                "ping360"]
+
+for definition in definitions:
+    definitionFile = "%s/%s.json" % (definitionPath, definition)
+    file = open("%s/pingmessage-%s.md" % (args.output_directory, definition), "w")
+    file.write(generator.generate(definitionFile, templateFile, {"definition": definition}))
+    file.close()
