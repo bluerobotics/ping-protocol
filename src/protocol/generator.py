@@ -1,17 +1,16 @@
 #!/usr/bin/env python3
 
-import os
 import json
 import re
-
-from jinja2 import Environment, FileSystemLoader
+import collections
+from jinja2 import Template
 
 class Generator:
-    ROOT = os.path.abspath(__file__)
-    PATH = os.path.dirname(ROOT)
-    JINJA_PATH = os.path.join(PATH, 'templates/')
-    DEFINITION_PATH = os.path.join(PATH, 'definitions/')
-
+    """
+    TODO: the generator api should help with determining things about messages (like a total payload length,
+    or if a field is a vector type). c functions should be moved to c generation code and python functions
+    should be moved to python generation code.
+    """
     def calc_payload(self, payloads):
         total_size = 0
         for payload in payloads:
@@ -21,7 +20,8 @@ class Generator:
                     if "sizetype" in payload["vector"]:
                         total_size = total_size + self.get_c_size(payload["vector"]["sizetype"])
                 else:
-                    total_size = total_size + int(payload["vector"]["size"]) * self.get_c_size(payload["vector"]["datatype"])
+                    total_size = ( total_size + int(payload["vector"]["size"])
+                                    * self.get_c_size(payload["vector"]["datatype"]) )
 
             else:
                 total_size = total_size + self.get_c_size(payload["type"])
@@ -52,7 +52,7 @@ class Generator:
         # this regex will get the X in u/intX_t (uint8_t, int16_t)
         match = re.search('[0-9]{1,2}', t)
         if match:
-            return int(match.group(0)) / 8
+            return int(match.group(0) / 8)
         if t.find('bool') != -1:
             return 1
         if t.find('int') != -1:
@@ -101,44 +101,28 @@ class Generator:
     def is_vector(self, t):
         return ('vector' in t)
 
-    def capitalize(self, input_string):
-        capitalized_words = [ x[0].capitalize() + x[1:] for x in input_string.split('_')]
-        return ''.join(capitalized_words)
+    def generate(self, definition, template, globuls=None):
+        definitionDict = json.load(open(definition), object_pairs_hook=collections.OrderedDict)
+
+        with open(template) as file:
+            template = Template(file.read(), trim_blocks=True)
+
+        template.globals.update(generator=self)
+
+        if globuls is not None:
+            for globul in globuls:
+                template.globals[globul] = globuls[globul]
+
+        return template.render(definitionDict)
 
 if __name__ == "__main__":
-    # Get list of all class names
-    class_names = []
-    # Get all jsons
-    jsons = [file for file in os.listdir(Generator.DEFINITION_PATH) if file.endswith('.json')]
-    for json_file in jsons:
-        # Get json data
-        protocol_data = json.load(open(os.path.join(Generator.DEFINITION_PATH, json_file), 'r'))
-        print('Processing file: %s' % protocol_data['class_info']['name'])
+    import argparse
 
-        # Create prefix name
-        file_prefix_name = protocol_data['class_info']['name'].lower()
-        class_names.append(file_prefix_name)
+    parser = argparse.ArgumentParser(description="ping protocol generation utility")
+    parser.add_argument('--definition', action="store", required=True, type=str,
+        help="the message definition file (ex ping360.json)")
+    parser.add_argument('--template', action="store", required=True, type=str,
+        help="the file template to populate according to the selected message definitions (ex pingmessage-.md.in)")
+    args = parser.parse_args()
 
-        # Create output file
-        output_path = os.path.join(Generator.PATH, '{0}/'.format('pingmessage'))
-        if not os.path.exists(output_path):
-            os.makedirs(output_path)
-
-        # Create a new dictionary with all message keys for convenience in the template
-        messageDict = protocol_data['messages']
-        allMessages = {}
-
-        for message_type in messageDict.keys():
-            allMessages.update(messageDict[message_type])
-
-        protocol_data['messages']['all_msgs'] = allMessages
-
-        # Create our lovely jinja env
-        j2_env = Environment(loader=FileSystemLoader(Generator.JINJA_PATH), trim_blocks=True)
-        j2_env.globals.update(generator=Generator())
-        j2_env.globals.update(_actual_message_type='')
-
-        # Create main class
-        f = open(os.path.join(output_path, "{0}.h".format(file_prefix_name)), "w")
-        f.write(j2_env.get_template(protocol_data['class_info']['file']).render(protocol_data))
-        f.close()
+    print( Generator().generate(args.definition, args.template) )
