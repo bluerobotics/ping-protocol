@@ -63,7 +63,7 @@
                         "units": "microsecond"
                     },
                     {
-                        "name": "interval",
+                        "name": "sample_period",
                         "type": "u16",
                         "description": "Time interval between individual signal intensity samples in 25nsec increments (80 to 40000 == 2 microseconds to 1000 microseconds)"
                     },
@@ -135,7 +135,7 @@
                         "units": "microsecond"
                     },
                     {
-                        "name": "interval",
+                        "name": "sample_period",
                         "type": "u16",
                         "description": "Time interval between individual signal intensity samples in 25nsec increments (80 to 40000 == 2 microseconds to 1000 microseconds)"
                     },
