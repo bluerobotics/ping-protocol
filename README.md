@@ -65,57 +65,86 @@
 | 8-n | u8[] | payload | The message payload. |
 | (n+1)-(n+2) | u16 | checksum | The message checksum. The checksum is calculated as the sum of all the non-checksum bytes in the message. |
 
-## Pack and unpack example
+## Scheme
 
-To request a message from the sensor, it's necessary to use [`general_request` message](#6-general_request) to request a specific message ID, and to build the message, the only thing necessary is to follow the [format description](https://github.com/bluerobotics/ping-protocol#format).
-In this example, will be demonstrated how to request a message, pack the bytes, unpack and extract the necessary information.
+Messages are divided into 4 categories:
 
-##### Pack
+general: messages that are used for general purpose signalling and communication.
+read/get: messages that are sent from the device in response to a [request message] from the host. These messages are designed to read data from the device.
+write/set: messages that are sent from the host to configure some parameters on the device. These messages are designed to write data to the device.
+control: messages that are sent from the host to command the device to perform some action. These messages are designed to perform more complex device interactions than atomic read/write.
 
-1. First it's necessary to define the message that we want, in this case `distance_simple`.
-2. The message ID of `general_request` is 6, so this value should be used in `message_id` field.
-3. Usually the master [parent],  will use the ID 0 and the slave [worker], in that case Ping, will boot with ID 1. This values should be used in `src_device_id` and `dst_device_id` respectively. It's also possible to use `dst_device_id` as 0 to do a broadcast.
-4. Since the payload of `general_request` is **two bytes**, this value should be used in `payload_length`, for the payload itself, the value is 0x04BB (1211 in hexadecimal) for `distance_simple` (ID 1211).
-5. The `checksum` field is calculated doing the sum of each byte:
-    - 0x42 + 0x52 + 0x00 + 0x02 + 0x00 + 0x06 + 0x00 + 0x00 + 0x04 + 0xBB = 0x015B
+There are a some messages that are implemented by all devices, referred to as the 'common' message set. Message ids # 0~999 are reserved for the common messages. The _request_ message is a special message in the common set that is used to request the device to respond with a message from the _get_ category. Each device must also define it's own message set specific to the operation of the particular device.
 
+### Device discovery
 
-| Byte | Value | Type | Name             | Description                                                      |
-|------|-------|------|------------------|------------------------------------------------------------------|
-| 0 | 'B' | u8 | start1 | 'B' |
-| 1 | 'R' | u8 | start2 | 'R' |
-| 2-3 | 0x0002 (2) | u16 | payload_length | Number of bytes in payload. |
-| 4-5 | 0x0006 (6) | u16 | message_id | The message id. |
-| 6 | 0x00 | u8 | src_device_id | The device ID of the device sending the message. |
-| 7 | 0x00 | u8 | dst_device_id | The device ID of the intended recipient of the message. |
-| 8-9 | 0x04BB  | u8[2] | payload | The message payload. |
-| 10-11 | 0x015B | u16 | checksum | The message checksum. The checksum is calculated as the sum of all the non-checksum bytes in the message. |
+If necessary, Ping Protocol enabled devices may be discovered and identified by the host as follows:
 
-With the created package, you should send the bytes in little-endian format:
-`0x42, 0x52, 0x02, 0x00, 0x06, 0x00, 0x00, 0x00, 0xBB, 0x04, 0x5B, 0x01`
+1. The host first requests the protocol version from the device
+1. After receiving a protocol version reply, the host switches to the matching protocol version and requests the device type and firmware version
+1. The host then loads the appropriate message set matching the device
+1. Communication may then continue using the device-specific messages
 
-##### Unpack
+## Negotiation example
 
-The return from the sensor, using our last example, will be:
-`0x42, 0x52, 0x05, 0x00, 0xBB, 0x04, 0x00, 0x00, 0x5B, 0x1D, 0x00, 0x00, 0x64, 0x34, 0x02`
-And you can unpack the information using the same logic behind the pack method.
+Here we demonstrate a byte-by-byte breakdown of some messages sent between the host application (master) and the device (slave). This example illustrates a few points:
+  - how to pack and unpack some message data (the byte-order of a message)
+  - how the request/response mechanism of the protcol works with the `general_request` message
+  - how to identify the protocol version that the device is using
 
-- The message `distance_simple` returns a message with a payload of 5 bytes, where the first 4 is the *distance* and the last one the *confidence*, you can [check that in the documentation here](#1211-distance_simple).
+Establishing communication with a sensor using the [ping-protocol](github.com/bluerobotics/ping-protocol) should begin with [negotiating the protocol version](#device-discovery). This negotiation process consists of two steps:
+  - the host application requests a [`protocol_version`](#5-protocol_version) message from the device
+  - the device responds with a [`protocol_version`](#5-protocol_version) message
 
-| Byte | Value | Type | Name             | Description                                                      |
-|------|-------|------|------------------|------------------------------------------------------------------|
-| 0 | 'B' | u8 | start1 | 'B' |
-| 1 | 'R' | u8 | start2 | 'R' |
-| 2-3 | 0x0005 (5)| u16 | payload_length | Number of bytes in payload. |
-| 4-5 | 0x04BB (1211)| u16 | message_id | The message id. |
-| 6 | 0x00 | u8 | src_device_id | The device ID of the device sending the message. |
-| 7 | 0x00 | u8 | dst_device_id | The device ID of the intended recipient of the message. |
-| 8-11 | 0x00001D5B (7515) | u32 | distance | Distance to the target. |
-|12 | 0x64 (100)| u8 | confidence | Confidence in the distance measurement.
-| 13-14 | 0x0234 | u16 | checksum | The message checksum. The checksum is calculated as the sum of all the non-checksum bytes in the message. |
+> Before reading these examples, you should be familiar with the [message format specification](#format).
 
-The conversion of distance and confidence from hexadecimal to decimal is 7515mm (7.515M) and 100% respectively.
-You can also check the checksum to be sure that the message is not corrupted, and the `message_id` to check if the message is the one that you are waiting for.
+### Request protocol version
+
+In order to receive a [`protocol_version`](#5-protocol_version) message from the device, we will first send a [`general_request`](#6-general_request) message to the device to ask for the message. The [`general_request`](#6-general_request) message has a single payload field, `requested_id`. We populate this field with a value of 5 to indicate that we want the sensor to respond with a `protocol_version` message:
+
+| Byte | Value (hex) | Value (decimal) | Type | Name | Description |
+|------|-------------|-----------------|------|------|-------------|
+| 0    | 0x42 ('B')  | 66 | u8 | start1 | This is a message start identifier, an ascii letter 'B' |
+| 1    | 0x52 ('R')  | 82 | u8 | start2 | This is a message start identifier, an ascii letter 'R' |
+| 2-3  | 0x0002      | 2 | u16 | payload_length | The number of bytes in the [`general_request`](#6-general_request) payload |
+| 4-5  | 0x0006      | 6 | u16 | message_id | This message is a [`general_request`](#6-general_request) (id #6) message |
+| 6    | 0x00        | 0 | u8  | src_device_id | The device ID of the device sending the message. This field is not currently implemented and should be populated with a value of zero |
+| 7    | 0x00        | 0 | u8  | dst_device_id | The device ID of the intended recipient of the message. This portion is not currently implemented and should be populated with a value of zero |
+| 8-9  | 0x0005      | 5 | u16 | requested_id | This is the message id that we would like the device to transmit to us. Valid ids are those in the [`get` category](#get) of messages |
+| 10-11 | 0x00a1     | 161 | u16 | checksum | The message checksum. The checksum is calculated as the sum of all the non-checksum bytes in the message: `66 + 82 + 2 + 6 + 0 + 0 + 5 = 161` |
+
+The bytes should be transmitted in this order:
+`0x42, 0x52, 0x02, 0x00, 0x06, 0x00, 0x00, 0x00, 0x05, 0x00, 0xa1, 0x00`
+
+> Note that the messages are transmitted in **little-endian** format (observe the byte-order of the 16 bit fields)
+
+### Receive protocol version
+
+If everything is right, the sensor will respond to our request with a [`protocol_version`](#5-protocol_version) message. The [`protocol_version`](#5-protocol_version) message has 4 bytes in the payload: `version_major`, `version_minor`, `version_patch`, and `reserved`. 
+
+In this example, the device is using (a hypothetical) protocol version 1.2.3:
+  - version_major = 1
+  - version_minor = 2
+  - version_patch = 3
+
+| Byte | Value (hex) | Value (decimal) | Type | Name | Description |
+|------|-------------|-----------------|------|------|-------------|
+| 0    | 0x42 ('B')  | 66 | u8 | start1 | This is a message start identifier, an ascii letter 'B' |
+| 1    | 0x52 ('R')  | 82 | u8 | start2 | This is a message start identifier, an ascii letter 'R' |
+| 2-3  | 0x0004      | 4 | u16 | payload_length | The number of bytes in the [`protocol_version`](#5-protocol_version) payload |
+| 4-5  | 0x0005      | 5 | u16 | message_id | This message is a [`protocol_version`](#5-protocol_version) (id #5) message |
+| 6    | 0x00        | 0 | u8 | src_device_id | The device ID of the device sending the message. This field is not currently implemented and should be populated with a value of zero |
+| 7    | 0x00        | 0 | u8 | dst_device_id | The device ID of the intended recipient of the message. This field is not currently implemented and should be populated with a value of zero |
+| 8    | 0x01        | 1 | u8 | version_major | This is the protocol _major_ version, the first digit in our example: v**1**.2.3 |
+| 9    | 0x02        | 2 | u8 | version_minor | This is the protocol _minor_ version, the second digit in our example: v1.**2**.3 |
+| 10   | 0x03        | 3 | u8 | version_patch | This is the protocol _patch_ version, the third digit in our example: v1.2.**3** |
+| 11   | 0x00        | 0 | u8 | reserved | This byte is unused and will normally be zero (but it might be any value) |
+| 12-13 | 0x00a3     | 163 |u16 | checksum |  The message checksum. The checksum is calculated as the sum of all the non-checksum bytes in the message: `66 + 82 + 4 + 5 + 0 + 0 + 1 + 2 + 3 + 0 = 163` |
+
+The bytes will be received in this order:
+`0x42, 0x52, 0x04, 0x00, 0x05, 0x00, 0x00, 0x00, 0x01, 0x02, 0x03, 0x00, 0xa3, 0x00`
+
+> Note that the messages are transmitted in **little-endian** format (observe the byte-order of the 16 bit fields)
 
 ## Common Messages
 
