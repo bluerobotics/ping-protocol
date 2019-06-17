@@ -40,9 +40,9 @@ public:
      * @brief Parse a single byte
      *
      * @param byte
-     * @return uint8_t
+     * @return bool if a valid message is available
      */
-    virtual uint8_t parseByte(const char byte) = 0;
+    virtual bool parseByte(const char byte) = 0;
 
     /**
      * @brief Return the last valid ping message
