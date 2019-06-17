@@ -11,7 +11,7 @@ public:
     PingParser() = default;
     ~PingParser() = default;
 
-    enum {
+    enum class State {
         NEW_MESSAGE,   // Just got a complete checksum-verified message
         WAIT_START,    // Waiting for the first character of a message 'B'
         WAIT_HEADER,   // Waiting for the second character in the two-character sequence 'BR'
@@ -36,13 +36,13 @@ public:
     uint8_t parseByte(const char byte) override
     {
         switch(_state) {
-        case WAIT_START:
+        case State::WAIT_START:
             if (byte == 'B') {
                 _parseBuf.append(byte);
                 _state++;
             }
             break;
-        case WAIT_HEADER:
+        case State::WAIT_HEADER:
             if (byte == 'R') {
                 _parseBuf.append(byte);
                 _state++;
@@ -51,38 +51,38 @@ public:
                 _state = WAIT_START;
             }
             break;
-        case WAIT_LENGTH_L:
+        case State::WAIT_LENGTH_L:
             _parseBuf.append(byte);
             _payloadLength = (uint8_t)byte;
             _state++;
             break;
-        case WAIT_LENGTH_H:
+        case State::WAIT_LENGTH_H:
             _parseBuf.append(byte);
             _payloadLength = (byte << 8) | _payloadLength;
             _state++;
             break;
-        case WAIT_MSG_ID_L:
+        case State::WAIT_MSG_ID_L:
             _parseBuf.append(byte);
             _msgId = (uint8_t)byte;
             _state++;
             break;
-        case WAIT_MSG_ID_H:
+        case State::WAIT_MSG_ID_H:
             _parseBuf.append(byte);
             _msgId = (byte << 8) | _msgId;
             _state++;
             break;
-        case WAIT_SRC_ID:
+        case State::WAIT_SRC_ID:
             _parseBuf.append(byte);
             _state++;
             break;
-        case WAIT_DST_ID:
+        case State::WAIT_DST_ID:
             _parseBuf.append(byte);
             _state++;
             if (_payloadLength == 0) { // no payload bytes
                 _state++;
             }
             break;
-        case WAIT_PAYLOAD:
+        case State::WAIT_PAYLOAD:
             if (_payloadLength) {
                 _parseBuf.append(byte);
                 _payloadLength--;
@@ -91,11 +91,11 @@ public:
                 _state++;
             }
             break;
-        case WAIT_CHECKSUM_L:
+        case State::WAIT_CHECKSUM_L:
             _parseBuf.append(byte);
             _state++;
             break;
-        case WAIT_CHECKSUM_H:
+        case State::WAIT_CHECKSUM_H:
             _parseBuf.append(byte);
             ping_message msg((uint8_t*)_parseBuf.data(), _parseBuf.length());
             bool ok = false;
