@@ -50,4 +50,7 @@ public:
      * @return ping_message
      */
     virtual ping_message pingMessage() const = 0;
+
+signals:
+    void newMessage(const ping_message& msg);
 };
