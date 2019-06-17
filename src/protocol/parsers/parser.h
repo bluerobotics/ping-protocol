@@ -5,7 +5,10 @@
 #include <QObject>
 #include "pingmessage/ping_message.h"
 
-// This class digests data and notifies owner when something interesting happens
+/**
+ * @brief Parser that digests data and notifies owner when something interesting happens
+ *
+ */
 class Parser : public QObject
 {
     Q_OBJECT
@@ -13,11 +16,33 @@ public:
     Parser() = default;
     ~Parser() = default;
 
-    uint32_t parsed; // number of messages/packets successfully parsed
-    uint32_t errors; // number of parse errors
+    /**
+     * @brief Number of messages/packets successfully parsed
+     *
+     */
+    uint32_t parsed;
 
-    virtual void parseBuffer(const QByteArray& data) = 0; // asynchronous use, Child classes should signal when something happens ie. 'emit newMessage(Message m)'
-    virtual uint8_t parseByte(const char byte) = 0; // synchronous use, Child should return flags indicating incremental parse result/status
+    /**
+     * @brief Number of parse errors
+     *
+     */
+    uint32_t errors;
+
+    /**
+     * @brief Parse a buffer
+     *  Should be used asynchronously.
+     *  The child classes emit `newMessage`
+     * @param data
+     */
+    virtual void parseBuffer(const QByteArray& data) = 0;
+
+    /**
+     * @brief Parse a single byte
+     *
+     * @param byte
+     * @return uint8_t
+     */
+    virtual uint8_t parseByte(const char byte) = 0;
 
     /**
      * @brief Return the last valid ping message
