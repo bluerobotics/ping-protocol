@@ -1,22 +1,4 @@
 {
-    "class_info": {
-        "_comment": "Handle the main class protocol, the class name will be the file prefix in lower",
-        "file": "pingmessage.h.in",
-        "name": "ping_ping1D"
-    },
-    "subclass_info": {
-        "_comment": "Create a class for each message type",
-        "file": "pingmessage_.h.in",
-        "name": "ping_msg_"
-    },
-    "sensor_info": {
-        "file": "ping.h.in",
-        "name": "ping1D"
-    },
-    "requirements": {
-        "discovery": "discovery of connected devices, types, and firmwares",
-        "packed fields": "memory alignment"
-    },
     "messages": {
         "set": {
             "set_device_id": {
