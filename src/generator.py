@@ -52,7 +52,7 @@ class Generator:
         # this regex will get the X in u/intX_t (uint8_t, int16_t)
         match = re.search('[0-9]{1,2}', t)
         if match:
-            return int(match.group(0) / 8)
+            return int(int(match.group(0)) / 8)
         if t.find('bool') != -1:
             return 1
         if t.find('int') != -1:
