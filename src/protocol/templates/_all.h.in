@@ -1,7 +1,0 @@
-#pragma once
-
-// This template will handle all includes for sensor
-
-{% for message_type in messages|sort %}
-#include "{{class_info.name.lower()}}_{{message_type}}.h"
-{% endfor %}
