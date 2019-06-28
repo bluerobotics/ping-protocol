@@ -102,7 +102,11 @@ class Generator:
         return ('vector' in t)
 
     def generate(self, definition, template, globuls=None):
-        definitionDict = json.load(open(definition), object_pairs_hook=collections.OrderedDict)
+        definitionDict = None
+        if type(definition) == dict:
+            definitionDict = definition
+        else:
+            definitionDict = json.load(open(definition), object_pairs_hook=collections.OrderedDict)
 
         with open(template) as file:
             template = Template(file.read(), trim_blocks=True)
