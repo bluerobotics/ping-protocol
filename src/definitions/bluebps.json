@@ -1,0 +1,276 @@
+{
+    "messages": {
+        "set": {
+            "cell_voltage_minimum": {
+                "id": "9000",
+                "description": "Set the minimum allowed cell voltage",
+                "payload": [
+                    {
+                        "name": "limit",
+                        "type": "u16",
+                        "description": "The minimum voltage allowed for any individual cell. 0~5000: 0~5V",
+                        "units": "millivolt"
+                    }
+                ]
+            },
+            "cell_voltage_timeout": {
+                "id": "9001",
+                "description": "Set the under-voltage timeout",
+                "payload": [
+                    {
+                        "name": "timeout",
+                        "type": "u16",
+                        "description": "If an individual cell exceeds the configured limit for this duration of time, the power will be locked-out",
+                        "units": "millisecond"
+                    }
+                ]
+            },
+            "current_max": {
+                "id": "9002",
+                "description": "Set the maximum allowed battery current",
+                "payload": [
+                    {
+                        "name": "limit",
+                        "type": "u16",
+                        "description": "The maximum allowed battery current 0~20000 = 0~200A",
+                        "units": "centiampere"
+                    }
+                ]
+            },
+            "current_timeout": {
+                "id": "9003",
+                "description": "Set the over-current timeout",
+                "payload": [
+                    {
+                        "name": "timeout",
+                        "type": "u16",
+                        "description": "If the battery current exceeds the configured limit for this duration of time, the power will be locked-out",
+                        "units": "millisecond"
+                    }
+                ]
+            },
+            "temperature_max": {
+                "id": "9004",
+                "description": "Set the maximum allowed battery temperature",
+                "payload": [
+                    {
+                        "name": "limit",
+                        "type": "u16",
+                        "description": "The maximum temperature allowed at the thermistor probe installed on the battery. 0~5000: 0~5V",
+                        "units": "centidegrees Centigrade"
+                    }
+                ]
+            },
+            "temperature_timeout": {
+                "id": "9005",
+                "description": "Set the over-temperature timeout",
+                "payload": [
+                    {
+                        "name": "timeout",
+                        "type": "u16",
+                        "description": "If the battery temperature exceeds the configured limit for this duration of time, the power will be locked-out",
+                        "units": "millisecond"
+                    }
+                ]
+            },
+            "stream_rate": {
+                "id": "9006",
+                "description": "Set the frequency to automatically output state messages.",
+                "payload": [
+                    {
+                        "name": "rate",
+                        "type": "u32",
+                        "description": "Rate to stream `state` messages. 0~100000Hz",
+                        "units": "Hz"
+                    }
+                ]
+            },
+            "lpf_sample_frequency": {
+                "id": "9007",
+                "description": "the frequency to take adc samples and run the filter.",
+                "payload": [
+                    {
+                        "name": "sample_frequency",
+                        "type": "uint32_t",
+                        "description": "sample frequency in Hz. 1~100000"
+                    }
+                ]
+            },
+            "lpf_setting": {
+                "id": "9007",
+                "description": "Low pass filter setting. This value represents x in the equation `value = value * x + sample * (1-x)`. 0.0 = no filtering, 0.99 = heavy filtering.",
+                "payload": [
+                    {
+                        "name": "setting",
+                        "type": "uint16_t",
+                        "description": "0~999: x = 0~0.999"
+                    }
+                ]
+            }
+        },
+        "get": {
+            "cell_voltage_min": {
+                "id": "9100",
+                "description": "Get the minimum allowed cell voltage",
+                "payload": [
+                    {
+                        "name": "limit",
+                        "type": "u16",
+                        "description": "The minimum voltage allowed for any individual cell. 0~5000: 0~5V",
+                        "units": "millivolt"
+                    }
+                ]
+            },
+            "cell_timeout": {
+                "id": "9101",
+                "description": "Get the undervoltage timeout",
+                "payload": [
+                    {
+                        "name": "timeout",
+                        "type": "u16",
+                        "description": "If an individual cell exceeds the configured limit for this duration of time, the power will be locked-out",
+                        "units": "millisecond"
+                    }
+                ]
+            },
+            "current_max": {
+                "id": "9102",
+                "description": "get the maximum allowed battery current",
+                "payload": [
+                    {
+                        "name": "limit",
+                        "type": "u16",
+                        "description": "The maximum allowed battery current 0~20000 = 0~200A",
+                        "units": "millivolt"
+                    }
+                ]
+            },
+            "current_timeout": {
+                "id": "9103",
+                "description": "Get the over-current timeout",
+                "payload": [
+                    {
+                        "name": "timeout",
+                        "type": "u16",
+                        "description": "If the battery current exceeds the configured limit for this duration of time, the power will be locked-out",
+                        "units": "millisecond"
+                    }
+                ]
+            },
+            "temperature_max": {
+                "id": "9104",
+                "description": "Get the maximum allowed battery temperature",
+                "payload": [
+                    {
+                        "name": "limit",
+                        "type": "u16",
+                        "description": "The minimum voltage allowed for any individual cell. 0~5000: 0~5V",
+                        "units": "millivolt"
+                    }
+                ]
+            },
+            "temperature_timeout": {
+                "id": "9105",
+                "description": "Get the over-temperature timeout",
+                "payload": [
+                    {
+                        "name": "timeout",
+                        "type": "u16",
+                        "description": "If the battery temperature exceeds the configured limit for this duration of time, the power will be locked-out",
+                        "units": "millisecond"
+                    }
+                ]
+            },
+            "state": {
+                "id": "9106",
+                "description": "Get the current state of the device",
+                "payload": [
+                    {
+                        "name": "battery_voltage",
+                        "type": "u16",
+                        "description": "The main battery voltage",
+                        "units": "millivolt"
+                    },
+                    {
+                        "name": "battery_current",
+                        "type": "u16",
+                        "description": "The current measurement",
+                        "units": "centiampere"
+                    },
+                    {
+                        "name": "battery_temperature",
+                        "type": "u16",
+                        "description": "The battery temperature",
+                        "units": "decidegrees Centigrade"
+                    },
+                    {
+                        "name": "cpu_temperature",
+                        "type": "u16",
+                        "description": "The cpu temperature",
+                        "units": "decidegrees Centigrade"
+                    },
+                    {
+                        "name": "flags",
+                        "type": "u8",
+                        "description": "flags indicating if any of the configured limits are currently exceeded"
+                    },
+                    {
+                        "name": "cell_voltages",
+                        "type": "vector",
+                        "vector": {
+                            "sizetype": "u8",
+                            "datatype": "u16",
+                            "size": "dynamic"
+                        },
+                        "description": "Array containing cell voltages",
+                        "units": "millivolt"
+                    }
+                ]
+            },
+            "events": {
+                "id": "9107",
+                "description": "A record of events causing a power lock-out. These numbers are non-volatile and reset only with the erase_flash control message.",
+                "payload": [
+                    {
+                        "name": "voltage",
+                        "type": "u16",
+                        "description": "The number of under-voltage events"
+                    },
+                    {
+                        "name": "current",
+                        "type": "u16",
+                        "description": "The number of over-current events"
+                    },
+                    {
+                        "name": "temperature",
+                        "type": "u16",
+                        "description": "The number of over-temperature events"
+                    }
+                ]
+            }
+        },
+        "control": {
+            "reboot": {
+                "id": "9200",
+                "description": "reboot the system",
+                "payload": [
+                    {
+                        "name": "goto_bootloader",
+                        "type": "u8",
+                        "description": "0 = normal reboot, run main application after reboot 1 = hold the device in bootloader after reboot"
+                    }
+                ]
+            },
+            "erase_flash": {
+                "id": "9201",
+                "description": "Erase flash, including parameter configuration and event counters. The mcu has a limited number of write/erase cycles (1k)!",
+                "payload": []
+            },
+            "reset_defaults": {
+                "id": "9202",
+                "description": "Reset parameter configuration to default values.",
+                "payload": []
+            }
+        }
+    }
+}
