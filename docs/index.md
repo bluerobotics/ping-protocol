@@ -21,10 +21,10 @@ Each message consists of a header, optional payload, and checksum. The binary fo
 
 Messages are divided into 4 categories:
 
-general: messages that are used for general purpose signalling and communication.
-read/get: messages that are sent from the device in response to a [`general_request`](pingmessage-common#6-general_request) from the host. These messages are designed to read data from the device.
-write/set: messages that are sent from the host to configure some parameters on the device. These messages are designed to write data to the device.
-control: messages that are sent from the host to command the device to perform some action. These messages are designed to perform more complex device interactions than atomic read/write.
+- general: messages that are used for general purpose signalling and communication.
+- read/get: messages that are sent from the device in response to a [`general_request`](pingmessage-common#6-general_request) from the host. These messages are designed to read data from the device.
+- write/set: messages that are sent from the host to configure some parameters on the device. These messages are designed to write data to the device.
+- control: messages that are sent from the host to command the device to perform some action. These messages are designed to perform more complex device interactions than atomic read/write.
 
 There are a some messages that are implemented by all devices, referred to as the 'common' message set. Message ids # 0~999 are reserved for the common messages. The _request_ message is a special message in the common set that is used to request the device to respond with a message from the _get_ category. Each device must also define it's own message set specific to the operation of the particular device.
 
