@@ -113,7 +113,8 @@
                         "type": "u16",
                         "description": "Firmware version minor number."
                     }
-                ]
+                ],
+                "deprecated": "true"
             },
             "device_id": {
                 "id": 1201,
@@ -251,7 +252,8 @@
                         "type": "u8",
                         "description": "The current operating mode of the device. 0: manual mode, 1: auto mode"
                     }
-                ]
+                ],
+                "deprecated": "true"
             },
             "distance_simple": {
                 "id": 1211,
