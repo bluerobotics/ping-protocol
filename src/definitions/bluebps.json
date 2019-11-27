@@ -97,7 +97,7 @@
                 ]
             },
             "set_lpf_setting": {
-                "id": "9007",
+                "id": "9008",
                 "description": "Low pass filter setting. This value represents x in the equation `value = value * x + sample * (1-x)`. 0.0 = no filtering, 0.99 = heavy filtering.",
                 "payload": [
                     {
