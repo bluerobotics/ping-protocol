@@ -144,6 +144,41 @@
                         "description": "reserved"
                     }
                 ]
+            },
+            "auto_transmit": {
+                "id": "2602",
+                "description": "Enable auto-scan function. The sonar will automatically scan the region between start_angle and end_angle and send device_data messages as soon as new data is available. Send a line break to stop scanning (and also begin the autobaudrate procedure). Alternatively, a motor_off message may be sent (but retrys might be necessary on the half-duplex RS485 interface).",
+                "payload": [
+                    {
+                        "name": "start_angle",
+                        "type": "u16",
+                        "description": "Head angle to begin scan sector for autoscan in gradians (0~399 = 0~360 degrees).",
+                        "units": "gradian"
+                    },
+                    {
+                        "name": "stop_angle",
+                        "type": "u16",
+                        "description": "Head angle to end scan sector for autoscan in gradians (0~399 = 0~360 degrees).",
+                        "units": "gradian"
+                    },
+                    {
+                        "name": "num_steps",
+                        "type": "u8",
+                        "description": "Number of 0.9 degree motor steps between pings for auto scan (1~10 = 0.9~9.0 degrees)",
+                        "units": "gradian"
+                    },
+                    {
+                        "name": "delay",
+                        "type": "u8",
+                        "description": "An additional delay between successive transmit pulses (0~100 ms). This may be necessary for some programs to avoid collisions on the RS485 USRT.",
+                        "units": "millisecond"
+                    }
+                ]
+            },
+            "motor_off": {
+                "id": "2903",
+                "description": "The sonar switches the current through the stepper motor windings off to save power. The sonar will send an ack message in response. The command timeout should be set to 50 msec. If the sonar is idle (not scanning) for more than 30 seconds then the motor current will automatically turn off. When the user sends any command that involves moving the transducer then the motor current is automatically re-enabled.",
+                "payload": []
             }
         }
     }
