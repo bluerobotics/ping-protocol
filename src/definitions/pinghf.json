@@ -1,0 +1,415 @@
+{
+    "messages": {
+        "set": {
+            "set_range": {
+                "id": "2001",
+                "description": "Set the scan range for acoustic measurements.",
+                "payload": [
+                    {
+                        "name": "scan_start",
+                        "type": "u32",
+                        "description:": "The beginning of the scan range in mm from the transducer.",
+                        "units": "mm"
+                    },
+                    {
+                        "name": "scan_length",
+                        "type": "u32",
+                        "description": "The length of the scan range.",
+                        "units": "mm"
+                    }
+                ]
+            },
+            "set_speed_of_sound": {
+                "id": "2002",
+                "description": "Set the speed of sound used for distance calculations.",
+                "payload": [
+                    {
+                        "name": "speed_of_sound",
+                        "type": "u32",
+                        "description": "The speed of sound in the measurement medium. ~1,500,000 mm/s for water.",
+                        "units": "mm/s"
+                    }
+                ]
+            },
+            "set_ping_interval": {
+                "id": "2004",
+                "description": "The interval between acoustic measurements.",
+                "payload": [
+                    {
+                        "name": "ping_interval",
+                        "type": "u16",
+                        "description": "The interval between acoustic measurements.",
+                        "units": "ms"
+                    }
+                ]
+            },
+            "set_gain_setting": {
+                "id": "2005",
+                "description": "Set the current gain setting.",
+                "payload": [
+                    {
+                        "name": "gain_setting",
+                        "type": "u8",
+                        "description": "The current gain setting. The analog gain can be determined by requesting the analog_gain_levels message."
+                    }
+                ]
+            },
+            "set_ping_enable": {
+                "id": "2006",
+                "description": "Enable or disable acoustic measurements.",
+                "payload": [
+                    {
+                        "name": "ping_enabled",
+                        "type": "u8",
+                        "description": "0: Disable, 1: Enable."
+                    }
+                ]
+            },
+            "set_auto_gain": {
+                "id": "2007",
+                "description": "Enable or disable automatic gain adjustments.",
+                "payload": [
+                    {
+                        "name": "enabled",
+                        "type": "u8",
+                        "description": "0: Disable, 1: Enable."
+                    }
+                ]
+            },
+            "set_auto_range": {
+                "id": "2008",
+                "description": "Enable or disable automatic scan range adjustments.",
+                "payload": [
+                    {
+                        "name": "enabled",
+                        "type": "u8",
+                        "description": "0: Disable, 1: Enable."
+                    }
+                ]
+            },
+            "set_num_profile_data_points": {
+                "id": "2009",
+                "description": "Set the number of data points to be returned in profile messages.",
+                "payload": [
+                    {
+                        "name": "num_points",
+                        "type": "u16",
+                        "description": "New length for the data array in profile messages returned from the sonar."
+                    }
+                ]
+            }
+        },
+        "get": {
+            "voltage_5": {
+                "id": "2202",
+                "description": "The 5V rail voltage.",
+                "payload": [
+                    {
+                        "name": "voltage_5",
+                        "type": "u16",
+                        "description": "The 5V rail voltage.",
+                        "units": "mV"
+                    }
+                ]
+            },
+            "speed_of_sound": {
+                "id": "2203",
+                "description": "The speed of sound used for distance calculations.",
+                "payload": [
+                    {
+                        "name": "speed_of_sound",
+                        "type": "u32",
+                        "description": "The speed of sound in the measurement medium. ~1,500,000 mm/s for water.",
+                        "units": "mm/s"
+                    }
+                ]
+            },
+            "range": {
+                "id": "2204",
+                "description": "The scan range for acoustic measurements. Measurements returned by the device will lie in the range (scan_start, scan_start + scan_length).",
+                "payload": [
+                    {
+                        "name": "scan_start",
+                        "type": "u32",
+                        "description": "The beginning of the scan range in mm from the transducer.",
+                        "units": "mm"
+                    },
+                    {
+                        "name": "scan_length",
+                        "type": "u32",
+                        "description": "The length of the scan range.",
+                        "units": "mm"
+                    }
+                ]
+            },
+            "ping_interval": {
+                "id": "2206",
+                "description": "The interval between acoustic measurements.",
+                "payload": [
+                    {
+                        "name": "ping_interval",
+                        "type": "u16",
+                        "description": "The minimum interval between acoustic measurements. The actual interval may be longer.",
+                        "units": "ms"
+                    }
+                ]
+            },
+            "gain_setting": {
+                "id": "2207",
+                "description": "The current gain setting.",
+                "payload": [
+                    {
+                        "name": "gain_setting",
+                        "type": "u32",
+                        "description": "The current gain setting. The analog gain can be determined by requesting the analog_gain_levels message."
+                    }
+                ]
+            },
+            "transmit_duration": {
+                "id": "2208",
+                "description": "The duration of the acoustic activation/transmission.",
+                "payload": [
+                    {
+                        "name": "transmit_duration",
+                        "type": "u16",
+                        "description": "Acoustic pulse duration.",
+                        "units": "microseconds"
+                    }
+                ]
+            },
+            "distance_simple": {
+                "id": "2211",
+                "description": "The distance to target with confidence estimate.",
+                "payload": [
+                    {
+                        "name": "distance",
+                        "type": "u32",
+                        "description": "Distance to the target.",
+                        "units": "mm"
+                    },
+                    {
+                        "name": "confidence",
+                        "type": "u8",
+                        "description": "Confidence in the distance measurement.",
+                        "units": "%"
+                    }
+                ]
+            },
+            "distance": {
+                "id": "2212",
+                "description": "The distance to target with confidence estimate. Relevant device parameters during the measurement are also provided.",
+                "payload": [
+                    {
+                        "name": "distance",
+                        "type": "u32",
+                        "description": "The current return distance determined for the most recent acoustic measurement.",
+                        "units": "mm"
+                    },
+                    {
+                        "name": "confidence",
+                        "type": "u16",
+                        "description": "Confidence in the most recent range measurement.",
+                        "units": "%"
+                    },
+                    {
+                        "name": "transmit_duration",
+                        "type": "u16",
+                        "description": "The acoustic pulse length during acoustic transmission/activation.",
+                        "units": "us"
+                    },
+                    {
+                        "name": "ping_number",
+                        "type": "u32",
+                        "description": "The pulse/measurement count since boot."
+                    },
+                    {
+                        "name": "scan_start",
+                        "type": "u32",
+                        "description": "The beginning of the scan region in mm from the transducer.",
+                        "units": "mm"
+                    },
+                    {
+                        "name": "scan_length",
+                        "type": "u32",
+                        "description": "The length of the scan region.",
+                        "units": "mm"
+                    },
+                    {
+                        "name": "gain_setting",
+                        "type": "u32",
+                        "description": "The current gain setting. The analog gain can be determined by requesting the analog_gain_levels message."
+                    }
+                ]
+            },
+            "processor_temperature": {
+                "id": "2213",
+                "description": "Temperature of the device cpu.",
+                "payload": [
+                    {
+                        "name": "processor_temperature",
+                        "type": "u16",
+                        "description": "The temperature in centi-degrees Centigrade (100 * degrees C).",
+                        "units": "cC"
+                    }
+                ]
+            },
+            "ping_enable": {
+                "id": "2215",
+                "description": "Acoustic output enabled state.",
+                "payload": [
+                    {
+                        "name": "ping_enabled",
+                        "type": "u8",
+                        "description": "The state of the acoustic output. 0: disabled, 1:enabled"
+                    }
+                ]
+            },
+            "analog_gain_levels": {
+                "id": "2216",
+                "description": "Acoustic output enabled state.",
+                "payload": [
+                    {
+                        "name": "ping_enabled",
+                        "type": "u8",
+                        "description": "The state of the acoustic output. 0: disabled, 1:enabled"
+                    },
+                    {
+                        "name": "ping_enabled",
+                        "type": "u8",
+                        "description": "The state of the acoustic output. 0: disabled, 1:enabled"
+                    }
+                ]
+            },
+            "auto_gain": {
+                "id": "2217",
+                "description": "Automatic gain control state",
+                "payload": [
+                    {
+                        "name": "enabled",
+                        "type": "u8",
+                        "description": "The state of the automatic gain control. 0: disabled, 1:enabled"
+                    }
+                ]
+            },
+            "auto_range": {
+                "id": "2218",
+                "description": "Automatic range control state",
+                "payload": [
+                    {
+                        "name": "enabled",
+                        "type": "u8",
+                        "description": "The state of the automatic range control. 0: disabled, 1:enabled"
+                    }
+                ]
+            },
+            "profile": {
+                "id": "2300",
+                "description": "A profile produced from a single acoustic measurement. The data returned is an array of response strength at even intervals across the scan region. The scan region is defined as the region between <scan_start> and <scan_start + scan_length> millimeters away from the transducer. A distance measurement to the target is also provided.",
+                "payload": [
+                    {
+                        "name": "ping_number",
+                        "type": "u32",
+                        "description": "The pulse/measurement count since boot."
+                    },
+                    {
+                        "name": "scan_start",
+                        "type": "u32",
+                        "description": "The beginning of the scan region in mm from the transducer.",
+                        "units": "mm"
+                    },
+                    {
+                        "name": "scan_length",
+                        "type": "u32",
+                        "description": "The length of the scan region.",
+                        "units": "mm"
+                    },
+                    {
+                        "name": "timestamp_ms",
+                        "type": "u32",
+                        "description": "Timestamp for this ping",
+                        "units": "ms"
+                    },
+                    {
+                        "name": "gain_setting",
+                        "type": "u32",
+                        "description": "The current gain setting"
+                    },
+                    {
+                        "name": "analog_gain",
+                        "type": "float",
+                        "description": "The current analog gain"
+                    },
+                    {
+                        "name": "distance",
+                        "type": "u32",
+                        "description": "The current return distance determined for the most recent acoustic measurement.",
+                        "units": "mm"
+                    },
+                    {
+                        "name": "distance_smoothed",
+                        "type": "u32",
+                        "description": "The current return distance determined for the most recent acoustic measurement (filtering applied).",
+                        "units": "mm"
+                    },
+                    {
+                        "name": "confidence",
+                        "type": "u8",
+                        "description": "Confidence in the most recent range measurement.",
+                        "units": "%"
+                    },
+                    {
+                        "name": "confidence_smoothed",
+                        "type": "u8",
+                        "description": "Confidence in the most recent range measurement (filtering applied).",
+                        "units": "%"
+                    },
+                    {
+                        "name": "transmit_duration",
+                        "type": "u16",
+                        "description": "The acoustic pulse length during acoustic transmission/activation.",
+                        "units": "us"
+                    },
+                    {
+                        "name": "profile_data",
+                        "type": "vector",
+                        "vector": {
+                            "sizetype": "u16",
+                            "datatype": "u8",
+                            "size": "dynamic"
+                        },
+                        "description": "An array of return strength measurements taken at regular intervals across the scan region."
+                    }
+                ]
+            }
+        },
+        "control": {
+            "goto_bootloader": {
+                "id": "2100",
+                "description": "Send the device into the bootloader. This is useful for firmware updates.",
+                "payload": []
+            },
+            "continuous_start": {
+                "id": "2400",
+                "description": "Command to initiate continuous data stream of profile messages.",
+                "payload": [
+                    {
+                        "name": "id",
+                        "type": "u16",
+                        "description": "The message id to stream. 2300: profile"
+                    }
+                ]
+            },
+            "continuous_stop": {
+                "id": "2401",
+                "description": "Command to stop the continuous data stream of profile messages.",
+                "payload": [
+                    {
+                        "name": "id",
+                        "type": "u16",
+                        "description": "The message id to stop streaming. 2300: profile"
+                    }
+                ]
+            }
+        }
+    }
+}
