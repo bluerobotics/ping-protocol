@@ -225,7 +225,7 @@
             },
             "auto_transmit": {
                 "id": "2602",
-                "description": "Enable auto-scan function. The sonar will automatically scan the region between start_angle and end_angle and send device_data messages as soon as new data is available. Send a line break to stop scanning (and also begin the autobaudrate procedure). Alternatively, a motor_off message may be sent (but retrys might be necessary on the half-duplex RS485 interface).",
+                "description": "Enable auto-scan function. The sonar will automatically scan the region between start_angle and end_angle and send auto_device_data messages as soon as new data is available. Send a line break to stop scanning (and also begin the autobaudrate procedure). Alternatively, a motor_off message may be sent (but retrys might be necessary on the half-duplex RS485 interface).",
                 "payload": [
                     {
                         "name": "start_angle",
