@@ -225,8 +225,40 @@
             },
             "auto_transmit": {
                 "id": "2602",
-                "description": "Enable auto-scan function. The sonar will automatically scan the region between start_angle and end_angle and send auto_device_data messages as soon as new data is available. Send a line break to stop scanning (and also begin the autobaudrate procedure). Alternatively, a motor_off message may be sent (but retrys might be necessary on the half-duplex RS485 interface).",
+                "description": "Extended *transducer* message with auto-scan function. The sonar will automatically scan the region between start_angle and end_angle and send auto_device_data messages as soon as new data is available. Send a line break to stop scanning (and also begin the autobaudrate procedure). Alternatively, a motor_off message may be sent (but retrys might be necessary on the half-duplex RS485 interface).",
                 "payload": [
+                    {
+                        "name": "mode",
+                        "type": "u8",
+                        "description": "Operating mode (1 for Ping360)"
+                    },
+                    {
+                        "name": "gain_setting",
+                        "type": "u8",
+                        "description": "Analog gain setting (0 = low, 1 = normal, 2 = high)"
+                    },
+                    {
+                        "name": "transmit_duration",
+                        "type": "u16",
+                        "description": "Acoustic transmission duration (1~1000 microseconds)",
+                        "units": "microsecond"
+                    },
+                    {
+                        "name": "sample_period",
+                        "type": "u16",
+                        "description": "Time interval between individual signal intensity samples in 25nsec increments (80 to 40000 == 2 microseconds to 1000 microseconds)"
+                    },
+                    {
+                        "name": "transmit_frequency",
+                        "type": "u16",
+                        "description": "Acoustic operating frequency. Frequency range is 500kHz to 1000kHz, however it is only practical to use say 650kHz to 850kHz due to the narrow bandwidth of the acoustic receiver.",
+                        "units": "kHz"
+                    },
+                    {
+                        "name": "number_of_samples",
+                        "type": "u16",
+                        "description": "Number of samples per reflected signal"
+                    },
                     {
                         "name": "start_angle",
                         "type": "u16",
