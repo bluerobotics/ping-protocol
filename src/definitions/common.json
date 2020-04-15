@@ -122,6 +122,19 @@
                     }
                 ]
             }
+        },
+        "set": {
+            "set_device_id": {
+                "id": "100",
+                "description": "Set the device ID.",
+                "payload": [
+                    {
+                        "name": "device_id",
+                        "type": "u8",
+                        "description": "Device ID (1-254). 0 is unknown and 255 is reserved for broadcast messages."
+                    }
+                ]
+            }
         }
     }
 }
