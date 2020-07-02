@@ -49,7 +49,7 @@ Here we demonstrate a byte-by-byte breakdown of some messages sent between the h
   - how the request/response mechanism of the protcol works with the `general_request` message
   - how to identify the protocol version that the device is using
 
-Establishing communication with a sensor using the [ping-protocol](https://github.com/bluerobotics/ping-protocol) should begin with [negotiating the protocol version](#device-discovery). This negotiation process consists of two steps:
+Establishing communication with a sensor using the [ping-protocol](https://github.com/bluerobotics/ping-protocol) should begin with negotiating the protocol version. This negotiation process consists of two steps:
   - the host application requests a [`protocol_version`](pingmessage-common#5-protocol_version) message from the device
   - the device responds with a [`protocol_version`](pingmessage-common#5-protocol_version) message
 
