@@ -2,7 +2,7 @@
     "messages": {
         "set": {
             "set_cell_voltage_minimum": {
-                "id": "9000",
+                "id": 9000,
                 "description": "Set the minimum allowed cell voltage",
                 "payload": [
                     {
@@ -14,7 +14,7 @@
                 ]
             },
             "set_cell_voltage_timeout": {
-                "id": "9001",
+                "id": 9001,
                 "description": "Set the under-voltage timeout",
                 "payload": [
                     {
@@ -26,7 +26,7 @@
                 ]
             },
             "set_current_max": {
-                "id": "9002",
+                "id": 9002,
                 "description": "Set the maximum allowed battery current",
                 "payload": [
                     {
@@ -38,7 +38,7 @@
                 ]
             },
             "set_current_timeout": {
-                "id": "9003",
+                "id": 9003,
                 "description": "Set the over-current timeout",
                 "payload": [
                     {
@@ -50,7 +50,7 @@
                 ]
             },
             "set_temperature_max": {
-                "id": "9004",
+                "id": 9004,
                 "description": "Set the maximum allowed battery temperature",
                 "payload": [
                     {
@@ -62,7 +62,7 @@
                 ]
             },
             "set_temperature_timeout": {
-                "id": "9005",
+                "id": 9005,
                 "description": "Set the over-temperature timeout",
                 "payload": [
                     {
@@ -74,7 +74,7 @@
                 ]
             },
             "set_stream_rate": {
-                "id": "9006",
+                "id": 9006,
                 "description": "Set the frequency to automatically output state messages.",
                 "payload": [
                     {
@@ -86,7 +86,7 @@
                 ]
             },
             "set_lpf_sample_frequency": {
-                "id": "9007",
+                "id": 9007,
                 "description": "the frequency to take adc samples and run the filter.",
                 "payload": [
                     {
@@ -97,7 +97,7 @@
                 ]
             },
             "set_lpf_setting": {
-                "id": "9008",
+                "id": 9008,
                 "description": "Low pass filter setting. This value represents x in the equation `value = value * x + sample * (1-x)`. 0.0 = no filtering, 0.99 = heavy filtering.",
                 "payload": [
                     {
@@ -110,7 +110,7 @@
         },
         "get": {
             "cell_voltage_min": {
-                "id": "9100",
+                "id": 9100,
                 "description": "Get the minimum allowed cell voltage",
                 "payload": [
                     {
@@ -122,7 +122,7 @@
                 ]
             },
             "cell_timeout": {
-                "id": "9101",
+                "id": 9101,
                 "description": "Get the undervoltage timeout",
                 "payload": [
                     {
@@ -134,7 +134,7 @@
                 ]
             },
             "current_max": {
-                "id": "9102",
+                "id": 9102,
                 "description": "get the maximum allowed battery current",
                 "payload": [
                     {
@@ -146,7 +146,7 @@
                 ]
             },
             "current_timeout": {
-                "id": "9103",
+                "id": 9103,
                 "description": "Get the over-current timeout",
                 "payload": [
                     {
@@ -158,7 +158,7 @@
                 ]
             },
             "temperature_max": {
-                "id": "9104",
+                "id": 9104,
                 "description": "Get the maximum allowed battery temperature",
                 "payload": [
                     {
@@ -170,7 +170,7 @@
                 ]
             },
             "temperature_timeout": {
-                "id": "9105",
+                "id": 9105,
                 "description": "Get the over-temperature timeout",
                 "payload": [
                     {
@@ -182,7 +182,7 @@
                 ]
             },
             "state": {
-                "id": "9106",
+                "id": 9106,
                 "description": "Get the current state of the device",
                 "payload": [
                     {
@@ -228,7 +228,7 @@
                 ]
             },
             "events": {
-                "id": "9107",
+                "id": 9107,
                 "description": "A record of events causing a power lock-out. These numbers are non-volatile and reset only with the erase_flash control message.",
                 "payload": [
                     {
@@ -251,7 +251,7 @@
         },
         "control": {
             "reboot": {
-                "id": "9200",
+                "id": 9200,
                 "description": "reboot the system",
                 "payload": [
                     {
@@ -262,12 +262,12 @@
                 ]
             },
             "erase_flash": {
-                "id": "9201",
+                "id": 9201,
                 "description": "Erase flash, including parameter configuration and event counters. The mcu has a limited number of write/erase cycles (1k)!",
                 "payload": []
             },
             "reset_defaults": {
-                "id": "9202",
+                "id": 9202,
                 "description": "Reset parameter configuration to default values.",
                 "payload": []
             }
