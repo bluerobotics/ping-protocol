@@ -2,7 +2,7 @@
     "messages": {
         "set": {
             "device_id": {
-                "id": "2000",
+                "id": 2000,
                 "description": "Change the device id",
                 "payload": [
                     {
@@ -20,7 +20,7 @@
         },
         "get": {
             "device_data": {
-                "id": "2300",
+                "id": 2300,
                 "description": "This message is used to communicate the current sonar state. If the data field is populated, the other fields indicate the sonar state when the data was captured. The time taken before the response to the command is sent depends on the difference between the last angle scanned and the new angle in the parameters as well as the number of samples and sample interval (range). To allow for the worst case reponse time the command timeout should be set to 4000 msec.",
                 "payload": [
                     {
@@ -74,7 +74,7 @@
                 ]
             },
             "auto_device_data": {
-                "id": "2301",
+                "id": 2301,
                 "description": "Extended version of *device_data* with *auto_transmit* information. The sensor emits this message when in *auto_transmit* mode.",
                 "payload": [
                     {
@@ -154,7 +154,7 @@
         },
         "control": {
             "reset": {
-                "id": "2600",
+                "id": 2600,
                 "description": "Reset the sonar. The bootloader may run depending on the selection according to the `bootloader` payload field. When the bootloader runs, the external LED flashes at 5Hz. If the bootloader is not contacted within 5 seconds, it will run the current program. If there is no program, then the bootloader will wait forever for a connection. Note that if you issue a reset then you will have to close all your open comm ports and go back to issuing either a discovery message for UDP or go through the break sequence for serial comms before you can talk to the sonar again.",
                 "payload": [
                     {
@@ -170,7 +170,7 @@
                 ]
             },
             "transducer": {
-                "id": "2601",
+                "id": 2601,
                 "description": "The transducer will apply the commanded settings. The sonar will reply with a `ping360_data` message. If the `transmit` field is 0, the sonar will not transmit after locating the transducer, and the `data` field in the `ping360_data` message reply will be empty. If the `transmit` field is 1, the sonar will make an acoustic transmission after locating the transducer, and the resulting data will be uploaded in the `data` field of the `ping360_data` message reply. To allow for the worst case reponse time the command timeout should be set to 4000 msec.",
                 "payload": [
                     {
@@ -224,7 +224,7 @@
                 ]
             },
             "auto_transmit": {
-                "id": "2602",
+                "id": 2602,
                 "description": "Extended *transducer* message with auto-scan function. The sonar will automatically scan the region between start_angle and end_angle and send auto_device_data messages as soon as new data is available. Send a line break to stop scanning (and also begin the autobaudrate procedure). Alternatively, a motor_off message may be sent (but retrys might be necessary on the half-duplex RS485 interface).",
                 "payload": [
                     {
@@ -286,7 +286,7 @@
                 ]
             },
             "motor_off": {
-                "id": "2903",
+                "id": 2903,
                 "description": "The sonar switches the current through the stepper motor windings off to save power. The sonar will send an ack message in response. The command timeout should be set to 50 msec. If the sonar is idle (not scanning) for more than 30 seconds then the motor current will automatically turn off. When the user sends any command that involves moving the transducer then the motor current is automatically re-enabled.",
                 "payload": []
             }
