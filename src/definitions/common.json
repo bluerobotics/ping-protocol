@@ -2,7 +2,7 @@
     "messages": {
         "general": {
             "ack": {
-                "id": "1",
+                "id": 1,
                 "description": "Acknowledged.",
                 "payload": [
                     {
@@ -13,7 +13,7 @@
                 ]
             },
             "nack": {
-                "id": "2",
+                "id": 2,
                 "description": "Not acknowledged.",
                 "payload": [
                     {
@@ -33,7 +33,7 @@
                 ]
             },
             "ascii_text": {
-                "id": "3",
+                "id": 3,
                 "description": "A message for transmitting text data.",
                 "payload": [
                     {
@@ -48,7 +48,7 @@
                 ]
             },
             "general_request": {
-                "id": "6",
+                "id": 6,
                 "description": "Requests a specific message to be sent from the sonar to the host. Command timeout should be set to 50 msec.",
                 "payload": [
                     {
@@ -61,7 +61,7 @@
         },
         "get": {
             "device_information": {
-                "id": "4",
+                "id": 4,
                 "description": "Device information",
                 "payload": [
                     {
@@ -97,7 +97,7 @@
                 ]
             },
             "protocol_version": {
-                "id": "5",
+                "id": 5,
                 "description": "The protocol version",
                 "payload": [
                     {
@@ -125,7 +125,7 @@
         },
         "set": {
             "set_device_id": {
-                "id": "100",
+                "id": 100,
                 "description": "Set the device ID.",
                 "payload": [
                     {
