@@ -2,7 +2,7 @@
     "messages": {
         "set": {
             "set_range": {
-                "id": "2001",
+                "id": 2001,
                 "description": "Set the scan range for acoustic measurements.",
                 "payload": [
                     {
@@ -20,7 +20,7 @@
                 ]
             },
             "set_speed_of_sound": {
-                "id": "2002",
+                "id": 2002,
                 "description": "Set the speed of sound used for distance calculations.",
                 "payload": [
                     {
@@ -32,7 +32,7 @@
                 ]
             },
             "set_ping_interval": {
-                "id": "2004",
+                "id": 2004,
                 "description": "The interval between acoustic measurements.",
                 "payload": [
                     {
@@ -44,7 +44,7 @@
                 ]
             },
             "set_gain_setting": {
-                "id": "2005",
+                "id": 2005,
                 "description": "Set the current gain setting.",
                 "payload": [
                     {
@@ -55,7 +55,7 @@
                 ]
             },
             "set_ping_enable": {
-                "id": "2006",
+                "id": 2006,
                 "description": "Enable or disable acoustic measurements.",
                 "payload": [
                     {
@@ -66,7 +66,7 @@
                 ]
             },
             "set_auto_gain": {
-                "id": "2007",
+                "id": 2007,
                 "description": "Enable or disable automatic gain adjustments.",
                 "payload": [
                     {
@@ -77,7 +77,7 @@
                 ]
             },
             "set_auto_range": {
-                "id": "2008",
+                "id": 2008,
                 "description": "Enable or disable automatic scan range adjustments.",
                 "payload": [
                     {
@@ -88,7 +88,7 @@
                 ]
             },
             "set_num_profile_data_points": {
-                "id": "2009",
+                "id": 2009,
                 "description": "Set the number of data points to be returned in profile messages.",
                 "payload": [
                     {
@@ -101,7 +101,7 @@
         },
         "get": {
             "voltage_5": {
-                "id": "2202",
+                "id": 2202,
                 "description": "The 5V rail voltage.",
                 "payload": [
                     {
@@ -113,7 +113,7 @@
                 ]
             },
             "speed_of_sound": {
-                "id": "2203",
+                "id": 2203,
                 "description": "The speed of sound used for distance calculations.",
                 "payload": [
                     {
@@ -125,7 +125,7 @@
                 ]
             },
             "range": {
-                "id": "2204",
+                "id": 2204,
                 "description": "The scan range for acoustic measurements. Measurements returned by the device will lie in the range (scan_start, scan_start + scan_length).",
                 "payload": [
                     {
@@ -143,7 +143,7 @@
                 ]
             },
             "ping_interval": {
-                "id": "2206",
+                "id": 2206,
                 "description": "The interval between acoustic measurements.",
                 "payload": [
                     {
@@ -155,7 +155,7 @@
                 ]
             },
             "gain_setting": {
-                "id": "2207",
+                "id": 2207,
                 "description": "The current gain setting.",
                 "payload": [
                     {
@@ -166,7 +166,7 @@
                 ]
             },
             "transmit_duration": {
-                "id": "2208",
+                "id": 2208,
                 "description": "The duration of the acoustic activation/transmission.",
                 "payload": [
                     {
@@ -178,7 +178,7 @@
                 ]
             },
             "distance_simple": {
-                "id": "2211",
+                "id": 2211,
                 "description": "The distance to target with confidence estimate.",
                 "payload": [
                     {
@@ -196,7 +196,7 @@
                 ]
             },
             "distance": {
-                "id": "2212",
+                "id": 2212,
                 "description": "The distance to target with confidence estimate. Relevant device parameters during the measurement are also provided.",
                 "payload": [
                     {
@@ -242,7 +242,7 @@
                 ]
             },
             "processor_temperature": {
-                "id": "2213",
+                "id": 2213,
                 "description": "Temperature of the device cpu.",
                 "payload": [
                     {
@@ -254,7 +254,7 @@
                 ]
             },
             "ping_enable": {
-                "id": "2215",
+                "id": 2215,
                 "description": "Acoustic output enabled state.",
                 "payload": [
                     {
@@ -265,7 +265,7 @@
                 ]
             },
             "analog_gain_levels": {
-                "id": "2216",
+                "id": 2216,
                 "description": "Acoustic output enabled state.",
                 "payload": [
                     {
@@ -281,7 +281,7 @@
                 ]
             },
             "auto_gain": {
-                "id": "2217",
+                "id": 2217,
                 "description": "Automatic gain control state",
                 "payload": [
                     {
@@ -292,7 +292,7 @@
                 ]
             },
             "auto_range": {
-                "id": "2218",
+                "id": 2218,
                 "description": "Automatic range control state",
                 "payload": [
                     {
@@ -303,7 +303,7 @@
                 ]
             },
             "profile": {
-                "id": "2300",
+                "id": 2300,
                 "description": "A profile produced from a single acoustic measurement. The data returned is an array of response strength at even intervals across the scan region. The scan region is defined as the region between <scan_start> and <scan_start + scan_length> millimeters away from the transducer. A distance measurement to the target is also provided.",
                 "payload": [
                     {
@@ -384,12 +384,12 @@
         },
         "control": {
             "goto_bootloader": {
-                "id": "2100",
+                "id": 2100,
                 "description": "Send the device into the bootloader. This is useful for firmware updates.",
                 "payload": []
             },
             "continuous_start": {
-                "id": "2400",
+                "id": 2400,
                 "description": "Command to initiate continuous data stream of profile messages.",
                 "payload": [
                     {
@@ -400,7 +400,7 @@
                 ]
             },
             "continuous_stop": {
-                "id": "2401",
+                "id": 2401,
                 "description": "Command to stop the continuous data stream of profile messages.",
                 "payload": [
                     {
