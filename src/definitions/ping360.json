@@ -75,7 +75,7 @@
             },
             "auto_device_data": {
                 "id": 2301,
-                "description": "Extended version of *device_data* with *auto_transmit* information. The sensor emits this message when in *auto_transmit* mode.",
+                "description": "[NOT RELEASED] Extended version of *device_data* with *auto_transmit* information. The sensor emits this message when in *auto_transmit* mode.",
                 "payload": [
                     {
                         "name": "mode",
