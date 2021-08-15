@@ -404,7 +404,7 @@
                             "datatype": "u8",
                             "size": "dynamic"
                         },
-                        "description": "An array of return strength measurements taken at regular intervals across the scan region."
+                        "description": "An array of return strength measurements taken at regular intervals across the scan region. The first element is the closest measurement to the sensor, and the last element is the farthest measurement in the scanned range."
                     }
                 ]
             }
