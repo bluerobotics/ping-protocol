@@ -69,7 +69,7 @@
                             "datatype": "u8",
                             "size": "dynamic"
                         },
-                        "description": "8 bit binary data array representing sonar echo strength"
+                        "description": "An array of return strength measurements taken at regular intervals across the scan region. The first element is the closest measurement to the sensor, and the last element is the farthest measurement in the scanned range."
                     }
                 ]
             },
@@ -147,7 +147,7 @@
                             "datatype": "u8",
                             "size": "dynamic"
                         },
-                        "description": "8 bit binary data array representing sonar echo strength"
+                        "description": "An array of return strength measurements taken at regular intervals across the scan region. The first element is the closest measurement to the sensor, and the last element is the farthest measurement in the scanned range."
                     }
                 ]
             }
