@@ -25,7 +25,7 @@
                     {
                         "name": "scan_length",
                         "type": "u32",
-                        "description": "The length of the scan range.",
+                        "description": "The total length of the scan range from the transducer.",
                         "units": "mm"
                     }
                 ]
