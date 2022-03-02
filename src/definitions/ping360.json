@@ -8,12 +8,16 @@
                     {
                         "name": "id",
                         "type": "u8",
-                        "description": "Device ID (1-254). 0 and 255 are reserved."
+                        "description": "Device ID (1-254). 0 and 255 are reserved.",
+                        "minimum": "1",
+                        "maximum": "254",
+                        "default": "2"
                     },
                     {
                         "name": "reserved",
                         "type": "u8",
-                        "description": "reserved"
+                        "description": "reserved, value shall be zero",
+                        "default": "0"
                     }
                 ]
             }
@@ -24,42 +28,61 @@
                 "description": "This message is used to communicate the current sonar state. If the data field is populated, the other fields indicate the sonar state when the data was captured. The time taken before the response to the command is sent depends on the difference between the last angle scanned and the new angle in the parameters as well as the number of samples and sample interval (range). To allow for the worst case reponse time the command timeout should be set to 4000 msec.",
                 "payload": [
                     {
-                        "name": "mode",
+                        "name": "reserved",
                         "type": "u8",
-                        "description": "Operating mode (1 for Ping360)"
+                        "description": "reserved, value shall be zero",
+                        "default": "0"
                     },
                     {
                         "name": "gain_setting",
                         "type": "u8",
-                        "description": "Analog gain setting (0 = low, 1 = normal, 2 = high)"
+                        "description": "Analog gain setting (0 = low, 1 = normal, 2 = high)",
+                        "minimum": "0",
+                        "maximum": "2",
+                        "default": "0"
                     },
                     {
                         "name": "angle",
                         "type": "u16",
                         "description": "Head angle",
-                        "units": "gradian"
+                        "units": "gradian",
+                        "minimum": "0",
+                        "maximum": "399",
+                        "default": "0"
                     },
                     {
                         "name": "transmit_duration",
                         "type": "u16",
                         "description": "Acoustic transmission duration (1~1000 microseconds)",
-                        "units": "microsecond"
+                        "units": "microsecond",
+                        "minimum": "1",
+                        "maximum": "1000",
+                        "default": "32"
                     },
                     {
                         "name": "sample_period",
                         "type": "u16",
-                        "description": "Time interval between individual signal intensity samples in 25nsec increments (80 to 40000 == 2 microseconds to 1000 microseconds)"
+                        "description": "Time interval between individual signal intensity samples in 25nsec increments (80 to 40000 == 2 microseconds to 1000 microseconds)",
+                        "minimum": "80",
+                        "maximum": "40000",
+                        "default": "80"
                     },
                     {
                         "name": "transmit_frequency",
                         "type": "u16",
                         "description": "Acoustic operating frequency. Frequency range is 500kHz to 1000kHz, however it is only practical to use say 650kHz to 850kHz due to the narrow bandwidth of the acoustic receiver.",
-                        "units": "kHz"
+                        "units": "kHz",
+                        "minimum": "500",
+                        "maximum": "1000",
+                        "default": "740"
                     },
                     {
                         "name": "number_of_samples",
                         "type": "u16",
-                        "description": "Number of samples per reflected signal"
+                        "description": "Number of samples per reflected signal",
+                        "minimum": "200",
+                        "maximum": "1200",
+                        "default": "1024"
                     },
                     {
                         "name": "data",
@@ -160,12 +183,14 @@
                     {
                         "name": "bootloader",
                         "type": "u8",
-                        "description": "0 = skip bootloader; 1 = run bootloader"
+                        "description": "0 = skip bootloader; 1 = run bootloader",
+                        "default": "0"
                     },
                     {
                         "name": "reserved",
                         "type": "u8",
-                        "description": "reserved"
+                        "description": "reserved, value shall be zero",
+                        "default": "0"
                     }
                 ]
             },
@@ -174,52 +199,73 @@
                 "description": "The transducer will apply the commanded settings. The sonar will reply with a `ping360_data` message. If the `transmit` field is 0, the sonar will not transmit after locating the transducer, and the `data` field in the `ping360_data` message reply will be empty. If the `transmit` field is 1, the sonar will make an acoustic transmission after locating the transducer, and the resulting data will be uploaded in the `data` field of the `ping360_data` message reply. To allow for the worst case response time the command timeout should be set to 4000 msec.",
                 "payload": [
                     {
-                        "name": "mode",
+                        "name": "reserved",
                         "type": "u8",
-                        "description": "Operating mode (1 for Ping360)"
+                        "description": "reserved, value shall be zero",
+                        "default": "0"
                     },
                     {
                         "name": "gain_setting",
                         "type": "u8",
-                        "description": "Analog gain setting (0 = low, 1 = normal, 2 = high)"
+                        "description": "Analog gain setting (0 = low, 1 = normal, 2 = high)",
+                        "minimum": "0",
+                        "maximum": "2",
+                        "default": "0"
                     },
                     {
                         "name": "angle",
                         "type": "u16",
                         "description": "Head angle",
-                        "units": "gradian"
+                        "units": "gradian",
+                        "minimum": "0",
+                        "maximum": "399",
+                        "default": "0"
                     },
                     {
                         "name": "transmit_duration",
                         "type": "u16",
                         "description": "Acoustic transmission duration (1~1000 microseconds)",
-                        "units": "microsecond"
+                        "units": "microsecond",
+                        "minimum": "1",
+                        "maximum": "1000",
+                        "default": "32"
                     },
                     {
                         "name": "sample_period",
                         "type": "u16",
-                        "description": "Time interval between individual signal intensity samples in 25nsec increments (80 to 40000 == 2 microseconds to 1000 microseconds)"
+                        "description": "Time interval between individual signal intensity samples in 25nsec increments (80 to 40000 == 2 microseconds to 1000 microseconds)",
+                        "minimum": "80",
+                        "maximum": "40000",
+                        "default": "80"
                     },
                     {
                         "name": "transmit_frequency",
                         "type": "u16",
                         "description": "Acoustic operating frequency. Frequency range is 500kHz to 1000kHz, however it is only practical to use say 650kHz to 850kHz due to the narrow bandwidth of the acoustic receiver.",
-                        "units": "kHz"
+                        "units": "kHz",
+                        "minimum": "500",
+                        "maximum": "1000",
+                        "default": "740"
                     },
                     {
                         "name": "number_of_samples",
                         "type": "u16",
-                        "description": "Number of samples per reflected signal"
+                        "description": "Number of samples per reflected signal",
+                        "minimum": "200",
+                        "maximum": "1200",
+                        "default": "1024"
                     },
                     {
                         "name": "transmit",
                         "type": "u8",
-                        "description": "0 = do not transmit; 1 = transmit after the transducer has reached the specified angle"
+                        "description": "0 = do not transmit; 1 = transmit after the transducer has reached the specified angle",
+                        "default": "0"
                     },
                     {
                         "name": "reserved",
                         "type": "u8",
-                        "description": "reserved"
+                        "description": "reserved, value shall be zero",
+                        "default": "0"
                     }
                 ]
             },
