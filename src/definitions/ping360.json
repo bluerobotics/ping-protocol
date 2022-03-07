@@ -42,20 +42,20 @@
                     {
                         "name": "transmit_duration",
                         "type": "u16",
-                        "description": "Acoustic transmission duration (1~1000 microseconds)",
+                        "description": "Acoustic transmission duration (1~1000 us)",
                         "units": "microseconds"
                     },
                     {
                         "name": "sample_period",
                         "type": "u16",
-                        "description": "Time interval between individual signal intensity samples in 25nsec increments (80 to 40000 == 2 microseconds to 1000 microseconds)",
+                        "description": "Time interval between individual signal intensity samples in 25 ns increments (80 to 40000 == 2 to 1000 us)",
                         "units": "eicosapenta-nanoseconds"
                     },
                     {
                         "name": "transmit_frequency",
                         "type": "u16",
-                        "description": "Acoustic operating frequency. Frequency range is 500kHz to 1000kHz, however it is only practical to use say 650kHz to 850kHz due to the narrow bandwidth of the acoustic receiver.",
-                        "units": "kHz"
+                        "description": "Acoustic operating frequency (500~1000 kHz). It is only practical to use say 650 to 850 kHz due to the narrow bandwidth of the acoustic receiver.",
+                        "units": "kilohertz"
                     },
                     {
                         "name": "number_of_samples",
@@ -98,31 +98,31 @@
                     {
                         "name": "transmit_duration",
                         "type": "u16",
-                        "description": "Acoustic transmission duration (1~1000 microseconds)",
+                        "description": "Acoustic transmission duration (1~1000 us)",
                         "units": "microseconds"
                     },
                     {
                         "name": "sample_period",
                         "type": "u16",
-                        "description": "Time interval between individual signal intensity samples in 25nsec increments (80 to 40000 == 2 microseconds to 1000 microseconds)",
+                        "description": "Time interval between individual signal intensity samples in 25 ns increments (80 to 40000 == 2 to 1000 us)",
                         "units": "eicosapenta-nanoseconds"
                     },
                     {
                         "name": "transmit_frequency",
                         "type": "u16",
-                        "description": "Acoustic operating frequency. Frequency range is 500kHz to 1000kHz, however it is only practical to use say 650kHz to 850kHz due to the narrow bandwidth of the acoustic receiver.",
-                        "units": "kHz"
+                        "description": "Acoustic operating frequency (500~1000 kHz). It is only practical to use say 650 to 850 kHz due to the narrow bandwidth of the acoustic receiver.",
+                        "units": "kilohertz"
                     },
                     {
                         "name": "start_angle",
                         "type": "u16",
-                        "description": "Head angle to begin scan sector for autoscan in gradians (0~399 = 0~360 degrees).",
+                        "description": "Head angle to begin scan sector for autoscan (0~399 = 0~360 degrees).",
                         "units": "gradians"
                     },
                     {
                         "name": "stop_angle",
                         "type": "u16",
-                        "description": "Head angle to end scan sector for autoscan in gradians (0~399 = 0~360 degrees).",
+                        "description": "Head angle to end scan sector for autoscan (0~399 = 0~360 degrees).",
                         "units": "gradians"
                     },
                     {
@@ -196,20 +196,20 @@
                     {
                         "name": "transmit_duration",
                         "type": "u16",
-                        "description": "Acoustic transmission duration (1~1000 microseconds)",
+                        "description": "Acoustic transmission duration (1~1000 us)",
                         "units": "microseconds"
                     },
                     {
                         "name": "sample_period",
                         "type": "u16",
-                        "description": "Time interval between individual signal intensity samples in 25nsec increments (80 to 40000 == 2 microseconds to 1000 microseconds)",
+                        "description": "Time interval between individual signal intensity samples in 25 ns increments (80 to 40000 == 2 to 1000 us)",
                         "units": "eicosapenta-nanoseconds"
                     },
                     {
                         "name": "transmit_frequency",
                         "type": "u16",
-                        "description": "Acoustic operating frequency. Frequency range is 500kHz to 1000kHz, however it is only practical to use say 650kHz to 850kHz due to the narrow bandwidth of the acoustic receiver.",
-                        "units": "kHz"
+                        "description": "Acoustic operating frequency (500~1000 kHz). It is only practical to use say 650 to 850 kHz due to the narrow bandwidth of the acoustic receiver.",
+                        "units": "kilohertz"
                     },
                     {
                         "name": "number_of_samples",
@@ -246,20 +246,20 @@
                     {
                         "name": "transmit_duration",
                         "type": "u16",
-                        "description": "Acoustic transmission duration (1~1000 microseconds)",
+                        "description": "Acoustic transmission duration (1~1000 us)",
                         "units": "microseconds"
                     },
                     {
                         "name": "sample_period",
                         "type": "u16",
-                        "description": "Time interval between individual signal intensity samples in 25nsec increments (80 to 40000 == 2 microseconds to 1000 microseconds)",
+                        "description": "Time interval between individual signal intensity samples in 25 ns increments (80 to 40000 == 2 to 1000 us)",
                         "units": "eicosapenta-nanoseconds"
                     },
                     {
                         "name": "transmit_frequency",
                         "type": "u16",
-                        "description": "Acoustic operating frequency. Frequency range is 500kHz to 1000kHz, however it is only practical to use say 650kHz to 850kHz due to the narrow bandwidth of the acoustic receiver.",
-                        "units": "kHz"
+                        "description": "Acoustic operating frequency (500~1000 kHz). It is only practical to use say 650 to 850 kHz due to the narrow bandwidth of the acoustic receiver.",
+                        "units": "kilohertz"
                     },
                     {
                         "name": "number_of_samples",
@@ -270,13 +270,13 @@
                     {
                         "name": "start_angle",
                         "type": "u16",
-                        "description": "Head angle to begin scan sector for autoscan in gradians (0~399 = 0~360 degrees).",
+                        "description": "Head angle to begin scan sector for autoscan (0~399 = 0~360 degrees).",
                         "units": "gradians"
                     },
                     {
                         "name": "stop_angle",
                         "type": "u16",
-                        "description": "Head angle to end scan sector for autoscan in gradians (0~399 = 0~360 degrees).",
+                        "description": "Head angle to end scan sector for autoscan (0~399 = 0~360 degrees).",
                         "units": "gradians"
                     },
                     {
