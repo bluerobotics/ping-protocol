@@ -59,7 +59,7 @@
                     {
                         "name": "number_of_samples",
                         "type": "u16",
-                        "description": "Number of samples per reflected signal"
+                        "description": "Number of samples per reflected signal (supported values: 200~1200)"
                     },
                     {
                         "name": "data",
@@ -137,7 +137,7 @@
                     {
                         "name": "number_of_samples",
                         "type": "u16",
-                        "description": "Number of samples per reflected signal"
+                        "description": "Number of samples per reflected signal (supported values: 200~1200)"
                     },
                     {
                         "name": "data",
@@ -209,7 +209,7 @@
                     {
                         "name": "number_of_samples",
                         "type": "u16",
-                        "description": "Number of samples per reflected signal"
+                        "description": "Number of samples per reflected signal (supported values: 200~1200)"
                     },
                     {
                         "name": "transmit",
@@ -257,7 +257,7 @@
                     {
                         "name": "number_of_samples",
                         "type": "u16",
-                        "description": "Number of samples per reflected signal"
+                        "description": "Number of samples per reflected signal (supported values: 200~1200)"
                     },
                     {
                         "name": "start_angle",
