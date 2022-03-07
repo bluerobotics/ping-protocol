@@ -77,7 +77,7 @@
             },
             "auto_device_data": {
                 "id": 2301,
-                "description": "[NOT RELEASED] Extended version of *device_data* with *auto_transmit* information. The sensor emits this message when in *auto_transmit* mode.",
+                "description": "**[NOT RELEASED]** Extended version of `device_data` with `auto_transmit` information. The sensor emits this message when in `auto_transmit` mode.",
                 "payload": [
                     {
                         "name": "mode",
@@ -231,7 +231,7 @@
             },
             "auto_transmit": {
                 "id": 2602,
-                "description": "Extended *transducer* message with auto-scan function. The sonar will automatically scan the region between start_angle and end_angle and send auto_device_data messages as soon as new data is available. Send a line break to stop scanning (and also begin the autobaudrate procedure). Alternatively, a motor_off message may be sent (but retrys might be necessary on the half-duplex RS485 interface).",
+                "description": "**[NOT RELEASED]** Extended `transducer` message with auto-scan function. The sonar will automatically scan the region between `start_angle` and `end_angle` and send `auto_device_data` messages as soon as new data is available. Send a line break to stop scanning (and also begin the autobaudrate procedure). Alternatively, a `motor_off` message may be sent (but retries might be necessary on the half-duplex RS485 interface).",
                 "payload": [
                     {
                         "name": "mode",
