@@ -37,18 +37,19 @@
                         "name": "angle",
                         "type": "u16",
                         "description": "Head angle",
-                        "units": "gradian"
+                        "units": "gradians"
                     },
                     {
                         "name": "transmit_duration",
                         "type": "u16",
                         "description": "Acoustic transmission duration (1~1000 microseconds)",
-                        "units": "microsecond"
+                        "units": "microseconds"
                     },
                     {
                         "name": "sample_period",
                         "type": "u16",
-                        "description": "Time interval between individual signal intensity samples in 25nsec increments (80 to 40000 == 2 microseconds to 1000 microseconds)"
+                        "description": "Time interval between individual signal intensity samples in 25nsec increments (80 to 40000 == 2 microseconds to 1000 microseconds)",
+                        "units": "eicosapenta-nanoseconds"
                     },
                     {
                         "name": "transmit_frequency",
@@ -59,7 +60,8 @@
                     {
                         "name": "number_of_samples",
                         "type": "u16",
-                        "description": "Number of samples per reflected signal (supported values: 200~1200)"
+                        "description": "Number of samples per reflected signal (supported values: 200~1200)",
+                        "units": "samples"
                     },
                     {
                         "name": "data",
@@ -91,18 +93,19 @@
                         "name": "angle",
                         "type": "u16",
                         "description": "Head angle",
-                        "units": "gradian"
+                        "units": "gradians"
                     },
                     {
                         "name": "transmit_duration",
                         "type": "u16",
                         "description": "Acoustic transmission duration (1~1000 microseconds)",
-                        "units": "microsecond"
+                        "units": "microseconds"
                     },
                     {
                         "name": "sample_period",
                         "type": "u16",
-                        "description": "Time interval between individual signal intensity samples in 25nsec increments (80 to 40000 == 2 microseconds to 1000 microseconds)"
+                        "description": "Time interval between individual signal intensity samples in 25nsec increments (80 to 40000 == 2 microseconds to 1000 microseconds)",
+                        "units": "eicosapenta-nanoseconds"
                     },
                     {
                         "name": "transmit_frequency",
@@ -114,30 +117,31 @@
                         "name": "start_angle",
                         "type": "u16",
                         "description": "Head angle to begin scan sector for autoscan in gradians (0~399 = 0~360 degrees).",
-                        "units": "gradian"
+                        "units": "gradians"
                     },
                     {
                         "name": "stop_angle",
                         "type": "u16",
                         "description": "Head angle to end scan sector for autoscan in gradians (0~399 = 0~360 degrees).",
-                        "units": "gradian"
+                        "units": "gradians"
                     },
                     {
                         "name": "num_steps",
                         "type": "u8",
                         "description": "Number of 0.9 degree motor steps between pings for auto scan (1~10 = 0.9~9.0 degrees)",
-                        "units": "gradian"
+                        "units": "gradians"
                     },
                     {
                         "name": "delay",
                         "type": "u8",
                         "description": "An additional delay between successive transmit pulses (0~100 ms). This may be necessary for some programs to avoid collisions on the RS485 USRT.",
-                        "units": "millisecond"
+                        "units": "milliseconds"
                     },
                     {
                         "name": "number_of_samples",
                         "type": "u16",
-                        "description": "Number of samples per reflected signal (supported values: 200~1200)"
+                        "description": "Number of samples per reflected signal (supported values: 200~1200)",
+                        "units": "samples"
                     },
                     {
                         "name": "data",
@@ -187,18 +191,19 @@
                         "name": "angle",
                         "type": "u16",
                         "description": "Head angle",
-                        "units": "gradian"
+                        "units": "gradians"
                     },
                     {
                         "name": "transmit_duration",
                         "type": "u16",
                         "description": "Acoustic transmission duration (1~1000 microseconds)",
-                        "units": "microsecond"
+                        "units": "microseconds"
                     },
                     {
                         "name": "sample_period",
                         "type": "u16",
-                        "description": "Time interval between individual signal intensity samples in 25nsec increments (80 to 40000 == 2 microseconds to 1000 microseconds)"
+                        "description": "Time interval between individual signal intensity samples in 25nsec increments (80 to 40000 == 2 microseconds to 1000 microseconds)",
+                        "units": "eicosapenta-nanoseconds"
                     },
                     {
                         "name": "transmit_frequency",
@@ -209,7 +214,8 @@
                     {
                         "name": "number_of_samples",
                         "type": "u16",
-                        "description": "Number of samples per reflected signal (supported values: 200~1200)"
+                        "description": "Number of samples per reflected signal (supported values: 200~1200)",
+                        "units": "samples"
                     },
                     {
                         "name": "transmit",
@@ -241,12 +247,13 @@
                         "name": "transmit_duration",
                         "type": "u16",
                         "description": "Acoustic transmission duration (1~1000 microseconds)",
-                        "units": "microsecond"
+                        "units": "microseconds"
                     },
                     {
                         "name": "sample_period",
                         "type": "u16",
-                        "description": "Time interval between individual signal intensity samples in 25nsec increments (80 to 40000 == 2 microseconds to 1000 microseconds)"
+                        "description": "Time interval between individual signal intensity samples in 25nsec increments (80 to 40000 == 2 microseconds to 1000 microseconds)",
+                        "units": "eicosapenta-nanoseconds"
                     },
                     {
                         "name": "transmit_frequency",
@@ -257,31 +264,32 @@
                     {
                         "name": "number_of_samples",
                         "type": "u16",
-                        "description": "Number of samples per reflected signal (supported values: 200~1200)"
+                        "description": "Number of samples per reflected signal (supported values: 200~1200)",
+                        "units": "samples"
                     },
                     {
                         "name": "start_angle",
                         "type": "u16",
                         "description": "Head angle to begin scan sector for autoscan in gradians (0~399 = 0~360 degrees).",
-                        "units": "gradian"
+                        "units": "gradians"
                     },
                     {
                         "name": "stop_angle",
                         "type": "u16",
                         "description": "Head angle to end scan sector for autoscan in gradians (0~399 = 0~360 degrees).",
-                        "units": "gradian"
+                        "units": "gradians"
                     },
                     {
                         "name": "num_steps",
                         "type": "u8",
                         "description": "Number of 0.9 degree motor steps between pings for auto scan (1~10 = 0.9~9.0 degrees)",
-                        "units": "gradian"
+                        "units": "gradians"
                     },
                     {
                         "name": "delay",
                         "type": "u8",
                         "description": "An additional delay between successive transmit pulses (0~100 ms). This may be necessary for some programs to avoid collisions on the RS485 USRT.",
-                        "units": "millisecond"
+                        "units": "milliseconds"
                     }
                 ]
             },
