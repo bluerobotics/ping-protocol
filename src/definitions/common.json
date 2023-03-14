@@ -67,7 +67,7 @@
                     {
                         "name": "device_type",
                         "type": "u8",
-                        "description": "Device type. 0: Unknown; 1: Ping Echosounder; 2: Ping360"
+                        "description": "Device type. 0: Unknown; 1: Ping Echosounder; 2: Ping360; 3: Ping Echosounder 2"
                     },
                     {
                         "name": "device_revision",
