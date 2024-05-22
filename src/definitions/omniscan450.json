@@ -1,6 +1,18 @@
 {
     "messages": {
-         "control": {
+        "control": {
+            "set_speed_of_sound": {
+                "id": 1002,
+                "description": "Set the speed of sound.",
+                "payload": [
+                    {
+                        "name": "speed_of_sound",
+                        "type": "u32",
+                        "description": "The speed of sound in the measurement medium. ~1,500,000 mm/s for water.",
+                        "units": "mm/s"
+                    }
+                ]
+            },
             "os_ping_params": {
                 "id": 2197,
                 "payload": [
@@ -27,7 +39,7 @@
                     {
                         "name": "pulse_len_percent",
                         "type": "float"
-                    } ,
+                    },
                     {
                         "name": "filter_duration_percent",
                         "type": "float"
@@ -43,26 +55,14 @@
                     {
                         "name": "enable",
                         "type": "u8"
-                    } ,
+                    },
                     {
                         "name": "reserved",
                         "type": "u8"
-                    }                                                                                                 
-                ]
-            },
-            "set_speed_of_sound": {
-                "id": 1002,
-                "description": "Set the speed of sound.",
-                "payload": [
-                    {
-                        "name": "speed_of_sound",
-                        "type": "u32",
-                        "description": "The speed of sound in the measurement medium. ~1,500,000 mm/s for water.",
-                        "units": "mm/s"
                     }
                 ]
             }
-         },
+        },
         "get": {
             "os_mono_profile": {
                 "id": 2198,
@@ -90,13 +90,13 @@
                         "type": "u32",
                         "description": "msec since power up at time of ping",
                         "units": "ms"
-                    },    
+                    },
                     {
                         "name": "ping_hz",
                         "type": "u32",
                         "description": "Frequency of acoustic signal",
                         "units": "hz"
-                    },                                    
+                    },
                     {
                         "name": "gain_index",
                         "type": "u16",
@@ -139,11 +139,11 @@
                     {
                         "name": "transducer_heading_deg",
                         "type": "float"
-                    },  
+                    },
                     {
                         "name": "vehicle_heading_deg",
                         "type": "float"
-                    },                                                                                                  
+                    },
                     {
                         "name": "pwr_results",
                         "type": "vector",
