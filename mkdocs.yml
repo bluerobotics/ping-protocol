@@ -8,6 +8,7 @@ nav:
     - Quick Start: index.md
     - Message Definitions:
         - common: pingmessage-common.md
+        - omniscan450: pingmessage-omniscan450.md
         - ping1d: pingmessage-ping1d.md
         - ping360: pingmessage-ping360.md
 site_dir: ping-protocol
