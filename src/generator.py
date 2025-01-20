@@ -98,6 +98,22 @@ class Generator:
 
         return s
 
+    def get_printf_format(self, t):
+        format_dict = {
+            'int8_t': 'PRId8',
+            'int16_t': 'PRId16',
+            'int32_t': 'PRId32',
+            'int64_t': 'PRId64',
+            'uint8_t': 'PRIu8',
+            'uint16_t': 'PRIu16',
+            'uint32_t': 'PRIu32',
+            'uint64_t': 'PRIu64',
+            'float': 'f',
+            'double': 'f',
+        }
+        t = self.get_type_string(t)
+        return format_dict.get(t, 'd')
+
     def is_vector(self, t):
         return ('vector' in t)
 
