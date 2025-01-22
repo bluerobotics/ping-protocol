@@ -86,6 +86,27 @@
                         "description": "0: Disable, 1: Enable."
                     }
                 ]
+            },
+            "set_oss_profile_configuration": {
+                "id": 1007,
+                "description": "Set the profile output configuration. (Open source firmware only)",
+                "payload": [
+                    {
+                        "name": "number_of_points",
+                        "type": "u16",
+                        "description:": "Total number of points sent from sonar to host computer in the profile message."
+                    },
+                    {
+                        "name": "normalization_enabled",
+                        "type": "u8",
+                        "description": "If enabled, the profile data is scaled so that the maximum value aligns with the upper limit of 255. (0: Disabled, 1: Enabled)"
+                    },
+                    {
+                        "name": "enhance_enabled",
+                        "type": "u8",
+                        "description": "If enabled, the profile data will be unevenly scaled to enhance peak values. (0: Disabled, 1: Enabled)"
+                    }
+                ]
             }
         },
         "get": {
@@ -407,6 +428,27 @@
                             "size": "dynamic"
                         },
                         "description": "An array of return strength measurements taken at regular intervals across the scan region. The first element is the closest measurement to the sensor, and the last element is the farthest measurement in the scanned range."
+                    }
+                ]
+            },
+            "oss_profile_configuration": {
+                "id": 1301,
+                "description": "Get the profile output configuration. (Open source firmware only)",
+                "payload": [
+                    {
+                        "name": "number_of_points",
+                        "type": "u16",
+                        "description:": "Total number of points sent from sonar to host computer in the profile message."
+                    },
+                    {
+                        "name": "normalization_enabled",
+                        "type": "u8",
+                        "description": "If enabled, the profile data is scaled so that the maximum value aligns with the upper limit of 255. (0: Disabled, 1: Enabled)"
+                    },
+                    {
+                        "name": "enhance_enabled",
+                        "type": "u8",
+                        "description": "If enabled, the profile data will be unevenly scaled to enhance peak values. (0: Disabled, 1: Enabled)"
                     }
                 ]
             }
