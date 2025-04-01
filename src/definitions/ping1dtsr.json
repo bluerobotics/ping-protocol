@@ -1,0 +1,592 @@
+{
+    "messages": {
+        "set": {
+            "set_device_id": {
+                "id": 1000,
+                "description": "Set the device ID.",
+                "payload": [
+                    {
+                        "name": "device_id",
+                        "type": "u8",
+                        "description": "Device ID (0-254). 255 is reserved for broadcast messages."
+                    }
+                ]
+            },
+            "set_range": {
+                "id": 1001,
+                "description": "Set the scan range for acoustic measurements.",
+                "payload": [
+                    {
+                        "name": "scan_start",
+                        "type": "u32",
+                        "description:": "The beginning of the scan range in mm from the transducer.",
+                        "units": "mm"
+                    },
+                    {
+                        "name": "scan_length",
+                        "type": "u32",
+                        "description": "The length of the scan range. Minimum 1000.",
+                        "units": "mm"
+                    }
+                ]
+            },
+            "set_speed_of_sound": {
+                "id": 1002,
+                "description": "Set the speed of sound used for distance calculations.",
+                "payload": [
+                    {
+                        "name": "speed_of_sound",
+                        "type": "u32",
+                        "description": "The speed of sound in the measurement medium. ~1,500,000 mm/s for water.",
+                        "units": "mm/s"
+                    }
+                ]
+            },
+            "set_mode_auto": {
+                "id": 1003,
+                "description": "Set automatic or manual mode. Manual mode allows for manual selection of the gain and scan range.",
+                "payload": [
+                    {
+                        "name": "mode_auto",
+                        "type": "u8",
+                        "description": "0: manual mode. 1: auto mode."
+                    }
+                ]
+            },
+            "set_ping_interval": {
+                "id": 1004,
+                "description": "The interval between acoustic measurements.",
+                "payload": [
+                    {
+                        "name": "ping_interval",
+                        "type": "u16",
+                        "description": "The interval between acoustic measurements.",
+                        "units": "ms"
+                    }
+                ]
+            },
+            "set_gain_setting": {
+                "id": 1005,
+                "description": "Set the current gain setting.",
+                "payload": [
+                    {
+                        "name": "gain_setting",
+                        "type": "u8",
+                        "description": "The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144"
+                    }
+                ]
+            },
+            "set_ping_enable": {
+                "id": 1006,
+                "description": "Enable or disable acoustic measurements.",
+                "payload": [
+                    {
+                        "name": "ping_enabled",
+                        "type": "u8",
+                        "description": "0: Disable, 1: Enable."
+                    }
+                ]
+            },
+            "set_oss_profile_configuration": {
+                "id": 1007,
+                "description": "Set the profile output configuration. (Open source firmware only)",
+                "payload": [
+                    {
+                        "name": "number_of_points",
+                        "type": "u16",
+                        "description:": "Total number of points sent from sonar to host computer in the profile message."
+                    },
+                    {
+                        "name": "normalization_enabled",
+                        "type": "u8",
+                        "description": "If enabled, the profile data is scaled so that the maximum value aligns with the upper limit of 255. (0: Disabled, 1: Enabled)"
+                    },
+                    {
+                        "name": "enhance_enabled",
+                        "type": "u8",
+                        "description": "If enabled, the profile data will be unevenly scaled to enhance peak values. (0: Disabled, 1: Enabled)"
+                    }
+                ]
+            },
+            "set_gps_location": {
+                "id": 1501,
+                "description": "Return the last known GPS location",
+                "payload": [
+                    {
+                        "name": "utc_time",
+                        "type": "double",
+                        "description": "UTC time from the GPS"
+                    },
+                    {
+                        "name": "latitude",
+                        "type": "double",
+                        "description": "[-] decimal lattitude"
+                    },
+                    {
+                        "name": "longitude",
+                        "type": "double",
+                        "description": "[-] decimal longitude"
+                    },
+                    {
+                        "name": "altitude",
+                        "type": "double",
+                        "description": "altitude in meters",
+                        "units:": "m"
+                    },
+                    {
+                        "name": "HDOP",
+                        "type": "double",
+                        "description": "horizontal precision"
+                    },
+                    {
+                        "name": "geoid_separation",
+                        "type": "double",
+                        "description": "adjustment in meters",
+                        "units": "m"
+                    },
+                    {
+                        "name": "reference id",
+                        "type": "u16",
+                        "description": "Reference station ID (0..4095)"
+                    },
+                    {
+                        "name": "quality",
+                        "type": "u8",
+                        "description": "0 - not valid, >0 (see NEMA definitions)"
+                    },
+                    {
+                        "name": "satellites",
+                        "type": "u8",
+                        "description": "0..24"
+                    }
+                ]
+            }
+        },
+        "get": {
+            "firmware_version": {
+                "id": 1200,
+                "description": "Device information",
+                "payload": [
+                    {
+                        "name": "device_type",
+                        "type": "u8",
+                        "description": "Device type. 0: Unknown; 1: Echosounder"
+                    },
+                    {
+                        "name": "device_model",
+                        "type": "u8",
+                        "description": "Device model. 0: Unknown; 1: Ping1D"
+                    },
+                    {
+                        "name": "firmware_version_major",
+                        "type": "u16",
+                        "description": "Firmware version major number."
+                    },
+                    {
+                        "name": "firmware_version_minor",
+                        "type": "u16",
+                        "description": "Firmware version minor number."
+                    }
+                ],
+                "deprecated": "true"
+            },
+            "device_id": {
+                "id": 1201,
+                "description": "The device ID.",
+                "payload": [
+                    {
+                        "name": "device_id",
+                        "type": "u8",
+                        "description": "The device ID (0-254). 255 is reserved for broadcast messages."
+                    }
+                ],
+                "deprecated": "true"
+            },
+            "voltage_5": {
+                "id": 1202,
+                "description": "The 5V rail voltage.",
+                "payload": [
+                    {
+                        "name": "voltage_5",
+                        "type": "u16",
+                        "description": "The 5V rail voltage.",
+                        "units": "mV"
+                    }
+                ]
+            },
+            "speed_of_sound": {
+                "id": 1203,
+                "description": "The speed of sound used for distance calculations.",
+                "payload": [
+                    {
+                        "name": "speed_of_sound",
+                        "type": "u32",
+                        "description": "The speed of sound in the measurement medium. ~1,500,000 mm/s for water.",
+                        "units": "mm/s"
+                    }
+                ]
+            },
+            "range": {
+                "id": 1204,
+                "description": "The scan range for acoustic measurements. Measurements returned by the device will lie in the range (scan_start, scan_start + scan_length).",
+                "payload": [
+                    {
+                        "name": "scan_start",
+                        "type": "u32",
+                        "description": "The beginning of the scan range in mm from the transducer.",
+                        "units": "mm"
+                    },
+                    {
+                        "name": "scan_length",
+                        "type": "u32",
+                        "description": "The length of the scan range.",
+                        "units": "mm"
+                    }
+                ]
+            },
+            "mode_auto": {
+                "id": 1205,
+                "description": "The current operating mode of the device. Manual mode allows for manual selection of the gain and scan range.",
+                "payload": [
+                    {
+                        "name": "mode_auto",
+                        "type": "u8",
+                        "description": "0: manual mode, 1: auto mode"
+                    }
+                ]
+            },
+            "ping_interval": {
+                "id": 1206,
+                "description": "The interval between acoustic measurements.",
+                "payload": [
+                    {
+                        "name": "ping_interval",
+                        "type": "u16",
+                        "description": "The minimum interval between acoustic measurements. The actual interval may be longer.",
+                        "units": "ms"
+                    }
+                ]
+            },
+            "gain_setting": {
+                "id": 1207,
+                "description": "The current gain setting.",
+                "payload": [
+                    {
+                        "name": "gain_setting",
+                        "type": "u32",
+                        "description": "The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144"
+                    }
+                ]
+            },
+            "transmit_duration": {
+                "id": 1208,
+                "description": "The duration of the acoustic activation/transmission.",
+                "payload": [
+                    {
+                        "name": "transmit_duration",
+                        "type": "u16",
+                        "description": "Acoustic pulse duration.",
+                        "units": "microseconds"
+                    }
+                ]
+            },
+            "general_info": {
+                "id": 1210,
+                "description": "General information.",
+                "payload": [
+                    {
+                        "name": "firmware_version_major",
+                        "type": "u16",
+                        "description": "Firmware major version."
+                    },
+                    {
+                        "name": "firmware_version_minor",
+                        "type": "u16",
+                        "description": "Firmware minor version."
+                    },
+                    {
+                        "name": "voltage_5",
+                        "type": "u16",
+                        "description": "Device supply voltage.",
+                        "units": "mV"
+                    },
+                    {
+                        "name": "ping_interval",
+                        "type": "u16",
+                        "description": "The interval between acoustic measurements.",
+                        "units": "ms"
+                    },
+                    {
+                        "name": "gain_setting",
+                        "type": "u8",
+                        "description": "The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144"
+                    },
+                    {
+                        "name": "mode_auto",
+                        "type": "u8",
+                        "description": "The current operating mode of the device. 0: manual mode, 1: auto mode"
+                    }
+                ],
+                "deprecated": "true"
+            },
+            "distance_simple": {
+                "id": 1211,
+                "description": "The distance to target with confidence estimate.",
+                "payload": [
+                    {
+                        "name": "distance",
+                        "type": "u32",
+                        "description": "Distance to the target.",
+                        "units": "mm"
+                    },
+                    {
+                        "name": "confidence",
+                        "type": "u8",
+                        "description": "Confidence in the distance measurement.",
+                        "units": "%"
+                    }
+                ]
+            },
+            "distance": {
+                "id": 1212,
+                "description": "The distance to target with confidence estimate. Relevant device parameters during the measurement are also provided.",
+                "payload": [
+                    {
+                        "name": "distance",
+                        "type": "u32",
+                        "description": "The current return distance determined for the most recent acoustic measurement.",
+                        "units": "mm"
+                    },
+                    {
+                        "name": "confidence",
+                        "type": "u16",
+                        "description": "Confidence in the most recent range measurement.",
+                        "units": "%"
+                    },
+                    {
+                        "name": "transmit_duration",
+                        "type": "u16",
+                        "description": "The acoustic pulse length during acoustic transmission/activation.",
+                        "units": "us"
+                    },
+                    {
+                        "name": "ping_number",
+                        "type": "u32",
+                        "description": "The pulse/measurement count since boot."
+                    },
+                    {
+                        "name": "scan_start",
+                        "type": "u32",
+                        "description": "The beginning of the scan region in mm from the transducer.",
+                        "units": "mm"
+                    },
+                    {
+                        "name": "scan_length",
+                        "type": "u32",
+                        "description": "The length of the scan region.",
+                        "units": "mm"
+                    },
+                    {
+                        "name": "gain_setting",
+                        "type": "u32",
+                        "description": "The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144"
+                    }
+                ]
+            },
+            "processor_temperature": {
+                "id": 1213,
+                "description": "Temperature of the device cpu.",
+                "payload": [
+                    {
+                        "name": "processor_temperature",
+                        "type": "u16",
+                        "description": "The temperature in centi-degrees Centigrade (100 * degrees C).",
+                        "units": "cC"
+                    }
+                ]
+            },
+            "pcb_temperature": {
+                "id": 1214,
+                "description": "Temperature of the on-board thermistor.",
+                "payload": [
+                    {
+                        "name": "pcb_temperature",
+                        "type": "u16",
+                        "description": "The temperature in centi-degrees Centigrade (100 * degrees C).",
+                        "units": "cC"
+                    }
+                ]
+            },
+            "ping_enable": {
+                "id": 1215,
+                "description": "Acoustic output enabled state.",
+                "payload": [
+                    {
+                        "name": "ping_enabled",
+                        "type": "u8",
+                        "description": "The state of the acoustic output. 0: disabled, 1:enabled"
+                    }
+                ]
+            },
+            "profile": {
+                "id": 1500,
+                "description": "A profile produced from a single acoustic measurement. The data returned is an array of response strength at even intervals across the scan region. The scan region is defined as the region between <scan_start> and <scan_start + scan_length> millimeters away from the transducer. A distance measurement to the target is also provided.",
+                "payload": [
+                    {
+                        "name": "distance",
+                        "type": "u32",
+                        "description": "The current return distance determined for the most recent acoustic measurement.",
+                        "units": "mm"
+                    },
+                    {
+                        "name": "confidence",
+                        "type": "u16",
+                        "description": "Confidence in the most recent range measurement.",
+                        "units": "%"
+                    },
+                    {
+                        "name": "transmit_duration",
+                        "type": "u16",
+                        "description": "The acoustic pulse length during acoustic transmission/activation.",
+                        "units": "us"
+                    },
+                    {
+                        "name": "ping_number",
+                        "type": "u32",
+                        "description": "The pulse/measurement count since boot."
+                    },
+                    {
+                        "name": "scan_start",
+                        "type": "u32",
+                        "description": "The beginning of the scan region in mm from the transducer.",
+                        "units": "mm"
+                    },
+                    {
+                        "name": "scan_length",
+                        "type": "u32",
+                        "description": "The length of the scan region.",
+                        "units": "mm"
+                    },
+                    {
+                        "name": "gain_setting",
+                        "type": "u32",
+                        "description": "The current gain setting. 0: 0.6, 1: 1.8, 2: 5.5, 3: 12.9, 4: 30.2, 5: 66.1, 6: 144"
+                    },
+                    {
+                        "name": "profile_data",
+                        "type": "vector",
+                        "vector": {
+                            "sizetype": "u16",
+                            "datatype": "u16",
+                            "size": "dynamic"
+                        },
+                        "description": "An array of return strength measurements taken at regular intervals across the scan region. The first element is the closest measurement to the sensor, and the last element is the farthest measurement in the scanned range."
+                    }
+                ]
+            },
+            "get_gps_location": {
+                "id": 1501,
+                "description": "Return the last known GPS location",
+                "payload": [
+                    {
+                        "name": "utc_time",
+                        "type": "double",
+                        "description": "UTC time from the GPS"
+                    },
+                    {
+                        "name": "latitude",
+                        "type": "double",
+                        "description": "[-] decimal lattitude"
+                    },
+                    {
+                        "name": "longitude",
+                        "type": "double",
+                        "description": "[-] decimal longitude"
+                    },
+                    {
+                        "name": "altitude",
+                        "type": "double",
+                        "description": "altitude in meters",
+                        "units:": "m"
+                    },
+                    {
+                        "name": "HDOP",
+                        "type": "double",
+                        "description": "horizontal precision"
+                    },
+                    {
+                        "name": "geoid_separation",
+                        "type": "double",
+                        "description": "adjustment in meters",
+                        "units": "m"
+                    },
+                    {
+                        "name": "reference id",
+                        "type": "u16",
+                        "description": "Reference station ID (0..4095)"
+                    },
+                    {
+                        "name": "quality",
+                        "type": "u8",
+                        "description": "0 - not valid, >0 (see NEMA definitions)"
+                    },
+                    {
+                        "name": "satellites",
+                        "type": "u8",
+                        "description": "0..24"
+                    }
+                ]
+            },
+            "oss_profile_configuration": {
+                "id": 1301,
+                "description": "Get the profile output configuration. (Open source firmware only)",
+                "payload": [
+                    {
+                        "name": "number_of_points",
+                        "type": "u16",
+                        "description:": "Total number of points sent from sonar to host computer in the profile message."
+                    },
+                    {
+                        "name": "normalization_enabled",
+                        "type": "u8",
+                        "description": "If enabled, the profile data is scaled so that the maximum value aligns with the upper limit of 255. (0: Disabled, 1: Enabled)"
+                    },
+                    {
+                        "name": "enhance_enabled",
+                        "type": "u8",
+                        "description": "If enabled, the profile data will be unevenly scaled to enhance peak values. (0: Disabled, 1: Enabled)"
+                    }
+                ]
+            }
+        },
+        "control": {
+            "goto_bootloader": {
+                "id": 1100,
+                "description": "Send the device into the bootloader. This is useful for firmware updates.",
+                "payload": []
+            },
+            "continuous_start": {
+                "id": 1400,
+                "description": "Command to initiate continuous data stream of profile messages.",
+                "payload": [
+                    {
+                        "name": "id",
+                        "type": "u16",
+                        "description": "The message id to stream. 1500: profile"
+                    }
+                ]
+            },
+            "continuous_stop": {
+                "id": 1401,
+                "description": "Command to stop the continuous data stream of profile messages.",
+                "payload": [
+                    {
+                        "name": "id",
+                        "type": "u16",
+                        "description": "The message id to stop streaming. 1500: profile"
+                    }
+                ]
+            }
+        }
+    }
+}
