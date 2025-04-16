@@ -145,7 +145,7 @@
                         "units": "m"
                     },
                     {
-                        "name": "reference id",
+                        "name": "reference_id",
                         "type": "u16",
                         "description": "Reference station ID (0..4095)"
                     },
@@ -521,7 +521,7 @@
                         "units": "m"
                     },
                     {
-                        "name": "reference id",
+                        "name": "reference_id",
                         "type": "u16",
                         "description": "Reference station ID (0..4095)"
                     },
