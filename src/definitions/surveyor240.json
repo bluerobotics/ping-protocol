@@ -1,0 +1,278 @@
+{
+    "messages": {
+        "control": {
+            "set_ping_parameters": {
+                "id": 3023,
+                "description": "Used to control the operation of Surveyor",
+                "payload": [
+                    {
+                        "name": "start_mm",
+                        "type": "i32",
+                        "description": "Start range in mm at which echo data is recorded. Ignored in auto range mode. Will be forced to 5% of end range as a minimum.",
+                        "units": "mm"
+                    },
+                    {
+                        "name": "end_mm",
+                        "type": "i32",
+                        "description": "End range in mm over which echo data is recorded. Set to 0 for Surveyor to automatically track the bottom and adjust range dynamically.",
+                        "units": "mm"
+                    },
+                    {
+                        "name": "sos_mps",
+                        "type": "float",
+                        "description": "Speed of sound",
+                        "units": "m/s"
+                    },
+                    {
+                        "name": "gain_index",
+                        "type": "i16",
+                        "description": "Set to -1 for auto gain (recommended). Valid manual gain ranges are from 0 to 100"
+                    },
+                    {
+                        "name": "msec_per_ping",
+                        "type": "i16",
+                        "description": "pings per second = 1000 / msec_per_ping. So 100 msec_per_ping means 10 pings per second. Actual ping rate can be limited by range and speed of sound, so the value specified defines an upper limit on ping rate.",
+                        "units": "ms/ping"
+                    },
+                    {
+                        "name": "diagnostic_injected_signal",
+                        "type": "u8",
+                        "description": "must be set to 0"
+                    },
+                    {
+                        "name": "ping_enable",
+                        "type": "bool",
+                        "description": "true to start/continue pinging, false to stop"
+                    },
+                    {
+                        "name": "enable_channel_data",
+                        "type": "bool",
+                        "description": "Used by SonarView, but not necessary. If enabled log files will be much larger."
+                    },
+                    {
+                        "name": "reserved_for_raw_data",
+                        "type": "bool",
+                        "description": "Must be set to false"
+                    },
+                    {
+                        "name": "enable_yz_point_data",
+                        "type": "bool",
+                        "description": "Angle and time of flight data is preferred for future SonarView enhancements."
+                    },
+                    {
+                        "name": "enable_atof_data",
+                        "type": "bool", 
+                        "description": "Enable angle and time of flight information for each detected point"
+                    },
+                    {
+                        "name": "n_range_steps",
+                        "type": "u16",
+                        "description": "Sets range resolution in number of range steps. Must be between 200 and 800 (inclusive)"
+                    },
+                    {
+                        "name": "reserved",
+                        "type": "u16"
+                    },
+                    {
+                        "name": "pulse_len_steps",
+                        "type": "float",
+                        "description": "Pulse length in number of range steps. Recommended value is 1.5"
+                    }
+                ]
+            }
+        },
+        "get": {
+            "attitude_report": {
+                "id": 504,
+                "description": "A response packet Surveyor sends to the host application containing information about the attitude (pitch and roll) of the device based on it's internal sensors.",
+                "payload": [
+                    {
+                        "name": "up_vec",
+                        "type": "vec3",
+                        "description": "World up vector (x, y, z) in the device coordinate system (x forward, y port, z up)"
+                    },
+                    {
+                        "name": "reserved",
+                        "type": "vec3",
+                        "description": "reserved for future magnetic field vector"
+                    },
+                    {
+                        "name": "utc_msec",
+                        "type": "u64",
+                        "description": "utc msec (1970 epoc). Will be 0 if not avaliable",
+                        "units": "msec"
+                    },
+                    {
+                        "name": "pwr_up_msec",
+                        "type": "u32",
+                        "description": "msec since power up",
+                        "units": "msec"
+                    }
+                ]
+            },
+            "water_stats": {
+                "id": 118,
+                "description": "A response packet Surveyor sends to the host application containing information about the attitude (pitch and roll) of the device based on it's internal sensors.",
+                "payload": [
+                    {
+                        "name": "temperature",
+                        "type": "float",
+                        "units": "deg C"
+                    },
+                    {
+                        "name": "pressure",
+                        "type": "float",
+                        "units": "Bar"
+                    }
+                ]
+            },
+            "atof_point_data": {
+                "id": 3012,
+                "description": "A a response packet Surveyor sends to the host application containing angle and time of flight for each detected point.",
+                "payload": [
+                    {
+                        "name": "pwr_up_msec",
+                        "type": "u32",
+                        "description": "Time at start of ping, msec since power on.",
+                        "units": "msec"
+                    },
+                    {
+                        "name": "utc_msec",
+                        "type": "u64",
+                        "description": "Time at start of ping, utc msec (1970 epoc). Will be 0 if not avaliable.",
+                        "units": "msec"
+                    },
+                    {
+                        "name": "listening_sec",
+                        "type": "float",
+                        "description": "Time from start of ping to last range bin.",
+                        "units": "sec"
+                    },
+                    {
+                        "name": "sos_mps",
+                        "type": "float",
+                        "description": "Speed of sound (mps) used in angle calculations.",
+                        "units": "float"
+                    },
+                    {
+                        "name": "ping_number",
+                        "type": "u32",
+                        "description": "Assigned sequentially from power on."
+                    },
+                    {
+                        "name": "ping_hz",
+                        "type": "u32",
+                        "description": "Frequency of the ping signal (Hz).",
+                        "units": "Hz"
+                    },
+                    {
+                        "name": "pulse_sec",
+                        "type": "float",
+                        "description": "Pulse length in seconds.",
+                        "units": "sec"
+                    },
+                    {
+                        "name": "flags",
+                        "type": "u32",
+                        "description": "reserved"
+                    },
+                    {
+                        "name": "num_points",
+                        "type": "u16",
+                        "description": "Number of points reported in the points field"
+                    },
+                    {
+                        "name": "reserved",
+                        "type": "u16"
+                    },
+                    {
+                        "name": "atof_point_data",
+                        "type": "atof_t[num_points]",
+                        "description": "struct atof_t {\nfloat    angle;            // radians, positive to port\nfloat    tof;              // seconds, time of flight\nu32      reserved[2];\n}\n// float distance = 0.5 * speed_of_sound * tof_sec;\n// float y = distance * sin(angle);\n// float z = -distance * cos(angle);"
+                    }
+                ]
+            },
+            "yz_point_data": {
+                "id": 3011,
+                "description": "A response packet that Surveyor sends to the host application containing the detected depth points.",
+                "payload": [
+                    {
+                        "name": "timestamp_msec",
+                        "type": "u32",
+                        "description": "msec since power up",
+                        "units": "msec"
+                    },
+                    {
+                        "name": "ping_number",
+                        "type": "u32",
+                        "description": "Assigned sequentially from power on."
+                    },
+                    {
+                        "name": "sos_mps",
+                        "type": "float",
+                        "description": "Speed of sound",
+                        "units": "m/s"
+                    },
+                    {
+                        "name": "up_vec",
+                        "type": "float[3]",
+                        "description": "World up vector (x, y, z) in the device coordinate system (x forward, y port, z up)"
+                    },
+                    {
+                        "name": "mag_vec",
+                        "type": "float[3]",
+                        "description": "reserved for future magnetic field vector"
+                    },
+                    {
+                        "name": "reserved",
+                        "type": "u32[10]"
+                    },
+                    {
+                        "name": "water_degC",
+                        "type": "float",
+                        "description": "-1000 if sensor not installed",
+                        "units": "deg C"
+                    },
+                    {
+                        "name": "water_bar",
+                        "type": "float",
+                        "description": "Water pressure in bar. -1000 if sensor not installed",
+                        "units": "bar"
+                    },
+                    {
+                        "name": "heave_m",
+                        "type": "float",
+                        "description": "Reserved for heave in meters.",
+                        "units": "meters"
+                    },
+                    {
+                        "name": "start_m",
+                        "type": "float",
+                        "description": "Range at the beginning of the analyzed signals for this ping.",
+                        "units": "meters"
+                    },
+                    {
+                        "name": "end_m",
+                        "type": "float",
+                        "description": "Range at the end of the analyzed signals for this ping.",
+                        "units": "meters"
+                    },
+                    {
+                        "name": "unused",
+                        "type": "u16"
+                    },
+                    {
+                        "name": "num_points",
+                        "type": "u16",
+                        "description": "Number of points reported in the points field"
+                    },
+                    {
+                        "name": "enable_yz_point_data",
+                        "type": "float[2*num_points]",
+                        "description": "Y and Z value pairs for each detected point. Y is athwartships offset in meters, positive to the port side. Z is depth, positive up so all z values will be negative."
+                    }
+                ]
+            }
+        }
+    }
+}
