@@ -25,7 +25,8 @@ definitions = [ "common",
                 "ping1d",
                 "ping360",
                 "omniscan450",
-		"ping1dtsr"]
+		        "ping1dtsr",
+                "surveyor240"]
 
 for definition in definitions:
     definitionFile = "%s/%s.json" % (definitionPath, definition)
