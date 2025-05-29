@@ -88,12 +88,12 @@
                 "payload": [
                     {
                         "name": "up_vec",
-                        "type": "vec3",
+                        "type": "vector",
                         "description": "World up vector (x, y, z) in the device coordinate system (x forward, y port, z up)"
                     },
                     {
                         "name": "reserved",
-                        "type": "vec3",
+                        "type": "vector",
                         "description": "reserved for future magnetic field vector"
                     },
                     {
@@ -112,7 +112,7 @@
             },
             "water_stats": {
                 "id": 118,
-                "description": "A response packet Surveyor sends to the host application containing information about the attitude (pitch and roll) of the device based on it's internal sensors.",
+                "description": "A response packet Surveyor sends to the host application containing information about the temperature and pressure of the water.",
                 "payload": [
                     {
                         "name": "temperature",
@@ -128,7 +128,7 @@
             },
             "atof_point_data": {
                 "id": 3012,
-                "description": "A a response packet Surveyor sends to the host application containing angle and time of flight for each detected point.",
+                "description": "A response packet Surveyor sends to the host application containing angle and time of flight for each detected point.",
                 "payload": [
                     {
                         "name": "pwr_up_msec",
