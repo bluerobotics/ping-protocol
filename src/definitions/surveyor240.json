@@ -89,11 +89,21 @@
                     {
                         "name": "up_vec",
                         "type": "vector",
+                        "vector": {
+                            "sizetype": "u8",
+                            "datatype": "float",
+                            "size": 3
+                        },
                         "description": "World up vector (x, y, z) in the device coordinate system (x forward, y port, z up)"
                     },
                     {
                         "name": "reserved",
                         "type": "vector",
+                        "vector": {
+                            "sizetype": "u8",
+                            "datatype": "float",
+                            "size": 3
+                        },
                         "description": "reserved for future magnetic field vector"
                     },
                     {
@@ -187,7 +197,12 @@
                     },
                     {
                         "name": "atof_point_data",
-                        "type": "atof_t[num_points]",
+                        "type": "vector",
+                        "vector": {
+                            "sizetype": "u16",
+                            "datatype": "atof_t",
+                            "size": "dynamic"
+                        },
                         "description": ""
                     }
                 ]
@@ -215,17 +230,32 @@
                     },
                     {
                         "name": "up_vec",
-                        "type": "float[3]",
+                        "type": "vector",
+                        "vector": {
+                            "sizetype": "u8",
+                            "datatype": "float",
+                            "size": 3
+                        },
                         "description": "World up vector (x, y, z) in the device coordinate system (x forward, y port, z up)"
                     },
                     {
                         "name": "mag_vec",
-                        "type": "float[3]",
+                        "type": "vector",
+                        "vector": {
+                            "sizetype": "u8",
+                            "datatype": "float",
+                            "size": 3
+                        },
                         "description": "reserved for future magnetic field vector"
                     },
                     {
                         "name": "reserved",
-                        "type": "u32[10]"
+                        "type": "vector",
+                        "vector": {
+                            "sizetype": "u8",
+                            "datatype": "u16",
+                            "size": 10
+                        }
                     },
                     {
                         "name": "water_degC",
@@ -268,7 +298,12 @@
                     },
                     {
                         "name": "enable_yz_point_data",
-                        "type": "float[2*num_points]",
+                        "type": "vector",
+                        "vector": {
+                            "sizetype": "u16",
+                            "datatype": "float",
+                            "size": "dynamic"
+                        },
                         "description": "Y and Z value pairs for each detected point. Y is athwartships offset in meters, positive to the port side. Z is depth, positive up so all z values will be negative."
                     }
                 ]

@@ -216,8 +216,13 @@
                         "type": "u16"
                     },
                     {
-                        "name": "pwr_results[]",
-                        "type": "u16",
+                        "name": "pwr_results",
+                        "type": "vector",
+                        "vector": {
+                            "sizetype": "u16",
+                            "datatype": "u16",
+                            "size": "dynamic"
+                        },
                         "description": "Power results scaled from min_pwr to max_pwr. num_results entries."
                     }
                 ]
