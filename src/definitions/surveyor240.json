@@ -79,6 +79,27 @@
                         "description": "Pulse length in number of range steps. Recommended value is 1.5"
                     }
                 ]
+            },
+            "set_net_info": {
+                "id": 17,
+                "description": "The first octet of the IP address is placed in the least significant byte of the u32. For example, the IP address 192.168.2.2 would be packed into a u32 like this: u32 ip = (192) | (168 << 8) | (2 << 16) | (2 << 24);",
+                "payload": [
+                    {
+                        "name": "ntp_ip_address",
+                        "type": "u32",
+                        "description": "IP address of NTP server."
+                    },
+                    {
+                        "name": "subnet_mask",
+                        "type": "u32",
+                        "description": "Subnet of NTP server."
+                    },
+                    {
+                        "name": "gateway_ip",
+                        "type": "u32",
+                        "description": "Gateway IP address of NTP server. Only necessary if NTP server is in different subnet than device and needs to be accessed through a gateway. Otherwise can be left as 0"
+                    }
+                ]
             }
         },
         "get": {
@@ -90,7 +111,6 @@
                         "name": "up_vec",
                         "type": "vector",
                         "vector": {
-                            "sizetype": "u8",
                             "datatype": "float",
                             "size": 3
                         },
@@ -100,7 +120,6 @@
                         "name": "reserved",
                         "type": "vector",
                         "vector": {
-                            "sizetype": "u8",
                             "datatype": "float",
                             "size": 3
                         },
@@ -199,7 +218,6 @@
                         "name": "atof_point_data",
                         "type": "vector",
                         "vector": {
-                            "sizetype": "u16",
                             "datatype": "atof_t",
                             "size": "dynamic"
                         },
@@ -232,7 +250,6 @@
                         "name": "up_vec",
                         "type": "vector",
                         "vector": {
-                            "sizetype": "u8",
                             "datatype": "float",
                             "size": 3
                         },
@@ -242,7 +259,6 @@
                         "name": "mag_vec",
                         "type": "vector",
                         "vector": {
-                            "sizetype": "u8",
                             "datatype": "float",
                             "size": 3
                         },
@@ -252,7 +268,6 @@
                         "name": "reserved",
                         "type": "vector",
                         "vector": {
-                            "sizetype": "u8",
                             "datatype": "u16",
                             "size": 10
                         }
@@ -300,7 +315,6 @@
                         "name": "enable_yz_point_data",
                         "type": "vector",
                         "vector": {
-                            "sizetype": "u16",
                             "datatype": "float",
                             "size": "dynamic"
                         },

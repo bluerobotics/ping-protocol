@@ -69,6 +69,103 @@
             }
        }, 
        "get": {
+            "fw_version": {
+                "id": 1200,
+                "payload": [
+                    {
+                        "name": "device_type",
+                        "type": "u8"
+                    },
+                    {
+                        "name": "device_model",
+                        "type": "u8"
+                    },
+                    {
+                        "name": "version_major",
+                        "type": "u16"
+                    },
+                    {
+                        "name": "version_minor",
+                        "type": "u16"
+                    }
+                ]
+            },
+            "speed_of_sound": {
+                "id": 1203,
+                "payload": [
+                    {
+                        "name": "sos_mm_per_sec",
+                        "type": "u32",
+                        "description": "Current speed of sound setting in mm/sec, default is 1500 m/sec.",
+                        "units": "mm/sec"
+                    }
+                ]
+            },
+            "range": {
+                "id": 1204,
+                "payload": [
+                    {
+                        "name": "start_mm",
+                        "type": "u32",
+                        "description": "Normally 0.",
+                        "units": "mm"
+                    },
+                    {
+                        "name": "length_mm",
+                        "type": "u32",
+                        "description": "start_mm + length_mm is max range.",
+                        "units": "mm"
+                    }
+                ]
+            },
+            "ping_rate_msec": {
+                "id": 1206,
+                "payload": [
+                    {
+                        "name": "msec_per_ping",
+                        "type": "u16",
+                        "description": "Minimum time between successive pings. Can be longer depending on range.",
+                        "units": "msec"
+                    }
+                ]
+            },
+            "gain_index": {
+                "id": 1207,
+                "payload": [
+                    {
+                        "name": "gain_index",
+                        "type": "u32",
+                        "description": "Current gain index setting"
+                    }
+                ]
+            },
+            "altitude": {
+                "id": 1211,
+                "payload": [
+                    {
+                        "name": "altitude_mm",
+                        "type": "u32",
+                        "description": "Result of most recent calculated distance from device to bottom (or other target).",
+                        "units": "mm"
+                    },
+                    {
+                        "name": "quality",
+                        "type": "u8",
+                        "description": "Measure of confidence of altitude measure, 0 (No idea) to 100 (Quite sure)."
+                    }
+                ]
+            },
+            "processor_degC": {
+                "id": 1213,
+                "payload": [
+                    {
+                        "name": "centi_degC",
+                        "type": "u32",
+                        "description": "Device CPU temperature, result = degrees C * 100",
+                        "units": "centi-degrees C"
+                    }
+                ]
+            },
             "distance2": {
                 "id": 1223,
                 "description": "Reports a simple distance measurement.",
@@ -219,7 +316,6 @@
                         "name": "pwr_results",
                         "type": "vector",
                         "vector": {
-                            "sizetype": "u16",
                             "datatype": "u16",
                             "size": "dynamic"
                         },
