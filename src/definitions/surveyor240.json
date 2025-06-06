@@ -396,7 +396,7 @@
                         "description": "Number of points reported in the points field"
                     },
                     {
-                        "name": "enable_yz_point_data",
+                        "name": "yz_point_data",
                         "type": "vector",
                         "vector": {
                             "datatype": "float",
