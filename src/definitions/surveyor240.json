@@ -1,5 +1,10 @@
 {
     "messages": {
+        "general": {
+            "utc_request": {
+                "id": 14
+            }
+        },
         "control": {
             "set_ping_parameters": {
                 "id": 3023,
@@ -35,6 +40,11 @@
                         "units": "ms/ping"
                     },
                     {
+                        "name": "deprecated",
+                        "type": "u16",
+                        "description": "Set to 0"
+                    },
+                    {
                         "name": "diagnostic_injected_signal",
                         "type": "u8",
                         "description": "must be set to 0"
@@ -63,6 +73,11 @@
                         "name": "enable_atof_data",
                         "type": "bool", 
                         "description": "Enable angle and time of flight information for each detected point"
+                    },
+                    {
+                        "name": "target_ping_hz",
+                        "type": "i32",
+                        "description": "Set to 240000. Used for internal production testing only"
                     },
                     {
                         "name": "n_range_steps",
@@ -100,6 +115,19 @@
                         "description": "Gateway IP address of NTP server. Only necessary if NTP server is in different subnet than device and needs to be accessed through a gateway. Otherwise can be left as 0"
                     }
                 ]
+            },
+            "utc_response": {
+                "id": 15,
+                "payload": [
+                    {
+                        "name": "utc_msec",
+                        "type": "u64"
+                    },
+                    {
+                        "name": "accuracy_msec",
+                        "type": "u32"
+                    }
+                ]
             }
         },
         "get": {
@@ -108,21 +136,33 @@
                 "description": "A response packet Surveyor sends to the host application containing information about the attitude (pitch and roll) of the device based on it's internal sensors.",
                 "payload": [
                     {
-                        "name": "up_vec",
-                        "type": "vector",
-                        "vector": {
-                            "datatype": "float",
-                            "size": 3
-                        },
+                        "name": "up_vec_x",
+                        "type": "float",
                         "description": "World up vector (x, y, z) in the device coordinate system (x forward, y port, z up)"
                     },
                     {
-                        "name": "reserved",
-                        "type": "vector",
-                        "vector": {
-                            "datatype": "float",
-                            "size": 3
-                        },
+                        "name": "up_vec_y",
+                        "type": "float",
+                        "description": "World up vector (x, y, z) in the device coordinate system (x forward, y port, z up)"
+                    },
+                    {
+                        "name": "up_vec_z",
+                        "type": "float",
+                        "description": "World up vector (x, y, z) in the device coordinate system (x forward, y port, z up)"
+                    },
+                    {
+                        "name": "reserved_1",
+                        "type": "float",
+                        "description": "reserved for future magnetic field vector"
+                    },
+                    {
+                        "name": "reserved_2",
+                        "type": "float",
+                        "description": "reserved for future magnetic field vector"
+                    },
+                    {
+                        "name": "reserved_3",
+                        "type": "float",
                         "description": "reserved for future magnetic field vector"
                     },
                     {
@@ -247,30 +287,74 @@
                         "units": "m/s"
                     },
                     {
-                        "name": "up_vec",
-                        "type": "vector",
-                        "vector": {
-                            "datatype": "float",
-                            "size": 3
-                        },
+                        "name": "up_vec_x",
+                        "type": "float",
                         "description": "World up vector (x, y, z) in the device coordinate system (x forward, y port, z up)"
                     },
                     {
-                        "name": "mag_vec",
-                        "type": "vector",
-                        "vector": {
-                            "datatype": "float",
-                            "size": 3
-                        },
+                        "name": "up_vec_y",
+                        "type": "float",
+                        "description": "World up vector (x, y, z) in the device coordinate system (x forward, y port, z up)"
+                    },
+                    {
+                        "name": "up_vec_z",
+                        "type": "float",
+                        "description": "World up vector (x, y, z) in the device coordinate system (x forward, y port, z up)"
+                    },
+                    {
+                        "name": "mag_vec_x",
+                        "type": "float",
                         "description": "reserved for future magnetic field vector"
                     },
                     {
-                        "name": "reserved",
-                        "type": "vector",
-                        "vector": {
-                            "datatype": "u16",
-                            "size": 10
-                        }
+                        "name": "mag_vec_y",
+                        "type": "float",
+                        "description": "reserved for future magnetic field vector"
+                    },
+                    {
+                        "name": "mag_vec_z",
+                        "type": "float",
+                        "description": "reserved for future magnetic field vector"
+                    },
+                    {
+                        "name": "reserved_0",
+                        "type": "u32"
+                    },
+                    {
+                        "name": "reserved_1",
+                        "type": "u32"
+                    },
+                    {
+                        "name": "reserved_2",
+                        "type": "u32"
+                    },
+                    {
+                        "name": "reserved_3",
+                        "type": "u32"
+                    },
+                    {
+                        "name": "reserved_4",
+                        "type": "u32"
+                    },
+                    {
+                        "name": "reserved_5",
+                        "type": "u32"
+                    },
+                    {
+                        "name": "reserved_6",
+                        "type": "u32"
+                    },
+                    {
+                        "name": "reserved_7",
+                        "type": "u32"
+                    },
+                    {
+                        "name": "reserved_8",
+                        "type": "u32"
+                    },
+                    {
+                        "name": "reserved_9",
+                        "type": "u32"
                     },
                     {
                         "name": "water_degC",
