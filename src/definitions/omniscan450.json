@@ -84,6 +84,18 @@
                         "type": "u8",
                         "description": "Set to 0",
                         "default": 0
+                    },
+                    {
+                        "name": "reserved_4",
+                        "type": "u8",
+                        "description": "Set to 0",
+                        "default": 0
+                    },
+                    {
+                        "name": "reserved_5",
+                        "type": "u8",
+                        "description": "Set to 0",
+                        "default": 0
                     }
                 ]
             }
