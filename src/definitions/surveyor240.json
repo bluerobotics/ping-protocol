@@ -6,7 +6,7 @@
             }
         },
         "control": {
-            "set_ping_parameters": {
+           "set_ping_parameters": {
                 "id": 3023,
                 "description": "Used to control the operation of Surveyor",
                 "payload": [
@@ -14,84 +14,100 @@
                         "name": "start_mm",
                         "type": "i32",
                         "description": "Start range in mm at which echo data is recorded. Ignored in auto range mode. Will be forced to 5% of end range as a minimum.",
-                        "units": "mm"
+                        "units": "mm",
+                        "default": 0
                     },
                     {
                         "name": "end_mm",
                         "type": "i32",
                         "description": "End range in mm over which echo data is recorded. Set to 0 for Surveyor to automatically track the bottom and adjust range dynamically.",
-                        "units": "mm"
+                        "units": "mm",
+                        "default": 5000
                     },
                     {
                         "name": "sos_mps",
                         "type": "float",
                         "description": "Speed of sound",
-                        "units": "m/s"
+                        "units": "m/s",
+                        "default": 1500
                     },
                     {
                         "name": "gain_index",
                         "type": "i16",
-                        "description": "Set to -1 for auto gain (recommended). Valid manual gain ranges are from 0 to 100"
+                        "description": "Set to -1 for auto gain (recommended). Valid manual gain ranges are from 0 to 100",
+                        "default": -1
                     },
                     {
                         "name": "msec_per_ping",
                         "type": "i16",
                         "description": "pings per second = 1000 / msec_per_ping. So 100 msec_per_ping means 10 pings per second. Actual ping rate can be limited by range and speed of sound, so the value specified defines an upper limit on ping rate.",
-                        "units": "ms/ping"
+                        "units": "ms/ping",
+                        "default": 100
                     },
                     {
                         "name": "deprecated",
                         "type": "u16",
-                        "description": "Set to 0"
+                        "description": "Set to 0",
+                        "default": 0
                     },
                     {
                         "name": "diagnostic_injected_signal",
                         "type": "u8",
-                        "description": "must be set to 0"
+                        "description": "must be set to 0",
+                        "default": 0
                     },
                     {
                         "name": "ping_enable",
                         "type": "bool",
-                        "description": "true to start/continue pinging, false to stop"
+                        "description": "true to start/continue pinging, false to stop",
+                        "default": "False"
                     },
                     {
                         "name": "enable_channel_data",
                         "type": "bool",
-                        "description": "Used by SonarView, but not necessary. If enabled log files will be much larger."
+                        "description": "Used by SonarView, but not necessary. If enabled log files will be much larger.",
+                        "default": "False"
                     },
                     {
                         "name": "reserved_for_raw_data",
                         "type": "bool",
-                        "description": "Must be set to false"
+                        "description": "Must be set to false",
+                        "default": "False"
                     },
                     {
                         "name": "enable_yz_point_data",
                         "type": "bool",
-                        "description": "Angle and time of flight data is preferred for future SonarView enhancements."
+                        "description": "Angle and time of flight data is preferred for future SonarView enhancements.",
+                        "default": "False"
                     },
                     {
                         "name": "enable_atof_data",
                         "type": "bool", 
-                        "description": "Enable angle and time of flight information for each detected point"
+                        "description": "Enable angle and time of flight information for each detected point",
+                        "default": "False"
                     },
                     {
                         "name": "target_ping_hz",
                         "type": "i32",
-                        "description": "Set to 240000. Used for internal production testing only"
+                        "description": "Set to 240000. Used for internal production testing only",
+                        "default": 240000
                     },
                     {
                         "name": "n_range_steps",
                         "type": "u16",
-                        "description": "Sets range resolution in number of range steps. Must be between 200 and 800 (inclusive)"
+                        "description": "Sets range resolution in number of range steps. Must be between 200 and 800 (inclusive)",
+                        "default": 400
                     },
                     {
                         "name": "reserved",
-                        "type": "u16"
+                        "type": "u16",
+                        "default": 0
                     },
                     {
                         "name": "pulse_len_steps",
                         "type": "float",
-                        "description": "Pulse length in number of range steps. Recommended value is 1.5"
+                        "description": "Pulse length in number of range steps. Recommended value is 1.5",
+                        "default": 1.5
                     }
                 ]
             },
