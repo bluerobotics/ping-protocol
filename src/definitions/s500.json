@@ -21,49 +21,58 @@
                         "name": "start_mm",
                         "type": "u32",
                         "description": "Start of ping range, normally set to 0.",
-                        "units": "mm"
+                        "units": "mm",
+                        "default": 0
                     },
                     {
                         "name": "length_mm",
                         "type": "u32",
                         "description": "Length of the returned profile. End of range = start_mm + length_mm. Set to 0 for auto_range.",
-                        "units": "mm"
+                        "units": "mm",
+                        "default": 5000
                     },
                     {
                         "name": "gain_index",
                         "type": "i16",
-                        "description": "Set to -1 for auto gain, otherwise 0-13 sets gain for manual gain."
+                        "description": "Set to -1 for auto gain, otherwise 0-13 sets gain for manual gain.",
+                        "default": -1
                     },
                     {
                         "name": "msec_per_ping",
                         "type": "i16",
                         "description": "Set to -1 to start a single ping. Otherwise sets minimum ping interval.",
-                        "units": "msec"
+                        "units": "msec",
+                        "default": -1
                     },
                     {
                         "name": "pulse_len_usec",
                         "type": "u16",
-                        "description": "0 for auto mode. Currently ignored and auto duration is always used."
+                        "description": "0 for auto mode. Currently ignored and auto duration is always used.",
+                        "default": 0
                     },
                     {
                         "name": "report_id",
                         "type": "u16",
-                        "description": "The ID of the packet type that you would like in response. Options are distance2 (1223), profile6 (1308), or zero. Zero disables pinging."
+                        "description": "The ID of the packet type that you would like in response. Options are distance2 (1223), profile6 (1308), or zero. Zero disables pinging.",
+                        "default": 0
                     },
                     {
                         "name": "reserved",
                         "type": "u16",
-                        "description": "Set to 0"
+                        "description": "Set to 0",
+                        "default": 0
                     },
                     {
                         "name": "chirp",
                         "type": "u8",
-                        "description": "Set to 1 for chirp, 0 for monotone ping."
+                        "description": "Set to 1 for chirp, 0 for monotone ping.",
+                        "default": 0
                     },
                     {
                         "name": "decimation",
                         "type": "u8",
-                        "description": "Set to 0 for auto range resolution in chirp mode"
+                        "description": "Set to 0 for auto range resolution in chirp mode",
+                        "default": 0
                     }
                 ]
             }

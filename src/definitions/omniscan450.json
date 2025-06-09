@@ -20,60 +20,70 @@
                         "name": "start_mm",
                         "type": "u32",
                         "description": "Start of ping range, set to 0.",
-                        "units": "mm"
+                        "units": "mm",
+                        "default": 0
                     },
                     {
                         "name": "length_mm",
                         "type": "u32",
                         "description": "Length of the returned profile, end of range = start_mm + length_mm.",
-                        "units": "mm"
+                        "units": "mm",
+                        "default": 5000
                     },
                     {
                         "name": "msec_per_ping",
                         "type": "u32",
                         "description": "Set value to limit ping rate, normally set to 0 for best ping rate.",
-                        "units": "msec"
+                        "units": "msec",
+                        "default": 0
                     },
                     {
                         "name": "reserved_1",
                         "type": "float",
-                        "description": "Set to 0"
-
+                        "description": "Set to 0",
+                        "default": 0
                     },
                     {
                         "name": "reserved_2",
                         "type": "float",
-                        "description": "Set to 0"
+                        "description": "Set to 0",
+                        "default": 0
                     },
                     {
                         "name": "pulse_len_percent",
                         "type": "float",
-                        "description": "% of total ping time for current range, 0.002 typical."
+                        "description": "% of total ping time for current range, 0.002 typical.",
+                        "default": 0.002
                     },
                     {
                         "name": "filter_duration_percent",
                         "type": "float",
-                        "description": "0.0015 typical."
+                        "description": "0.0015 typical.",
+                        "default": 0.0015
                     },
                     {
                         "name": "gain_index",
                         "type": "i16",
-                        "description": "Set to -1 for auto gain, otherwise 0-7 sets gain." 
+                        "description": "Set to -1 for auto gain, otherwise 0-7 sets gain.",
+                        "default": -1
                     },
                     {
                         "name": "num_results",
                         "type": "u16",
-                        "description": "Number of signal data points in resulting profile (200-1200), 600 typical."
+                        "description": "Number of signal data points in resulting profile (200-1200), 600 typical.",
+                        "default": 600
                     },
                     {
                         "name": "enable",
                         "type": "u8",
-                        "description": "1 or 0 to enable or disable pinging."
+                        "description": "1 or 0 to enable or disable pinging.",
+                        "default": "True"
                     },
                     {
                         "name": "reserved_3",
                         "type": "u8",
-                        "description": "Set to 0"
+                        "description": "Set to 0",
+                        "default": 0
                     }
                 ]
             }
