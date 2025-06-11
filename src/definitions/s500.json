@@ -1,0 +1,337 @@
+{
+    "messages": {
+        "control": {
+            "set_ping_params": {
+                "description": "Set parameters",
+                "id": 1015,
+                "payload": [
+                    {
+                        "default": 0,
+                        "description": "Start of ping range, normally set to 0.",
+                        "name": "start_mm",
+                        "type": "u32",
+                        "units": "mm"
+                    },
+                    {
+                        "default": 5000,
+                        "description": "Length of the returned profile. End of range = start_mm + length_mm. Set to 0 for auto_range.",
+                        "name": "length_mm",
+                        "type": "u32",
+                        "units": "mm"
+                    },
+                    {
+                        "default": -1,
+                        "description": "Set to -1 for auto gain, otherwise 0-13 sets gain for manual gain.",
+                        "name": "gain_index",
+                        "type": "i16"
+                    },
+                    {
+                        "default": -1,
+                        "description": "Set to -1 to start a single ping. Otherwise sets minimum ping interval.",
+                        "name": "msec_per_ping",
+                        "type": "i16",
+                        "units": "msec"
+                    },
+                    {
+                        "default": 0,
+                        "description": "0 for auto mode. Currently ignored and auto duration is always used.",
+                        "name": "pulse_len_usec",
+                        "type": "u16"
+                    },
+                    {
+                        "default": 0,
+                        "description": "The ID of the packet type that you would like in response. Options are distance2 (1223), profile6 (1308), or zero. Zero disables pinging.",
+                        "name": "report_id",
+                        "type": "u16"
+                    },
+                    {
+                        "default": 0,
+                        "description": "Set to 0",
+                        "name": "reserved",
+                        "type": "u16"
+                    },
+                    {
+                        "default": 0,
+                        "description": "Set to 1 for chirp, 0 for monotone ping.",
+                        "name": "chirp",
+                        "type": "u8"
+                    },
+                    {
+                        "default": 0,
+                        "description": "Set to 0 for auto range resolution in chirp mode",
+                        "name": "decimation",
+                        "type": "u8"
+                    }
+                ]
+            },
+            "set_speed_of_sound": {
+                "description": "Set the speed of sound",
+                "id": 1002,
+                "payload": [
+                    {
+                        "description": "The speed of sound in the measurement medium, ~1,500,000 mm/s for water.",
+                        "name": "sos_mm_per_sec",
+                        "type": "u32",
+                        "units": "mm/s"
+                    }
+                ]
+            }
+        },
+        "get": {
+            "altitude": {
+                "id": 1211,
+                "payload": [
+                    {
+                        "description": "Result of most recent calculated distance from device to bottom (or other target).",
+                        "name": "altitude_mm",
+                        "type": "u32",
+                        "units": "mm"
+                    },
+                    {
+                        "description": "Measure of confidence of altitude measure, 0 (No idea) to 100 (Quite sure).",
+                        "name": "quality",
+                        "type": "u8"
+                    }
+                ]
+            },
+            "distance2": {
+                "description": "Reports a simple distance measurement.",
+                "id": 1223,
+                "payload": [
+                    {
+                        "description": "Distance of most recent ping",
+                        "name": "ping_distance_mm",
+                        "type": "u32",
+                        "units": "mm"
+                    },
+                    {
+                        "description": "Average distance over last 20 pings",
+                        "name": "averaged_distance_mm",
+                        "type": "u32",
+                        "units": "mm"
+                    },
+                    {
+                        "name": "reserved",
+                        "type": "u16"
+                    },
+                    {
+                        "description": "0 to 100",
+                        "name": "ping_confidence",
+                        "type": "u8"
+                    },
+                    {
+                        "description": "0 to 100",
+                        "name": "average_distance_confidence",
+                        "type": "u8"
+                    },
+                    {
+                        "name": "timestamp",
+                        "type": "u32",
+                        "units": "msec"
+                    }
+                ]
+            },
+            "fw_version": {
+                "id": 1200,
+                "payload": [
+                    {
+                        "name": "device_type",
+                        "type": "u8"
+                    },
+                    {
+                        "name": "device_model",
+                        "type": "u8"
+                    },
+                    {
+                        "name": "version_major",
+                        "type": "u16"
+                    },
+                    {
+                        "name": "version_minor",
+                        "type": "u16"
+                    }
+                ]
+            },
+            "gain_index": {
+                "id": 1207,
+                "payload": [
+                    {
+                        "description": "Current gain index setting",
+                        "name": "gain_index",
+                        "type": "u32"
+                    }
+                ]
+            },
+            "ping_rate_msec": {
+                "id": 1206,
+                "payload": [
+                    {
+                        "description": "Minimum time between successive pings. Can be longer depending on range.",
+                        "name": "msec_per_ping",
+                        "type": "u16",
+                        "units": "msec"
+                    }
+                ]
+            },
+            "processor_degC": {
+                "id": 1213,
+                "payload": [
+                    {
+                        "description": "Device CPU temperature, result = degrees C * 100",
+                        "name": "centi_degC",
+                        "type": "u32",
+                        "units": "centi-degrees C"
+                    }
+                ]
+            },
+            "profile6_t": {
+                "description": "Reports a measure of signal strength at all depths within the ping range. This could be used to present a 'waterfall' type display similar to a commercial marine depth sounder or fish finder. The Cerulean SonarView app uses profile6_t to do just that. The native number of results reported for the profile6_t is 1024 for monotone pings. For chirp pings, the range resolution is affected by the 'decimation' field in the set_ping_params command. If decimation is set to 0, the device will vary decimation depending on range. The smallest decimation will be used that does not exceed 6000 reported data elements. Keep in mind the bandwidth of the communication channel in use when considering which profile report to use. For example, profile6_t can generate a lot of data, and is probably best used with the USB or Ethernet interface.",
+                "id": 1308,
+                "payload": [
+                    {
+                        "description": "Sequentially assigned from 0 at power up.",
+                        "name": "ping_number",
+                        "type": "u32"
+                    },
+                    {
+                        "description": "Start of ping range",
+                        "name": "start_mm",
+                        "type": "u32",
+                        "units": "mm"
+                    },
+                    {
+                        "description": "Length of the returned profile. End of range = start_mm + length_mm.",
+                        "name": "length_mm",
+                        "type": "u32",
+                        "units": "mm"
+                    },
+                    {
+                        "description": "Initial frequency of ping.",
+                        "name": "start_ping_hz",
+                        "type": "u32",
+                        "units": "hz"
+                    },
+                    {
+                        "description": "Final frequency of ping.",
+                        "name": "end_ping_hz",
+                        "type": "u32",
+                        "units": "hz"
+                    },
+                    {
+                        "description": "Sampling rate of adc",
+                        "name": "adc_sample_hz",
+                        "type": "u32",
+                        "units": "hz"
+                    },
+                    {
+                        "name": "timestamp_msec",
+                        "type": "u32",
+                        "units": "msec"
+                    },
+                    {
+                        "name": "spare2",
+                        "type": "u32"
+                    },
+                    {
+                        "description": "Pulse duration in seconds.",
+                        "name": "pulse_duration_sec",
+                        "type": "float",
+                        "units": "sec"
+                    },
+                    {
+                        "name": "analog_gain",
+                        "type": "float"
+                    },
+                    {
+                        "description": "Maximum power level in dB.",
+                        "name": "max_pwr_db",
+                        "type": "float",
+                        "units": "dB"
+                    },
+                    {
+                        "description": "Minimum power level in dB.",
+                        "name": "min_pwr_db",
+                        "type": "float",
+                        "units": "dB"
+                    },
+                    {
+                        "description": "Depth in meters as calculated from most recent ping.",
+                        "name": "this_ping_depth_m",
+                        "type": "float",
+                        "units": "m"
+                    },
+                    {
+                        "description": "Smoothed calculated depth in meters.",
+                        "name": "smooth_depth_m",
+                        "type": "float",
+                        "units": "m"
+                    },
+                    {
+                        "description": "0",
+                        "name": "fspare2",
+                        "type": "float"
+                    },
+                    {
+                        "description": "Depth measurement confidence (0-100) based on most recent ping.",
+                        "name": "ping_depth_measurement_confidence",
+                        "type": "u8"
+                    },
+                    {
+                        "name": "gain_index",
+                        "type": "u8"
+                    },
+                    {
+                        "name": "decimation",
+                        "type": "u8"
+                    },
+                    {
+                        "description": "0 (0-100)",
+                        "name": "smoothed_depth_measurement_confidence",
+                        "type": "u8"
+                    },
+                    {
+                        "name": "num_results",
+                        "type": "u16"
+                    },
+                    {
+                        "description": "Power results scaled from min_pwr to max_pwr. num_results entries.",
+                        "name": "pwr_results",
+                        "type": "vector",
+                        "vector": {
+                            "datatype": "u16",
+                            "size": "dynamic"
+                        }
+                    }
+                ]
+            },
+            "range": {
+                "id": 1204,
+                "payload": [
+                    {
+                        "description": "Normally 0.",
+                        "name": "start_mm",
+                        "type": "u32",
+                        "units": "mm"
+                    },
+                    {
+                        "description": "start_mm + length_mm is max range.",
+                        "name": "length_mm",
+                        "type": "u32",
+                        "units": "mm"
+                    }
+                ]
+            },
+            "speed_of_sound": {
+                "id": 1203,
+                "payload": [
+                    {
+                        "description": "Current speed of sound setting in mm/sec, default is 1500 m/sec.",
+                        "name": "sos_mm_per_sec",
+                        "type": "u32",
+                        "units": "mm/sec"
+                    }
+                ]
+            }
+        }
+    }
+}

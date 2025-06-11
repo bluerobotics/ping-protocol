@@ -9,6 +9,8 @@ nav:
     - Message Definitions:
         - common: pingmessage-common.md
         - omniscan450: pingmessage-omniscan450.md
+        - surveyor240: pingmessage-surveyor240.md
+        - s500: pingmessage-s500.md
         - ping1d: pingmessage-ping1d.md
         - ping360: pingmessage-ping360.md
 site_dir: ping-protocol
