@@ -13,4 +13,4 @@ src/generate-markdown.py --output-directory=docs
 
 mkdocs build
 
-htmlproofer --ignore-empty-alt --file-ignore "./ping-protocol/404.html" --ignore-urls "https://fonts.gstatic.com" || exit 1
+htmlproofer --allow-hash-href --ignore-empty-alt --ignore-files "./ping-protocol/404.html" --ignore-urls "https://fonts.gstatic.com" || exit 1
