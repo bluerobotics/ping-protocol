@@ -1,5 +1,20 @@
 {
     "messages": {
+        "general": {
+            "JSON_WRAPPER": {
+                "id": 10,
+                "payload": [
+                    {
+                        "name": "string",
+                        "type": "vector",
+                        "vector": {
+                            "datatype": "char",
+                            "size": "dynamic"
+                        }
+                    }
+                ]
+            }
+        },
         "control": {
             "set_speed_of_sound": {
                 "id": 1002,
