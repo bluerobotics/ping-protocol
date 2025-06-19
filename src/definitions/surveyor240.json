@@ -144,6 +144,19 @@
         "general": {
             "utc_request": {
                 "id": 14
+            },
+            "JSON_WRAPPER": {
+                "id": 10,
+                "payload": [
+                    {
+                        "name": "string",
+                        "type": "vector",
+                        "vector": {
+                            "datatype": "char",
+                            "size": "dynamic"
+                        }
+                    }
+                ]
             }
         },
         "get": {
