@@ -1,0 +1,1289 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../pingmessage-surveyor240/">
+      
+      
+        <link rel="next" href="../pingmessage-ping1d/">
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.5.3, mkdocs-material-9.5.17">
+    
+    
+      
+        <title>s500 - Ping Protocol</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.bcfcd587.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="light-blue" data-md-color-accent="blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#s500-messages" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Ping Protocol" class="md-header__button md-logo" aria-label="Ping Protocol" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Ping Protocol
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              s500
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Ping Protocol" class="md-nav__button md-logo" aria-label="Ping Protocol" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    Ping Protocol
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Quick Start
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  <span class="md-ellipsis">
+    Message Definitions
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Message Definitions
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pingmessage-common/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    common
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pingmessage-omniscan450/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    omniscan450
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pingmessage-surveyor240/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    surveyor240
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    s500
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    s500
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#general" class="md-nav__link">
+    <span class="md-ellipsis">
+      general
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="general">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#10-json_wrapper" class="md-nav__link">
+    <span class="md-ellipsis">
+      10 JSON_WRAPPER
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#control" class="md-nav__link">
+    <span class="md-ellipsis">
+      control
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="control">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1015-set_ping_params" class="md-nav__link">
+    <span class="md-ellipsis">
+      1015 set_ping_params
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1002-set_speed_of_sound" class="md-nav__link">
+    <span class="md-ellipsis">
+      1002 set_speed_of_sound
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get" class="md-nav__link">
+    <span class="md-ellipsis">
+      get
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="get">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1211-altitude" class="md-nav__link">
+    <span class="md-ellipsis">
+      1211 altitude
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1223-distance2" class="md-nav__link">
+    <span class="md-ellipsis">
+      1223 distance2
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1200-fw_version" class="md-nav__link">
+    <span class="md-ellipsis">
+      1200 fw_version
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1207-gain_index" class="md-nav__link">
+    <span class="md-ellipsis">
+      1207 gain_index
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1206-ping_rate_msec" class="md-nav__link">
+    <span class="md-ellipsis">
+      1206 ping_rate_msec
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1213-processor_degc" class="md-nav__link">
+    <span class="md-ellipsis">
+      1213 processor_degC
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1308-profile6_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      1308 profile6_t
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1204-range" class="md-nav__link">
+    <span class="md-ellipsis">
+      1204 range
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1203-speed_of_sound" class="md-nav__link">
+    <span class="md-ellipsis">
+      1203 speed_of_sound
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pingmessage-ping1d/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ping1d
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pingmessage-ping360/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    ping360
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#general" class="md-nav__link">
+    <span class="md-ellipsis">
+      general
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="general">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#10-json_wrapper" class="md-nav__link">
+    <span class="md-ellipsis">
+      10 JSON_WRAPPER
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#control" class="md-nav__link">
+    <span class="md-ellipsis">
+      control
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="control">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1015-set_ping_params" class="md-nav__link">
+    <span class="md-ellipsis">
+      1015 set_ping_params
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1002-set_speed_of_sound" class="md-nav__link">
+    <span class="md-ellipsis">
+      1002 set_speed_of_sound
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#get" class="md-nav__link">
+    <span class="md-ellipsis">
+      get
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="get">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1211-altitude" class="md-nav__link">
+    <span class="md-ellipsis">
+      1211 altitude
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1223-distance2" class="md-nav__link">
+    <span class="md-ellipsis">
+      1223 distance2
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1200-fw_version" class="md-nav__link">
+    <span class="md-ellipsis">
+      1200 fw_version
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1207-gain_index" class="md-nav__link">
+    <span class="md-ellipsis">
+      1207 gain_index
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1206-ping_rate_msec" class="md-nav__link">
+    <span class="md-ellipsis">
+      1206 ping_rate_msec
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1213-processor_degc" class="md-nav__link">
+    <span class="md-ellipsis">
+      1213 processor_degC
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1308-profile6_t" class="md-nav__link">
+    <span class="md-ellipsis">
+      1308 profile6_t
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1204-range" class="md-nav__link">
+    <span class="md-ellipsis">
+      1204 range
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#1203-speed_of_sound" class="md-nav__link">
+    <span class="md-ellipsis">
+      1203 speed_of_sound
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="s500-messages">S500 messages</h1>
+<h2 id="general">general</h2>
+<h4 id="10-json_wrapper">10 JSON_WRAPPER</h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Name</th>
+<th>Description</th>
+<th>Units</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>char[]</td>
+<td>string</td>
+<td>Length is derived from payload_length in the header.</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="control">control</h2>
+<h4 id="1015-set_ping_params">1015 set_ping_params</h4>
+<p>Set parameters</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Name</th>
+<th>Description</th>
+<th>Units</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>u32</td>
+<td>start_mm</td>
+<td>Start of ping range, normally set to 0.</td>
+<td>mm</td>
+</tr>
+<tr>
+<td>u32</td>
+<td>length_mm</td>
+<td>Length of the returned profile. End of range = start_mm + length_mm. Set to 0 for auto_range.</td>
+<td>mm</td>
+</tr>
+<tr>
+<td>i16</td>
+<td>gain_index</td>
+<td>Set to -1 for auto gain, otherwise 0-13 sets gain for manual gain.</td>
+<td></td>
+</tr>
+<tr>
+<td>i16</td>
+<td>msec_per_ping</td>
+<td>Set to -1 to start a single ping. Otherwise sets minimum ping interval.</td>
+<td>msec</td>
+</tr>
+<tr>
+<td>u16</td>
+<td>pulse_len_usec</td>
+<td>0 for auto mode. Currently ignored and auto duration is always used.</td>
+<td></td>
+</tr>
+<tr>
+<td>u16</td>
+<td>report_id</td>
+<td>The ID of the packet type that you would like in response. Options are distance2 (1223), profile6 (1308), or zero. Zero disables pinging.</td>
+<td></td>
+</tr>
+<tr>
+<td>u16</td>
+<td>reserved</td>
+<td>Set to 0</td>
+<td></td>
+</tr>
+<tr>
+<td>u8</td>
+<td>chirp</td>
+<td>Set to 1 for chirp, 0 for monotone ping.</td>
+<td></td>
+</tr>
+<tr>
+<td>u8</td>
+<td>decimation</td>
+<td>Set to 0 for auto range resolution in chirp mode</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="1002-set_speed_of_sound">1002 set_speed_of_sound</h4>
+<p>Set the speed of sound</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Name</th>
+<th>Description</th>
+<th>Units</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>u32</td>
+<td>sos_mm_per_sec</td>
+<td>The speed of sound in the measurement medium, ~1,500,000 mm/s for water.</td>
+<td>mm/s</td>
+</tr>
+</tbody>
+</table>
+<h2 id="get">get</h2>
+<h4 id="1211-altitude">1211 altitude</h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Name</th>
+<th>Description</th>
+<th>Units</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>u32</td>
+<td>altitude_mm</td>
+<td>Result of most recent calculated distance from device to bottom (or other target).</td>
+<td>mm</td>
+</tr>
+<tr>
+<td>u8</td>
+<td>quality</td>
+<td>Measure of confidence of altitude measure, 0 (No idea) to 100 (Quite sure).</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="1223-distance2">1223 distance2</h4>
+<p>Reports a simple distance measurement.</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Name</th>
+<th>Description</th>
+<th>Units</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>u32</td>
+<td>ping_distance_mm</td>
+<td>Distance of most recent ping</td>
+<td>mm</td>
+</tr>
+<tr>
+<td>u32</td>
+<td>averaged_distance_mm</td>
+<td>Average distance over last 20 pings</td>
+<td>mm</td>
+</tr>
+<tr>
+<td>u16</td>
+<td>reserved</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>u8</td>
+<td>ping_confidence</td>
+<td>0 to 100</td>
+<td></td>
+</tr>
+<tr>
+<td>u8</td>
+<td>average_distance_confidence</td>
+<td>0 to 100</td>
+<td></td>
+</tr>
+<tr>
+<td>u32</td>
+<td>timestamp</td>
+<td></td>
+<td>msec</td>
+</tr>
+</tbody>
+</table>
+<h4 id="1200-fw_version">1200 fw_version</h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Name</th>
+<th>Description</th>
+<th>Units</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>u8</td>
+<td>device_type</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>u8</td>
+<td>device_model</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>u16</td>
+<td>version_major</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>u16</td>
+<td>version_minor</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="1207-gain_index">1207 gain_index</h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Name</th>
+<th>Description</th>
+<th>Units</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>u32</td>
+<td>gain_index</td>
+<td>Current gain index setting</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="1206-ping_rate_msec">1206 ping_rate_msec</h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Name</th>
+<th>Description</th>
+<th>Units</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>u16</td>
+<td>msec_per_ping</td>
+<td>Minimum time between successive pings. Can be longer depending on range.</td>
+<td>msec</td>
+</tr>
+</tbody>
+</table>
+<h4 id="1213-processor_degc">1213 processor_degC</h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Name</th>
+<th>Description</th>
+<th>Units</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>u32</td>
+<td>centi_degC</td>
+<td>Device CPU temperature, result = degrees C * 100</td>
+<td>centi-degrees C</td>
+</tr>
+</tbody>
+</table>
+<h4 id="1308-profile6_t">1308 profile6_t</h4>
+<p>Reports a measure of signal strength at all depths within the ping range. This could be used to present a 'waterfall' type display similar to a commercial marine depth sounder or fish finder. The Cerulean SonarView app uses profile6_t to do just that. The native number of results reported for the profile6_t is 1024 for monotone pings. For chirp pings, the range resolution is affected by the 'decimation' field in the set_ping_params command. If decimation is set to 0, the device will vary decimation depending on range. The smallest decimation will be used that does not exceed 6000 reported data elements. Keep in mind the bandwidth of the communication channel in use when considering which profile report to use. For example, profile6_t can generate a lot of data, and is probably best used with the USB or Ethernet interface.</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Name</th>
+<th>Description</th>
+<th>Units</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>u32</td>
+<td>ping_number</td>
+<td>Sequentially assigned from 0 at power up.</td>
+<td></td>
+</tr>
+<tr>
+<td>u32</td>
+<td>start_mm</td>
+<td>Start of ping range</td>
+<td>mm</td>
+</tr>
+<tr>
+<td>u32</td>
+<td>length_mm</td>
+<td>Length of the returned profile. End of range = start_mm + length_mm.</td>
+<td>mm</td>
+</tr>
+<tr>
+<td>u32</td>
+<td>start_ping_hz</td>
+<td>Initial frequency of ping.</td>
+<td>hz</td>
+</tr>
+<tr>
+<td>u32</td>
+<td>end_ping_hz</td>
+<td>Final frequency of ping.</td>
+<td>hz</td>
+</tr>
+<tr>
+<td>u32</td>
+<td>adc_sample_hz</td>
+<td>Sampling rate of adc</td>
+<td>hz</td>
+</tr>
+<tr>
+<td>u32</td>
+<td>timestamp_msec</td>
+<td></td>
+<td>msec</td>
+</tr>
+<tr>
+<td>u32</td>
+<td>spare2</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>float</td>
+<td>pulse_duration_sec</td>
+<td>Pulse duration in seconds.</td>
+<td>sec</td>
+</tr>
+<tr>
+<td>float</td>
+<td>analog_gain</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>float</td>
+<td>max_pwr_db</td>
+<td>Maximum power level in dB.</td>
+<td>dB</td>
+</tr>
+<tr>
+<td>float</td>
+<td>min_pwr_db</td>
+<td>Minimum power level in dB.</td>
+<td>dB</td>
+</tr>
+<tr>
+<td>float</td>
+<td>this_ping_depth_m</td>
+<td>Depth in meters as calculated from most recent ping.</td>
+<td>m</td>
+</tr>
+<tr>
+<td>float</td>
+<td>smooth_depth_m</td>
+<td>Smoothed calculated depth in meters.</td>
+<td>m</td>
+</tr>
+<tr>
+<td>float</td>
+<td>fspare2</td>
+<td>0</td>
+<td></td>
+</tr>
+<tr>
+<td>u8</td>
+<td>ping_depth_measurement_confidence</td>
+<td>Depth measurement confidence (0-100) based on most recent ping.</td>
+<td></td>
+</tr>
+<tr>
+<td>u8</td>
+<td>gain_index</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>u8</td>
+<td>decimation</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>u8</td>
+<td>smoothed_depth_measurement_confidence</td>
+<td>0 (0-100)</td>
+<td></td>
+</tr>
+<tr>
+<td>u16</td>
+<td>num_results</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>u16[]</td>
+<td>pwr_results</td>
+<td>Power results scaled from min_pwr to max_pwr. num_results entries. Length is derived from payload_length in the header.</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h4 id="1204-range">1204 range</h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Name</th>
+<th>Description</th>
+<th>Units</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>u32</td>
+<td>start_mm</td>
+<td>Normally 0.</td>
+<td>mm</td>
+</tr>
+<tr>
+<td>u32</td>
+<td>length_mm</td>
+<td>start_mm + length_mm is max range.</td>
+<td>mm</td>
+</tr>
+</tbody>
+</table>
+<h4 id="1203-speed_of_sound">1203 speed_of_sound</h4>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Name</th>
+<th>Description</th>
+<th>Units</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>u32</td>
+<td>sos_mm_per_sec</td>
+<td>Current speed of sound setting in mm/sec, default is 1500 m/sec.</td>
+<td>mm/sec</td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": [], "search": "../assets/javascripts/workers/search.b8dbb3d2.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.1e8ae164.min.js"></script>
+      
+    
+  </body>
+</html>
