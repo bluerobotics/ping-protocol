@@ -28,6 +28,14 @@ class Generator:
 
         return int(total_size)
 
+    def escape_reserved(self, name):
+        reserved = {"string"}
+        ret_name = name + "_" if name in reserved else name
+        print(f'current name {name}: new name {ret_name}')
+        return ret_name
+    def should_convert_atof_to_string(self, type):
+        return type in "atof_point_data"
+
     def convert_short_type(self, t):
         # u/i
         ui = t[0]
@@ -108,11 +116,11 @@ class Generator:
             'uint16_t': 'PRIu16',
             'uint32_t': 'PRIu32',
             'uint64_t': 'PRIu64',
-            'float': 'f',
-            'double': 'f',
+            'float': '"f"',
+            'double': '"f"',
         }
         t = self.get_type_string(t)
-        return format_dict.get(t, 'd')
+        return format_dict.get(t, '"d"')
 
     def is_vector(self, t):
         return ('vector' in t)
