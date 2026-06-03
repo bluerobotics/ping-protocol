@@ -7,7 +7,7 @@
 {% endif %}
 
 {% for msg in messages[msg_type] %}
-{% if msg != 'description' %}
+{% if msg not in ['description', 'notes'] %}
 #### {{messages[msg_type][msg].id}} {{msg}}
 {% if messages[msg_type][msg].description %}
 {{messages[msg_type][msg].description}}
@@ -27,14 +27,19 @@
 {% endif %}
 {% endif %}
 {% else %}
-| {{field.type}} | {{field.name}} | {{field.description}} | {{field.units}} |
+| {{field.type}} | {{field.name}} | {{field.description}}{% if field.notes %}<br><br><b>Note:</b> {{field.notes}}{% endif %} | {{field.units}} |
 {% endif %}
 {% endfor %}
 
 {% else %}
 No payload.
-
 {% endif %}
+
+{% if messages[msg_type][msg].notes %}
+{{messages[msg_type][msg].notes}}
+<br><br>
+{% endif %}
+
 {% endif %}
 {% endfor %}{# each message #}
 {% endfor %}{# each message type #}
