@@ -1,0 +1,348 @@
+{
+    "messages": {
+        "general": {
+            "JSON_WRAPPER": {
+                "id": 10,
+                "payload": [
+                    {
+                        "name": "string",
+                        "type": "vector",
+                        "vector": {
+                            "datatype": "char",
+                            "size": "dynamic"
+                        }
+                    }
+                ]
+            }
+        },
+        "control": {
+            "os3d_set_ping_params": {
+                "id": 3024,
+                "description": "<b>Payload Definition</b>",
+                "payload": [
+                    {
+                        "default": 0,
+                        "name": "start_m",
+                        "type": "float",
+                        "description": "start range in meters at which echo data is recorded. Ignored in auto range mode. Will be forced to 5% of end range as a minimum.",
+                        "units": "m"
+                    },
+                    {
+                        "default": 0,
+                        "name": "end_m",
+                        "type": "float",
+                        "description": "end range in meters over which echo data is recorded. Set to 0 for Omniscan 3D to automatically track the bottom and adjust range dynamically.",
+                        "units": "m"
+                    },
+                    {
+                        "default": 1500,
+                        "description": "speed of sound, meters per second",
+                        "name": "sos_mps",
+                        "type": "float",
+                        "units": "m/s"
+                    },
+                    {
+                        "default": -1,
+                        "description": "Set to -1 for auto gain (recommended). Valid manual gain ranges are from 0 to 10",
+                        "name": "gain_index",
+                        "type": "i16"
+                    },
+                    {
+                        "default": 100,
+                        "description": "pings per second = 1000 / msec_per_ping. So 100 msec_per_ping means 10 pings per second. Actual ping rate can be limited by range and speed of sound, so the value specified defines an upper limit on ping rate.",
+                        "name": "msec_per_ping",
+                        "type": "i16",
+                        "units": "ms/ping"
+                    },
+                    {
+                        "default": 0,
+                        "name": "reserved",
+                        "type": "u16",
+                        "description": "set to 0"
+                    },
+                    {
+                        "default": 0,
+                        "name": "diagnostic injected signal",
+                        "type": "u16",
+                        "description": "must be set to 0"
+                    },
+                    {
+                        "default": "False",
+                        "description": "true to start/continue pinging, false to stop",
+                        "name": "ping_enable",
+                        "type": "bool"
+                    },
+                    {
+                        "default": "False",
+                        "description": "Used by SonarView, but not necessary. If enabled log files will be much larger.",
+                        "name": "enable_channel_data",
+                        "type": "bool"
+                    },
+                    {
+                        "default": "False",
+                        "description": "Must be set to false",
+                        "name": "reserved_for_raw_data",
+                        "type": "bool"
+                    },
+                    {
+                        "default": "False",
+                        "description": "set to false",
+                        "name": "reserved",
+                        "type": "bool"
+                    },
+                    {
+                        "default": "False",
+                        "description": "enable angle + time of flight information for each detected point should be true",
+                        "name": "enable_atof_data",
+                        "type": "bool"
+                    },
+                    {
+                        "default": 450000,
+                        "description": "set to 450000. Used internally for production testing only.",
+                        "name": "target_ping_hz",
+                        "type": "i32"
+                    },
+                    {
+                        "default": 1000,
+                        "description": "sets range resolution in number of range steps. Must be between 200 and 1000 (inclusive), 1000 is recommended.",
+                        "name": "n_range_steps",
+                        "type": "u16"
+                    },
+                    {
+                        "default": 0,
+                        "name": "reserved",
+                        "description": "set to 0",
+                        "type": "u16"
+                    },
+                    {
+                        "default": 1.5,
+                        "description": "Pulse length in number of range steps. Recommended value is 1.5",
+                        "name": "pulse_len_steps",
+                        "type": "float"
+                    }
+                ]
+            }
+        },
+        "get": {
+            "attitude_report": {
+                "id": 504,
+                "notes": "This data pertains to the IMU in the RX16 module. Note the 'dot' on one corner of the face of the RX16 module. The zero pitch and roll orientation is with the transducer face pointing downward with the 'dot' toward the forward/starboard corner. Roll is positive as starboard side rolls downward and port side up. Pitch is positive when the forward axis is rotated downwards.<br><br>To compute pitch and roll from the up_vec:<br><br>Pitch = asin(-up_vec.x);<br><br>Roll = atan2(up_vec.y, up_vec.z);<br><br>We may support a calibrated magnetic vector in the future, but currently a heading signal from another source is required.",
+                "payload": [
+                    {
+                        "name": "up_vec",
+                        "type": "vec3",
+                        "description": "world up vector (x,y,z) in the device coordinate system (x forward, y port, z up)."
+                    },
+                    {
+                        "name": "reserved",
+                        "type": "vec3",
+                        "description": "reserved for future magnetic field vector"
+                    },
+                    {
+                        "name": "utc_msec",
+                        "type": "u64",
+                        "description": "utc msec (1970 epoc). Will be 0 if not available.",
+                        "units": "ms"
+                    },
+                    {
+                        "name": "pwr_up_msec",
+                        "type": "u32",
+                        "description": "msec since power up",
+                        "units": "ms"
+                    },
+                    {
+                        "name": "channel_number",
+                        "description": "assigned sequentially from 0. typically 0 for a single channel system and 0 or 1 for port/stb setup.",
+                        "type": "u8"
+                    }
+                ]
+            },
+            "os3d_point_set": {
+                "id": 3104,
+                "notes": "<b>version</b>: This is Version 1 of this packet format. Earlier there was a Version 0, which was applicable in some earlier beta units. These earlier files can be handled by SonarView and can be converted in SonarView as long as channel data was recorded.<br><br><b>power thresholds</b>: The set of detected points is generously populated in the sense that some of these points are stronger than others and some may not be helpful. Three power thresholds are provided with which the points can be filtered if a more conservative selection of point detections is desired. <pre><code><br>struct atof_point_t<br>{<br>    float angle; // radians;<br>    float tof;   // time of flight in seconds<br>    float pwr;   // power level of the beam at this point<br>    u8 pt_type;  // 0 = unclassified, 1 = bottom_points, 2 = water column points<br>    u8 reserved[3] = {0,0,0};<br>} PACKED_STRUCT;<br><br></code></pre><b>pt_type</b>: At the time of this writing, all points emitted by the device will be of type 'unclassified.' In the future, we may implement further classification within the device.<br><br><b>Interpreting Angle</b><br><br>Zero angle is perpendicular to the face of the RX16 receive module. With the 'dot' end of the RX16 facing the forward direction, and the transducer side down, positive angles are to the starboard side.<br><br>Note that the angles given in the data were computed with the speed of sound also given in the data. To adjust the angle in post processing for a different speed of sound, use the Snell's Law relation.<br><br>sin(angle1) / sos1 = sin(angle2) / sos2",
+                "payload": [
+                    {
+                        "name": "ping_number",
+                        "type": "u32",
+                        "description": "assigned sequentially from power on"
+                    },
+                    {
+                        "name": "sos_mps",
+                        "type": "float",
+                        "description": "speed of sound (meters per second) used in angle calculations"
+                    },
+                    {
+                        "name": "num_points",
+                        "type": "i16",
+                        "description": "number of points reported in the points field"
+                    },
+                    {
+                        "name": "unused",
+                        "type": "u16",
+                        "description": "0"
+                    },
+                    {
+                        "name": "unused",
+                        "type": "u32",
+                        "description": "0"
+                    },
+                    {
+                        "name": "utc_msec",
+                        "type": "u64",
+                        "description": "ime at start of ping, UTC milliseconds (1970 epoch). Will be 0 if not available.",
+                        "units": "ms"
+                    },
+                    {
+                        "name": "pwr_up_msec",
+                        "type": "u32",
+                        "description": "time at start of ping from power on",
+                        "units": "ms"
+                    },
+                    {
+                        "name": "version",
+                        "type": "u8",
+                        "description": "1. There was a previous version (0), see note below"
+                    },
+                    {
+                        "name": "device number",
+                        "type": "u8",
+                        "description": "must be < number of devices (so it will be 0 for a single device)"
+                    },
+                    {
+                        "name": "unused",
+                        "type": "u8",
+                        "description": "0"
+                    },
+                    {
+                        "name": "reserved",
+                        "type": "u8",
+                        "description": "0"
+                    },
+                    {
+                        "name": "pwr_threshold_high",
+                        "type": "float",
+                        "description": "Points with pwr higher than this are quite strong. This was the level used in all version 0 point sets. Seemed to be overly conservative."
+                    },
+                    {
+                        "name": "pwr_threshold_med",
+                        "type": "float",
+                        "description": "This is a reasonable cutoff level for most applications."
+                    },
+                    {
+                        "name": "pwr_threshold_low",
+                        "type": "float",
+                        "description": "This is a more liberal power level. If point_data is filtered with this threshold"
+                    },
+                    {
+                        "name": "reserved[9]",
+                        "type": "u32",
+                        "description": "reserved for future (9 words)"
+                    },
+                    {
+                        "name": "point_data[num_points]",
+                        "type": "atof_t",
+                        "description": "see above for atof_t definition"
+                    }
+                ]
+            },
+            "end_ping_info": {
+                "id": 3010,
+                "description": "<b>Payload Definition</b>",
+                "payload": [
+                    {
+                        "name": "reserved",
+                        "type": "u32",
+                        "description": "deprecated, may be repurposed in future"
+                    },
+                    {
+                        "name": "range_start_m",
+                        "type": "float",
+                        "description": "range where sampling begins",
+                        "units": "m"
+                    },
+                    {
+                        "name": "range_end_m",
+                        "type": "float",
+                        "description": "range where sampling ends",
+                        "units": "m"
+                    },
+                    {
+                        "description": "see description in ATTITUDE_REPORT",
+                        "name": "up-vec",
+                        "type": "vec3"
+                    },
+                    {
+                        "name": "ping_number",
+                        "type": "u32",
+                        "description": "assigned sequentially from power on"
+                    },
+                    {
+                        "description": "-1000 if no sensor present",
+                        "name": "water_degC",
+                        "type": "float"
+                    },
+                    {
+                        "description": "-1000 if no sensor present",
+                        "name": "water_bar",
+                        "type": "float"
+                    },
+                    {
+                        "description": "0, not yet implemented",
+                        "name": "heave_m",
+                        "type": "float"
+                    },
+                    {
+                        "description": "reserved for future implementation",
+                        "name": "mag_vec",
+                        "type": "vec3"
+                    },
+                    {
+                        "description": "acutal ping hz (may differ from requested)",
+                        "name": "ping_hz_realized",
+                        "type": "float"
+                    },
+                    {
+                        "name": "gain_index",
+                        "type": "i32",
+                        "description": "gain index used for this ping"
+                    },
+                    {
+                        "name": "pulse_usec",
+                        "type": "u16",
+                        "description": "length of the pulse used in this ping in usec"
+                    },
+                    {
+                        "description": "number of range bins processed for this ping",
+                        "name": "n_range_bins",
+                        "type": "u16"
+                    },
+                    {
+                        "description": "number of adc samples in each range bin",
+                        "name": "samples_per_range_bin",
+                        "type": "u16"
+                    },
+                    {
+                        "description": "must be < number of devices, so 0 for single device",
+                        "name": "device_number",
+                        "type": "u8"
+                    },
+                    {
+                        "description": "0",
+                        "name": "unused",
+                        "type": "u8"
+                    },
+                    {
+                        "description": "msec since pwr up at start of ping",
+                        "name": "pwr_up_msec",
+                        "type": "u32"
+                    },
+                    {
+                        "description": "utc msec at start of ping",
+                        "name": "utc_msec",
+                        "type": "u64"
+                    }
+                ]
+            }
+        }
+    }
+}
