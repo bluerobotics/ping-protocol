@@ -17,7 +17,7 @@
         },
         "control": {
             "set_speed_of_sound": {
-                "id": 1002,
+                "id": 116,
                 "description": "Set the speed of sound.",
                 "payload": [
                     {
