@@ -49,6 +49,8 @@ class Generator:
         return new_name + 'Update'
 
     def get_c_size(self, t):
+        if t == 'atof_t':
+            return 16
         # this regex will get the X in u/intX_t (uint8_t, int16_t)
         match = re.search('[0-9]{1,2}', t)
         if match:

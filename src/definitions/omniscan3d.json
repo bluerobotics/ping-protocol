@@ -56,13 +56,13 @@
                     },
                     {
                         "default": 0,
-                        "name": "reserved",
+                        "name": "reserved1",
                         "type": "u16",
                         "description": "set to 0"
                     },
                     {
                         "default": 0,
-                        "name": "diagnostic injected signal",
+                        "name": "diagnostic_injected_signal",
                         "type": "u16",
                         "description": "must be set to 0"
                     },
@@ -87,7 +87,7 @@
                     {
                         "default": "False",
                         "description": "set to false",
-                        "name": "reserved",
+                        "name": "reserved2",
                         "type": "bool"
                     },
                     {
@@ -110,7 +110,7 @@
                     },
                     {
                         "default": 0,
-                        "name": "reserved",
+                        "name": "reserved3",
                         "description": "set to 0",
                         "type": "u16"
                     },
@@ -129,19 +129,39 @@
                 "notes": "This data pertains to the IMU in the RX16 module. Note the 'dot' on one corner of the face of the RX16 module. The zero pitch and roll orientation is with the transducer face pointing downward with the 'dot' toward the forward/starboard corner. Roll is positive as starboard side rolls downward and port side up. Pitch is positive when the forward axis is rotated downwards.<br><br>To compute pitch and roll from the up_vec:<br><br>Pitch = asin(-up_vec.x);<br><br>Roll = atan2(up_vec.y, up_vec.z);<br><br>We may support a calibrated magnetic vector in the future, but currently a heading signal from another source is required.",
                 "payload": [
                     {
-                        "name": "up_vec",
-                        "type": "vec3",
-                        "description": "world up vector (x,y,z) in the device coordinate system (x forward, y port, z up)."
+                        "description": "World up vector (x, y, z) in the device coordinate system (x forward, y port, z up)",
+                        "name": "up_vec_x",
+                        "type": "float"
                     },
                     {
-                        "name": "reserved",
-                        "type": "vec3",
-                        "description": "reserved for future magnetic field vector"
+                        "description": "World up vector (x, y, z) in the device coordinate system (x forward, y port, z up)",
+                        "name": "up_vec_y",
+                        "type": "float"
+                    },
+                    {
+                        "description": "World up vector (x, y, z) in the device coordinate system (x forward, y port, z up)",
+                        "name": "up_vec_z",
+                        "type": "float"
+                    },
+                    {
+                        "description": "reserved for future magnetic field vector",
+                        "name": "reserved_1",
+                        "type": "float"
+                    },
+                    {
+                        "description": "reserved for future magnetic field vector",
+                        "name": "reserved_2",
+                        "type": "float"
+                    },
+                    {
+                        "description": "reserved for future magnetic field vector",
+                        "name": "reserved_3",
+                        "type": "float"
                     },
                     {
                         "name": "utc_msec",
                         "type": "u64",
-                        "description": "utc msec (1970 epoc). Will be 0 if not available.",
+                        "description": "utc msec (1970 epoch). Will be 0 if not available.",
                         "units": "ms"
                     },
                     {
@@ -177,19 +197,19 @@
                         "description": "number of points reported in the points field"
                     },
                     {
-                        "name": "unused",
+                        "name": "unused_1",
                         "type": "u16",
                         "description": "0"
                     },
                     {
-                        "name": "unused",
+                        "name": "unused_2",
                         "type": "u32",
                         "description": "0"
                     },
                     {
                         "name": "utc_msec",
                         "type": "u64",
-                        "description": "ime at start of ping, UTC milliseconds (1970 epoch). Will be 0 if not available.",
+                        "description": "time at start of ping, UTC milliseconds (1970 epoch). Will be 0 if not available.",
                         "units": "ms"
                     },
                     {
@@ -204,17 +224,17 @@
                         "description": "1. There was a previous version (0), see note below"
                     },
                     {
-                        "name": "device number",
+                        "name": "device_number",
                         "type": "u8",
                         "description": "must be < number of devices (so it will be 0 for a single device)"
                     },
                     {
-                        "name": "unused",
+                        "name": "unused_3",
                         "type": "u8",
                         "description": "0"
                     },
                     {
-                        "name": "reserved",
+                        "name": "reserved_1",
                         "type": "u8",
                         "description": "0"
                     },
@@ -233,15 +253,23 @@
                         "type": "float",
                         "description": "This is a more liberal power level. If point_data is filtered with this threshold"
                     },
+                    { "name": "reserved2_0", "type": "u32", "description": "reserved for future" },
+                    { "name": "reserved2_1", "type": "u32", "description": "reserved for future" },
+                    { "name": "reserved2_2", "type": "u32", "description": "reserved for future" },
+                    { "name": "reserved2_3", "type": "u32", "description": "reserved for future" },
+                    { "name": "reserved2_4", "type": "u32", "description": "reserved for future" },
+                    { "name": "reserved2_5", "type": "u32", "description": "reserved for future" },
+                    { "name": "reserved2_6", "type": "u32", "description": "reserved for future" },
+                    { "name": "reserved2_7", "type": "u32", "description": "reserved for future" },
+                    { "name": "reserved2_8", "type": "u32", "description": "reserved for future" },
                     {
-                        "name": "reserved[9]",
-                        "type": "u32",
-                        "description": "reserved for future (9 words)"
-                    },
-                    {
-                        "name": "point_data[num_points]",
-                        "type": "atof_t",
-                        "description": "see above for atof_t definition"
+                        "name": "atof_point_data",
+                        "type": "vector",
+                        "vector": {
+                            "datatype": "atof_t",
+                            "size": "dynamic"
+                        },
+                       "description": "see below for atof_t definition"
                     }
                 ]
             },
@@ -250,7 +278,7 @@
                 "description": "<b>Payload Definition</b>",
                 "payload": [
                     {
-                        "name": "reserved",
+                        "name": "reserved1",
                         "type": "u32",
                         "description": "deprecated, may be repurposed in future"
                     },
@@ -267,9 +295,19 @@
                         "units": "m"
                     },
                     {
-                        "description": "see description in ATTITUDE_REPORT",
-                        "name": "up-vec",
-                        "type": "vec3"
+                        "description": "World up vector (x, y, z) in the device coordinate system (x forward, y port, z up)",
+                        "name": "up_vec_x",
+                        "type": "float"
+                    },
+                    {
+                        "description": "World up vector (x, y, z) in the device coordinate system (x forward, y port, z up)",
+                        "name": "up_vec_y",
+                        "type": "float"
+                    },
+                    {
+                        "description": "World up vector (x, y, z) in the device coordinate system (x forward, y port, z up)",
+                        "name": "up_vec_z",
+                        "type": "float"
                     },
                     {
                         "name": "ping_number",
@@ -293,11 +331,21 @@
                     },
                     {
                         "description": "reserved for future implementation",
-                        "name": "mag_vec",
-                        "type": "vec3"
+                        "name": "mag_vec_x",
+                        "type": "float"
                     },
                     {
-                        "description": "acutal ping hz (may differ from requested)",
+                        "description": "reserved for future implementation",
+                        "name": "mag_vec_y",
+                        "type": "float"
+                    },
+                    {
+                        "description": "reserved for future implementation",
+                        "name": "mag_vec_z",
+                        "type": "float"
+                    },
+                    {
+                        "description": "actual ping hz (may differ from requested)",
                         "name": "ping_hz_realized",
                         "type": "float"
                     },
