@@ -253,15 +253,51 @@
                         "type": "float",
                         "description": "This is a more liberal power level. If point_data is filtered with this threshold"
                     },
-                    { "name": "reserved2_0", "type": "u32", "description": "reserved for future" },
-                    { "name": "reserved2_1", "type": "u32", "description": "reserved for future" },
-                    { "name": "reserved2_2", "type": "u32", "description": "reserved for future" },
-                    { "name": "reserved2_3", "type": "u32", "description": "reserved for future" },
-                    { "name": "reserved2_4", "type": "u32", "description": "reserved for future" },
-                    { "name": "reserved2_5", "type": "u32", "description": "reserved for future" },
-                    { "name": "reserved2_6", "type": "u32", "description": "reserved for future" },
-                    { "name": "reserved2_7", "type": "u32", "description": "reserved for future" },
-                    { "name": "reserved2_8", "type": "u32", "description": "reserved for future" },
+                    {
+                        "name": "reserved2_0",
+                        "type": "u32",
+                        "description": "reserved for future"
+                    },
+                    {
+                        "name": "reserved2_1",
+                        "type": "u32",
+                        "description": "reserved for future"
+                    },
+                    {
+                        "name": "reserved2_2",
+                        "type": "u32",
+                        "description": "reserved for future"
+                    },
+                    {
+                        "name": "reserved2_3",
+                        "type": "u32",
+                        "description": "reserved for future"
+                    },
+                    {
+                        "name": "reserved2_4",
+                        "type": "u32",
+                        "description": "reserved for future"
+                    },
+                    {
+                        "name": "reserved2_5",
+                        "type": "u32",
+                        "description": "reserved for future"
+                    },
+                    {
+                        "name": "reserved2_6",
+                        "type": "u32",
+                        "description": "reserved for future"
+                    },
+                    {
+                        "name": "reserved2_7",
+                        "type": "u32",
+                        "description": "reserved for future"
+                    },
+                    {
+                        "name": "reserved2_8",
+                        "type": "u32",
+                        "description": "reserved for future"
+                    },
                     {
                         "name": "atof_point_data",
                         "type": "vector",
@@ -269,7 +305,7 @@
                             "datatype": "atof_t",
                             "size": "dynamic"
                         },
-                       "description": "see below for atof_t definition"
+                        "description": "see below for atof_t definition"
                     }
                 ]
             },
