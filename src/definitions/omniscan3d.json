@@ -63,7 +63,7 @@
                     {
                         "default": 0,
                         "name": "diagnostic_injected_signal",
-                        "type": "u16",
+                        "type": "u8",
                         "description": "must be set to 0"
                     },
                     {
