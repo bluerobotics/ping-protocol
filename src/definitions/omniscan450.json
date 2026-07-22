@@ -113,6 +113,17 @@
                         "default": 0
                     }
                 ]
+            },
+            "set_sync_channel_number": {
+                "id": 170,
+                "description": "Set the channel number of the OS.",
+                "payload": [
+                    {
+                        "name": "channel_number",
+                        "type": "u8",
+                        "description": "channel number assigned to this device"
+                    }
+                ]
             }
         },
         "get": {
