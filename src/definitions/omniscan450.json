@@ -122,11 +122,32 @@
                         "name": "channel_number",
                         "type": "u8",
                         "description": "channel number assigned to this device"
+                    },
+                    {
+                        "name": "number_of_channels",
+                        "type": "u8",
+                        "description": "number of sonars to be synchronized"
                     }
                 ]
             }
         },
         "get": {
+            "sync_channel_number": {
+                "id": 169,
+                "description": "Get the current channel number of the OS.",
+                "payload": [
+                    {
+                        "name": "channel_number",
+                        "type": "u8",
+                        "description": "channel number assigned to this device"
+                    },
+                    {
+                        "name": "number_of_channels",
+                        "type": "u8",
+                        "description": "number of sonars to be synchronized"
+                    }
+                ]
+            },
             "os_mono_profile": {
                 "id": 2198,
                 "description": "A profile produced from a single acoustic measurement. The data returned is an array of response strength, in dB, at even intervals across the scan region. The scan region is defined as the region between <scan_start> and <scan_start + scan_length> millimeters away from the transducer. Note that the amplitude of the results are in dB. This is just to keep high dynamic range in the u16 sized data elements. Normally these are converted back to linear power or signal levels.",
