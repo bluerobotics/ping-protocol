@@ -477,6 +477,62 @@
                         "type": "vector",
                         "vector": {
                             "sizetype": "u16",
+                            "datatype": "u8",
+                            "size": "dynamic"
+                        },
+                        "description": "An array of return strength measurements taken at regular intervals across the scan region. The first element is the closest measurement to the sensor, and the last element is the farthest measurement in the scanned range."
+                    }
+                ]
+            },
+            "profile16": {
+                "id": 1500,
+                "description": "A profile produced from a single acoustic measurement. The data returned is an array of response strength at even intervals across the scan region. The scan region is defined as the region between <scan_start> and <scan_start + scan_length> millimeters away from the transducer. A distance measurement to the target is also provided.",
+                "payload": [
+                    {
+                        "name": "distance",
+                        "type": "u32",
+                        "description": "The current return distance determined for the most recent acoustic measurement.",
+                        "units": "mm"
+                    },
+                    {
+                        "name": "confidence",
+                        "type": "u16",
+                        "description": "Confidence in the most recent range measurement.",
+                        "units": "%"
+                    },
+                    {
+                        "name": "transmit_duration",
+                        "type": "u16",
+                        "description": "The acoustic pulse length during acoustic transmission/activation.",
+                        "units": "us"
+                    },
+                    {
+                        "name": "ping_number",
+                        "type": "u32",
+                        "description": "The pulse/measurement count since boot."
+                    },
+                    {
+                        "name": "scan_start",
+                        "type": "u32",
+                        "description": "The beginning of the scan region in mm from the transducer.",
+                        "units": "mm"
+                    },
+                    {
+                        "name": "scan_length",
+                        "type": "u32",
+                        "description": "The length of the scan region.",
+                        "units": "mm"
+                    },
+                    {
+                        "name": "gain_setting",
+                        "type": "u32",
+                        "description": "The current gain setting. 0..3"
+                    },
+                    {
+                        "name": "profile_data",
+                        "type": "vector",
+                        "vector": {
+                            "sizetype": "u16",
                             "datatype": "u16",
                             "size": "dynamic"
                         },
@@ -572,7 +628,7 @@
                     {
                         "name": "id",
                         "type": "u16",
-                        "description": "The message id to stream. 1500: profile"
+                        "description": "The message id to stream. 1300/1500: profile"
                     }
                 ]
             },
@@ -583,7 +639,7 @@
                     {
                         "name": "id",
                         "type": "u16",
-                        "description": "The message id to stop streaming. 1500: profile"
+                        "description": "The message id to stop streaming. 1300/1500: profile"
                     }
                 ]
             }
