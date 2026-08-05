@@ -8,12 +8,20 @@
                     {
                         "name": "id",
                         "type": "u8",
-                        "description": "Device ID (1-254). 0 and 255 are reserved."
+                        "description": "Device ID (1-254). 0 and 255 are reserved.",
+                        "value": {
+                            "minimum": "1",
+                            "maximum": "254",
+                            "default": "2"
+                        }
                     },
                     {
                         "name": "reserved",
                         "type": "u8",
-                        "description": "reserved"
+                        "description": "reserved, value shall be zero",
+                        "value": {
+                            "default": "0"
+                        }
                     }
                 ]
             }
@@ -31,37 +39,67 @@
                     {
                         "name": "gain_setting",
                         "type": "u8",
-                        "description": "Analog gain setting (0 = low, 1 = normal, 2 = high)"
+                        "description": "Analog gain setting",
+                        "enum": {
+                            "low": "0",
+                            "normal": "1",
+                            "high": "2"
+                        }
                     },
                     {
                         "name": "angle",
                         "type": "u16",
                         "description": "Head angle",
-                        "units": "gradians"
+                        "units": "gradians",
+                        "value": {
+                            "minimum": "0",
+                            "maximum": "399",
+                            "default": "0"
+                        }
                     },
                     {
                         "name": "transmit_duration",
                         "type": "u16",
                         "description": "Acoustic transmission duration (1~1000 us)",
-                        "units": "microseconds"
+                        "units": "microseconds",
+                        "value": {
+                            "minimum": "1",
+                            "maximum": "1000",
+                            "default": "32"
+                        }
                     },
                     {
                         "name": "sample_period",
                         "type": "u16",
                         "description": "Time interval between individual signal intensity samples in 25 ns increments (80 to 40000 == 2 to 1000 us)",
-                        "units": "eicosapenta-nanoseconds"
+                        "units": "eicosapenta-nanoseconds",
+                        "value": {
+                            "minimum": "80",
+                            "maximum": "40000",
+                            "default": "80"
+                        }
                     },
                     {
                         "name": "transmit_frequency",
                         "type": "u16",
                         "description": "Acoustic operating frequency (500~1000 kHz). It is only practical to use say 650 to 850 kHz due to the narrow bandwidth of the acoustic receiver.",
-                        "units": "kilohertz"
+                        "units": "kilohertz",
+                        "value": {
+                            "minimum": "500",
+                            "maximum": "1000",
+                            "default": "740"
+                        }
                     },
                     {
                         "name": "number_of_samples",
                         "type": "u16",
                         "description": "Number of samples per reflected signal (supported values: 200~1200)",
-                        "units": "samples"
+                        "units": "samples",
+                        "value": {
+                            "minimum": "200",
+                            "maximum": "1200",
+                            "default": "1024"
+                        }
                     },
                     {
                         "name": "data",
@@ -87,61 +125,111 @@
                     {
                         "name": "gain_setting",
                         "type": "u8",
-                        "description": "Analog gain setting (0 = low, 1 = normal, 2 = high)"
+                        "description": "Analog gain setting",
+                        "enum": {
+                            "low": "0",
+                            "normal": "1",
+                            "high": "2"
+                        }
                     },
                     {
                         "name": "angle",
                         "type": "u16",
                         "description": "Head angle",
-                        "units": "gradians"
+                        "units": "gradians",
+                        "value": {
+                            "minimum": "0",
+                            "maximum": "399",
+                            "default": "0"
+                        }
                     },
                     {
                         "name": "transmit_duration",
                         "type": "u16",
                         "description": "Acoustic transmission duration (1~1000 us)",
-                        "units": "microseconds"
+                        "units": "microseconds",
+                        "value": {
+                            "minimum": "1",
+                            "maximum": "1000",
+                            "default": "32"
+                        }
                     },
                     {
                         "name": "sample_period",
                         "type": "u16",
                         "description": "Time interval between individual signal intensity samples in 25 ns increments (80 to 40000 == 2 to 1000 us)",
-                        "units": "eicosapenta-nanoseconds"
+                        "units": "eicosapenta-nanoseconds",
+                        "value": {
+                            "minimum": "80",
+                            "maximum": "40000",
+                            "default": "80"
+                        }
                     },
                     {
                         "name": "transmit_frequency",
                         "type": "u16",
                         "description": "Acoustic operating frequency (500~1000 kHz). It is only practical to use say 650 to 850 kHz due to the narrow bandwidth of the acoustic receiver.",
-                        "units": "kilohertz"
+                        "units": "kilohertz",
+                        "value": {
+                            "minimum": "500",
+                            "maximum": "1000",
+                            "default": "740"
+                        }
                     },
                     {
                         "name": "start_angle",
                         "type": "u16",
                         "description": "Head angle to begin scan sector for autoscan (0~399 = 0~360 degrees).",
-                        "units": "gradians"
+                        "units": "gradians",
+                        "value": {
+                            "minimum": "0",
+                            "maximum": "399",
+                            "default": "0"
+                        }
                     },
                     {
                         "name": "stop_angle",
                         "type": "u16",
                         "description": "Head angle to end scan sector for autoscan (0~399 = 0~360 degrees).",
-                        "units": "gradians"
+                        "units": "gradians",
+                        "value": {
+                            "minimum": "0",
+                            "maximum": "399",
+                            "default": "0"
+                        }
                     },
                     {
                         "name": "num_steps",
                         "type": "u8",
                         "description": "Number of 0.9 degree motor steps between pings for auto scan (1~10 = 0.9~9.0 degrees)",
-                        "units": "gradians"
+                        "units": "gradians",
+                        "value": {
+                            "minimum": "1",
+                            "maximum": "10",
+                            "default": "1"
+                        }
                     },
                     {
                         "name": "delay",
                         "type": "u8",
                         "description": "An additional delay between successive transmit pulses (0~100 ms). This may be necessary for some programs to avoid collisions on the RS485 USRT.",
-                        "units": "milliseconds"
+                        "units": "milliseconds",
+                        "value": {
+                            "minimum": "0",
+                            "maximum": "100",
+                            "default": "0"
+                        }
                     },
                     {
                         "name": "number_of_samples",
                         "type": "u16",
                         "description": "Number of samples per reflected signal (supported values: 200~1200)",
-                        "units": "samples"
+                        "units": "samples",
+                        "value": {
+                            "minimum": "200",
+                            "maximum": "1200",
+                            "default": "1024"
+                        }
                     },
                     {
                         "name": "data",
@@ -164,12 +252,19 @@
                     {
                         "name": "bootloader",
                         "type": "u8",
-                        "description": "0 = skip bootloader; 1 = run bootloader"
+                        "description": "0 = skip bootloader; 1 = run bootloader",
+                        "enum": {
+                            "skip_bootloader": "0",
+                            "run_bootloader": "1"
+                        }
                     },
                     {
                         "name": "reserved",
                         "type": "u8",
-                        "description": "reserved"
+                        "description": "reserved, value shall be zero",
+                        "value": {
+                            "default": "0"
+                        }
                     }
                 ]
             },
@@ -186,47 +281,81 @@
                     {
                         "name": "gain_setting",
                         "type": "u8",
-                        "description": "Analog gain setting (0 = low, 1 = normal, 2 = high)"
+                        "description": "Analog gain setting",
+                        "enum": {
+                            "low": "0",
+                            "normal": "1",
+                            "high": "2"
+                        }
                     },
                     {
                         "name": "angle",
                         "type": "u16",
                         "description": "Head angle",
-                        "units": "gradians"
+                        "value": {
+                            "minimum": "0",
+                            "maximum": "399",
+                            "default": "0"
+                        }
                     },
                     {
                         "name": "transmit_duration",
                         "type": "u16",
                         "description": "Acoustic transmission duration (1~1000 us)",
-                        "units": "microseconds"
+                        "units": "microseconds",
+                        "value": {
+                            "minimum": "1",
+                            "maximum": "1000",
+                            "default": "32"
+                        }
                     },
                     {
                         "name": "sample_period",
                         "type": "u16",
                         "description": "Time interval between individual signal intensity samples in 25 ns increments (80 to 40000 == 2 to 1000 us)",
-                        "units": "eicosapenta-nanoseconds"
+                        "units": "eicosapenta-nanoseconds", 
+                        "value": {
+                            "minimum": "80",
+                            "maximum": "40000",
+                            "default": "80"
+                        }
                     },
                     {
                         "name": "transmit_frequency",
                         "type": "u16",
                         "description": "Acoustic operating frequency (500~1000 kHz). It is only practical to use say 650 to 850 kHz due to the narrow bandwidth of the acoustic receiver.",
-                        "units": "kilohertz"
+                        "units": "kilohertz",
+                        "value": {
+                            "minimum": "500",
+                            "maximum": "1000",
+                            "default": "740"
+                        }
                     },
                     {
                         "name": "number_of_samples",
                         "type": "u16",
                         "description": "Number of samples per reflected signal (supported values: 200~1200)",
-                        "units": "samples"
+                        "units": "samples",
+                        "value": {
+                            "minimum": "200",
+                            "maximum": "1200",
+                            "default": "1024"
+                        }
                     },
                     {
                         "name": "transmit",
                         "type": "u8",
-                        "description": "0 = do not transmit; 1 = transmit after the transducer has reached the specified angle"
+                        "description": "0 = do not transmit; 1 = transmit after the transducer has reached the specified angle",
+                        "enum": {
+                            "do_not_transmit": "0",
+                            "transmit": "1"
+                        }
                     },
                     {
                         "name": "reserved",
                         "type": "u8",
-                        "description": "reserved"
+                        "description": "reserved, value shall be zero",
+                        "default": "0"
                     }
                 ]
             },
@@ -242,55 +371,100 @@
                     {
                         "name": "gain_setting",
                         "type": "u8",
-                        "description": "Analog gain setting (0 = low, 1 = normal, 2 = high)"
+                        "description": "Analog gain setting",
+                        "enum": {
+                            "low": "0",
+                            "normal": "1",
+                            "high": "2"
+                        }
                     },
                     {
                         "name": "transmit_duration",
                         "type": "u16",
                         "description": "Acoustic transmission duration (1~1000 us)",
-                        "units": "microseconds"
+                        "units": "microseconds",
+                        "value": {
+                            "minimum": "1",
+                            "maximum": "1000",
+                            "default": "32"
+                        }
                     },
                     {
                         "name": "sample_period",
                         "type": "u16",
                         "description": "Time interval between individual signal intensity samples in 25 ns increments (80 to 40000 == 2 to 1000 us)",
-                        "units": "eicosapenta-nanoseconds"
+                        "units": "eicosapenta-nanoseconds",
+                        "value": {
+                            "minimum": "80",
+                            "maximum": "40000",
+                            "default": "80"
+                        }
                     },
                     {
                         "name": "transmit_frequency",
                         "type": "u16",
                         "description": "Acoustic operating frequency (500~1000 kHz). It is only practical to use say 650 to 850 kHz due to the narrow bandwidth of the acoustic receiver.",
-                        "units": "kilohertz"
+                        "units": "kilohertz",
+                        "value": {
+                            "minimum": "500",
+                            "maximum": "1000",
+                            "default": "740"
+                        }
                     },
                     {
                         "name": "number_of_samples",
                         "type": "u16",
                         "description": "Number of samples per reflected signal (supported values: 200~1200)",
-                        "units": "samples"
+                        "units": "samples",
+                        "value": {
+                            "minimum": "200",
+                            "maximum": "1200",
+                            "default": "1024"
+                        }
                     },
                     {
                         "name": "start_angle",
                         "type": "u16",
                         "description": "Head angle to begin scan sector for autoscan (0~399 = 0~360 degrees).",
-                        "units": "gradians"
+                        "units": "gradians",
+                        "value": {
+                            "minimum": "0",
+                            "maximum": "399",
+                            "default": "0"
+                        }
                     },
                     {
                         "name": "stop_angle",
                         "type": "u16",
                         "description": "Head angle to end scan sector for autoscan (0~399 = 0~360 degrees).",
-                        "units": "gradians"
+                        "units": "gradians",
+                        "value": {
+                            "minimum": "0",
+                            "maximum": "399",
+                            "default": "0"
+                        }
                     },
                     {
                         "name": "num_steps",
                         "type": "u8",
                         "description": "Number of 0.9 degree motor steps between pings for auto scan (1~10 = 0.9~9.0 degrees)",
-                        "units": "gradians"
+                        "units": "gradians",
+                        "value": {
+                            "minimum": "1",
+                            "maximum": "10",
+                            "default": "1"
+                        }
                     },
                     {
                         "name": "delay",
                         "type": "u8",
                         "description": "An additional delay between successive transmit pulses (0~100 ms). This may be necessary for some programs to avoid collisions on the RS485 USRT.",
-                        "units": "milliseconds"
+                        "units": "milliseconds",
+                        "value": {
+                            "minimum": "0",
+                            "maximum": "100",
+                            "default": "0"
+                        }
                     }
                 ]
             },
